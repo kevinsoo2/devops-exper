@@ -1,0 +1,27 @@
+# Render Blueprint - DevOps Expert Academy Backend API
+# Documentation: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: devops-expert-api
+    runtime: node
+    region: frankfurt  # EU region for French audience
+    plan: free  # Use 'starter' for production
+    rootDir: backend
+    buildCommand: npm install && npm run db:migrate && npm run db:seed
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TURSO_DATABASE_URL
+        sync: false  # Must be set manually in Render dashboard
+      - key: TURSO_AUTH_TOKEN
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true  # Auto-generate a secure random value
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: FRONTEND_URL
+        sync: false  # Set to your Vercel deployment URL
+    autoDeploy: true
