@@ -4,35 +4,35 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Map, ChevronRight, CheckCircle, Circle, Lock } from 'lucide-react';
 
-const levels = ['All', 'Beginner', 'Intermediate', 'Advanced', 'Expert'];
+const levels = ['Tous', 'Débutant', 'Intermédiaire', 'Avancé', 'Expert'];
 
 const roadmapSteps = [
   {
-    level: 'Beginner',
-    title: 'Foundations',
-    description: 'Linux, Git, Networking basics',
+    level: 'Débutant',
+    title: 'Fondations',
+    description: 'Linux, Git, bases du réseau',
     xp: 500,
     status: 'completed',
     items: ['Linux Fundamentals', 'Git & Version Control', 'Networking Basics', 'Shell Scripting'],
   },
   {
-    level: 'Beginner',
-    title: 'Containerization',
-    description: 'Docker, Container concepts',
+    level: 'Débutant',
+    title: 'Conteneurisation',
+    description: 'Docker, concepts de conteneurs',
     xp: 750,
     status: 'completed',
     items: ['Docker Basics', 'Dockerfile Best Practices', 'Docker Compose', 'Container Security'],
   },
   {
-    level: 'Intermediate',
-    title: 'CI/CD Pipelines',
+    level: 'Intermédiaire',
+    title: 'Pipelines CI/CD',
     description: 'Jenkins, GitHub Actions, GitLab CI',
     xp: 1000,
     status: 'current',
     items: ['CI/CD Concepts', 'GitHub Actions', 'Jenkins Pipelines', 'GitLab CI/CD'],
   },
   {
-    level: 'Intermediate',
+    level: 'Intermédiaire',
     title: 'Orchestration',
     description: 'Kubernetes, Helm, Service Mesh',
     xp: 1500,
@@ -40,7 +40,7 @@ const roadmapSteps = [
     items: ['Kubernetes Basics', 'Helm Charts', 'Service Mesh (Istio)', 'K8s Security'],
   },
   {
-    level: 'Advanced',
+    level: 'Avancé',
     title: 'Infrastructure as Code',
     description: 'Terraform, Ansible, Pulumi',
     xp: 2000,
@@ -50,7 +50,7 @@ const roadmapSteps = [
   {
     level: 'Expert',
     title: 'Platform Engineering',
-    description: 'Internal Dev Platforms, SRE',
+    description: 'Plateformes internes, SRE',
     xp: 3000,
     status: 'locked',
     items: ['Platform Design', 'Developer Experience', 'SRE Principles', 'Chaos Engineering'],
@@ -60,7 +60,7 @@ const roadmapSteps = [
 export function RoadmapPreview() {
   const [filter, setFilter] = useState('All');
 
-  const filtered = filter === 'All' ? roadmapSteps : roadmapSteps.filter((s) => s.level === filter);
+  const filtered = filter === 'Tous' ? roadmapSteps : roadmapSteps.filter((s) => s.level === filter);
 
   return (
     <section className="py-24 bg-gray-50 dark:bg-dark">
@@ -68,13 +68,13 @@ export function RoadmapPreview() {
         <div className="text-center mb-12">
           <span className="section-badge">
             <Map size={16} />
-            Learning Roadmap
+            Parcours d&apos;apprentissage
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl font-bold dark:text-white">
-            Your Path to <span className="gradient-text">DevOps Mastery</span>
+            Votre chemin vers la <span className="gradient-text">Maîtrise DevOps</span>
           </h2>
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
-            Follow our structured learning path from foundations to expert-level platform engineering.
+            Suivez notre parcours structuré des fondations au platform engineering de niveau expert.
           </p>
         </div>
 
@@ -123,9 +123,9 @@ export function RoadmapPreview() {
                   <div className="card-hover">
                     <div className="flex items-center gap-2 mb-2">
                       <span className={`text-xs font-medium px-2 py-1 rounded-full border ${
-                        step.level === 'Beginner' ? 'difficulty-beginner' :
-                        step.level === 'Intermediate' ? 'difficulty-intermediate' :
-                        step.level === 'Advanced' ? 'difficulty-advanced' :
+                        step.level === 'Débutant' ? 'difficulty-beginner' :
+                        step.level === 'Intermédiaire' ? 'difficulty-intermediate' :
+                        step.level === 'Avancé' ? 'difficulty-advanced' :
                         'text-purple-400 bg-purple-500/10 border-purple-500/20'
                       }`}>
                         {step.level}
@@ -148,7 +148,7 @@ export function RoadmapPreview() {
 
         <div className="text-center mt-12">
           <Link href="/roadmap" className="btn-outline inline-flex items-center gap-2">
-            View Full Roadmap <ChevronRight size={18} />
+            Voir le Parcours Complet <ChevronRight size={18} />
           </Link>
         </div>
       </div>

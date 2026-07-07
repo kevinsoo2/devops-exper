@@ -103,7 +103,7 @@ export default function CourseDetailPage() {
     <div className="min-h-screen pt-24 pb-16 dark:bg-dark">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link href="/courses" className="flex items-center gap-2 text-sm text-gray-500 hover:text-primary-400 mb-6">
-          <ArrowLeft size={16} /> Back to Courses
+          <ArrowLeft size={16} /> Retour aux Formations
         </Link>
 
         {/* Header */}
@@ -111,17 +111,17 @@ export default function CourseDetailPage() {
           <div className="flex items-center gap-2 mb-3">
             <span className="skill-tag">{course.category || fallbackCourse.category}</span>
             <span className={`text-xs px-2 py-0.5 rounded-full border ${
-              (course.level || fallbackCourse.level) === 'Beginner' ? 'difficulty-beginner' :
-              (course.level || fallbackCourse.level) === 'Intermediate' ? 'difficulty-intermediate' : 'difficulty-advanced'
+              (course.level || fallbackCourse.level) === 'Beginner' || (course.level || fallbackCourse.level) === 'Débutant' ? 'difficulty-beginner' :
+              (course.level || fallbackCourse.level) === 'Intermediate' || (course.level || fallbackCourse.level) === 'Intermédiaire' ? 'difficulty-intermediate' : 'difficulty-advanced'
             }`}>{course.level || fallbackCourse.level}</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold dark:text-white">{course.title || fallbackCourse.title}</h1>
           <p className="mt-4 text-gray-500">{course.description || fallbackCourse.description}</p>
           <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-gray-500">
             <span className="flex items-center gap-1"><Clock size={14} /> {course.duration_hours || fallbackCourse.duration_hours}h</span>
-            <span className="flex items-center gap-1"><Users size={14} /> {(course.enrolled_count || fallbackCourse.enrolled_count).toLocaleString()} enrolled</span>
+            <span className="flex items-center gap-1"><Users size={14} /> {(course.enrolled_count || fallbackCourse.enrolled_count).toLocaleString()} inscrits</span>
             <span className="flex items-center gap-1"><Star size={14} className="text-accent-400" /> {course.rating || fallbackCourse.rating}</span>
-            <span>by {course.instructor || fallbackCourse.instructor}</span>
+            <span>par {course.instructor || fallbackCourse.instructor}</span>
           </div>
         </div>
 
@@ -129,18 +129,18 @@ export default function CourseDetailPage() {
         <div className="mb-8">
           {enrolled ? (
             <div className="flex items-center gap-2 text-success-400 font-medium">
-              <CheckCircle size={20} /> Enrolled! Start learning below.
+              <CheckCircle size={20} /> Inscrit ! Commencez ci-dessous.
             </div>
           ) : (
             <button onClick={handleEnroll} disabled={enrolling} className="btn-primary">
-              {enrolling ? 'Enrolling...' : 'Enroll Now (Free)'}
+              {enrolling ? 'Inscription...' : 'S\'inscrire (Gratuit)'}
             </button>
           )}
         </div>
 
         {/* Chapters */}
         <div className="mb-12">
-          <h2 className="text-xl font-bold dark:text-white mb-4">Course Content</h2>
+          <h2 className="text-xl font-bold dark:text-white mb-4">Contenu de la Formation</h2>
           <div className="space-y-3">
             {chapters.map((chapter: Chapter, idx: number) => (
               <div key={chapter.id} className="card">
@@ -177,7 +177,7 @@ export default function CourseDetailPage() {
 
         {/* Reviews */}
         <div>
-          <h2 className="text-xl font-bold dark:text-white mb-4">Student Reviews</h2>
+          <h2 className="text-xl font-bold dark:text-white mb-4">Avis des Apprenants</h2>
           <div className="space-y-4">
             {reviews.map((review: any, idx: number) => (
               <div key={idx} className="card">

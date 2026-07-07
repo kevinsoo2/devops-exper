@@ -5,10 +5,10 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 
 export const metadata: Metadata = {
-  title: 'DevOps Expert Academy - Master DevOps Engineering',
+  title: 'DevOps Expert Academy - Devenez Expert DevOps',
   description:
-    'The ultimate platform to learn DevOps, Cloud, CI/CD, Kubernetes, Docker and more. Hands-on labs, certifications, and community-driven learning.',
-  keywords: ['DevOps', 'Cloud', 'Kubernetes', 'Docker', 'CI/CD', 'Learning Platform'],
+    'Plateforme complète pour devenir expert DevOps. Formations, labs pratiques, certifications et communauté.',
+  keywords: ['DevOps', 'Cloud', 'Kubernetes', 'Docker', 'CI/CD', 'Plateforme de formation'],
 };
 
 export default function RootLayout({
@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="fr" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

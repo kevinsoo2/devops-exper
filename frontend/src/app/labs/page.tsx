@@ -5,19 +5,19 @@ import Link from 'next/link';
 import { FlaskConical, Clock, Zap, Filter } from 'lucide-react';
 import { labs as labsApi } from '@/lib/api';
 
-const difficulties = ['All', 'Beginner', 'Intermediate', 'Advanced'];
-const categories = ['All', 'Containers', 'CI/CD', 'Cloud', 'Orchestration', 'Security', 'IaC', 'Monitoring'];
+const difficulties = ['Tous', 'Débutant', 'Intermédiaire', 'Avancé'];
+const categories = ['Tous', 'Conteneurs', 'CI/CD', 'Cloud', 'Orchestration', 'Sécurité', 'IaC', 'Monitoring'];
 
 
 const fallbackLabs = [
-  { id: '1', title: 'Deploy Multi-Container App with Docker Compose', slug: 'docker-compose-deploy', difficulty: 'Beginner', duration: '30 min', xp: 150, category: 'Containers', description: 'Learn to orchestrate multiple containers with Docker Compose.' },
-  { id: '2', title: 'Kubernetes Cluster Setup with kubeadm', slug: 'k8s-kubeadm-setup', difficulty: 'Intermediate', duration: '60 min', xp: 300, category: 'Orchestration', description: 'Set up a production-ready Kubernetes cluster from scratch.' },
-  { id: '3', title: 'CI/CD Pipeline with GitHub Actions', slug: 'github-actions-pipeline', difficulty: 'Beginner', duration: '45 min', xp: 200, category: 'CI/CD', description: 'Build a complete CI/CD pipeline with testing and deployment.' },
-  { id: '4', title: 'Zero-Trust Network with Istio', slug: 'istio-zero-trust', difficulty: 'Advanced', duration: '90 min', xp: 500, category: 'Security', description: 'Implement service mesh security with Istio.' },
-  { id: '5', title: 'Terraform AWS Infrastructure', slug: 'terraform-aws', difficulty: 'Intermediate', duration: '45 min', xp: 250, category: 'IaC', description: 'Provision AWS infrastructure using Terraform modules.' },
-  { id: '6', title: 'Prometheus Monitoring Setup', slug: 'prometheus-setup', difficulty: 'Intermediate', duration: '40 min', xp: 200, category: 'Monitoring', description: 'Set up complete monitoring with Prometheus and Grafana.' },
-  { id: '7', title: 'Deploy to AWS ECS', slug: 'aws-ecs-deploy', difficulty: 'Intermediate', duration: '50 min', xp: 250, category: 'Cloud', description: 'Deploy containerized applications to AWS ECS.' },
-  { id: '8', title: 'Kubernetes RBAC Security', slug: 'k8s-rbac', difficulty: 'Advanced', duration: '60 min', xp: 400, category: 'Security', description: 'Implement role-based access control in Kubernetes.' },
+  { id: '1', title: 'Déployer une app multi-conteneurs avec Docker Compose', slug: 'docker-compose-deploy', difficulty: 'Débutant', duration: '30 min', xp: 150, category: 'Conteneurs', description: 'Apprenez à orchestrer plusieurs conteneurs avec Docker Compose.' },
+  { id: '2', title: 'Setup Cluster Kubernetes avec kubeadm', slug: 'k8s-kubeadm-setup', difficulty: 'Intermédiaire', duration: '60 min', xp: 300, category: 'Orchestration', description: 'Mettez en place un cluster Kubernetes prêt pour la production.' },
+  { id: '3', title: 'Pipeline CI/CD avec GitHub Actions', slug: 'github-actions-pipeline', difficulty: 'Débutant', duration: '45 min', xp: 200, category: 'CI/CD', description: 'Construisez un pipeline CI/CD complet avec tests et déploiement.' },
+  { id: '4', title: 'Réseau Zero-Trust avec Istio', slug: 'istio-zero-trust', difficulty: 'Avancé', duration: '90 min', xp: 500, category: 'Sécurité', description: 'Implémentez la sécurité service mesh avec Istio.' },
+  { id: '5', title: 'Infrastructure AWS avec Terraform', slug: 'terraform-aws', difficulty: 'Intermédiaire', duration: '45 min', xp: 250, category: 'IaC', description: 'Provisionnez une infrastructure AWS avec les modules Terraform.' },
+  { id: '6', title: 'Setup Monitoring Prometheus', slug: 'prometheus-setup', difficulty: 'Intermédiaire', duration: '40 min', xp: 200, category: 'Monitoring', description: 'Mettez en place un monitoring complet avec Prometheus et Grafana.' },
+  { id: '7', title: 'Déployer sur AWS ECS', slug: 'aws-ecs-deploy', difficulty: 'Intermédiaire', duration: '50 min', xp: 250, category: 'Cloud', description: 'Déployez des applications conteneurisées sur AWS ECS.' },
+  { id: '8', title: 'Sécurité RBAC Kubernetes', slug: 'k8s-rbac', difficulty: 'Avancé', duration: '60 min', xp: 400, category: 'Sécurité', description: 'Implémentez le contrôle d\'accès basé sur les rôles dans Kubernetes.' },
 ];
 
 
@@ -35,8 +35,8 @@ export default function LabsPage() {
   }, []);
 
   const filtered = labList.filter((lab) => {
-    const matchDiff = difficulty === 'All' || lab.difficulty === difficulty;
-    const matchCat = category === 'All' || lab.category === category;
+    const matchDiff = difficulty === 'Tous' || lab.difficulty === difficulty;
+    const matchCat = category === 'Tous' || lab.category === category;
     return matchDiff && matchCat;
   });
 
@@ -45,10 +45,10 @@ export default function LabsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold dark:text-white">
-            Hands-On <span className="gradient-text">Labs</span>
+            Labs <span className="gradient-text">Pratiques</span>
           </h1>
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
-            Practice DevOps skills in real cloud environments with guided exercises.
+            Pratiquez les compétences DevOps dans de vrais environnements cloud avec des exercices guidés.
           </p>
         </div>
 
@@ -85,14 +85,14 @@ export default function LabsPage() {
           </div>
         ) : (
           <>
-            <p className="text-sm text-gray-500 mb-6">{filtered.length} labs available</p>
+            <p className="text-sm text-gray-500 mb-6">{filtered.length} labs disponibles</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {filtered.map((lab) => (
                 <Link key={lab.id} href={`/labs/${lab.slug}`} className="card-hover group">
                   <div className="flex items-center gap-2 mb-2">
                     <span className={`text-xs px-2 py-0.5 rounded-full border ${
-                      lab.difficulty === 'Beginner' ? 'difficulty-beginner' :
-                      lab.difficulty === 'Intermediate' ? 'difficulty-intermediate' : 'difficulty-advanced'
+                      lab.difficulty === 'Débutant' ? 'difficulty-beginner' :
+                      lab.difficulty === 'Intermédiaire' ? 'difficulty-intermediate' : 'difficulty-advanced'
                     }`}>{lab.difficulty}</span>
                     <span className="text-xs text-accent-400 font-medium">+{lab.xp} XP</span>
                     <span className="skill-tag text-xs">{lab.category}</span>
@@ -101,7 +101,7 @@ export default function LabsPage() {
                   <p className="text-sm text-gray-500 mt-1">{lab.description}</p>
                   <div className="flex items-center gap-4 mt-3 text-xs text-gray-500">
                     <span className="flex items-center gap-1"><Clock size={12} /> {lab.duration}</span>
-                    <span className="flex items-center gap-1"><FlaskConical size={12} /> Hands-on</span>
+                    <span className="flex items-center gap-1"><FlaskConical size={12} /> Pratique</span>
                   </div>
                 </Link>
               ))}

@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { Users, MessageSquare, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const communityStats = [
-  { label: 'Members', value: '15,000+' },
-  { label: 'Forum Posts', value: '42,000+' },
-  { label: 'Questions Answered', value: '38,500+' },
-  { label: 'Mentoring Sessions', value: '2,400+' },
+  { label: 'Membres', value: '15 000+' },
+  { label: 'Posts Forum', value: '42 000+' },
+  { label: 'Questions Résolues', value: '38 500+' },
+  { label: 'Sessions de Mentorat', value: '2 400+' },
 ];
 
 const testimonials = [
@@ -58,13 +58,13 @@ export function CommunityPreview() {
         <div className="text-center mb-12">
           <span className="section-badge">
             <Users size={16} />
-            Community
+            Communauté
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl font-bold dark:text-white">
-            Join a Thriving <span className="gradient-text">Community</span>
+            Rejoignez une <span className="gradient-text">Communauté</span> Dynamique
           </h2>
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
-            Learn together, grow together. Our community is here to support your DevOps journey.
+            Apprenez ensemble, progressez ensemble. Notre communauté est là pour accompagner votre parcours DevOps.
           </p>
         </div>
 
@@ -141,7 +141,7 @@ export function CommunityPreview() {
 
         <div className="text-center mt-12">
           <Link href="/community" className="btn-primary inline-flex items-center gap-2">
-            <MessageSquare size={18} /> Join the Community
+            <MessageSquare size={18} /> Rejoindre la Communauté
           </Link>
         </div>
       </div>

@@ -19,14 +19,14 @@ import {
 } from 'lucide-react';
 
 const navLinks = [
-  { href: '/courses', label: 'Courses', icon: BookOpen },
+  { href: '/courses', label: 'Formations', icon: BookOpen },
   { href: '/labs', label: 'Labs', icon: FlaskConical },
-  { href: '/tools', label: 'Tools', icon: Wrench },
-  { href: '/certifications', label: 'Certs', icon: Award },
-  { href: '/roadmap', label: 'Roadmap', icon: Map },
-  { href: '/community', label: 'Community', icon: Users },
+  { href: '/tools', label: 'Outils', icon: Wrench },
+  { href: '/certifications', label: 'Certifs', icon: Award },
+  { href: '/roadmap', label: 'Parcours', icon: Map },
+  { href: '/community', label: 'Communauté', icon: Users },
   { href: '/blog', label: 'Blog', icon: PenTool },
-  { href: '/achievements', label: 'Achievements', icon: Trophy },
+  { href: '/achievements', label: 'Succès', icon: Trophy },
 ];
 
 export function Navbar() {
@@ -75,7 +75,7 @@ export function Navbar() {
             <button
               onClick={toggle}
               className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors"
-              aria-label="Toggle theme"
+              aria-label="Changer le thème"
             >
               {isDark ? <Sun size={18} className="text-yellow-400" /> : <Moon size={18} />}
             </button>
@@ -83,7 +83,7 @@ export function Navbar() {
             {user ? (
               <div className="hidden sm:flex items-center gap-3">
                 <Link href="/dashboard" className="btn-ghost text-sm">
-                  Dashboard
+                  Tableau de bord
                 </Link>
                 <Link href="/profile" className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-white text-xs font-bold">
@@ -91,20 +91,20 @@ export function Navbar() {
                   </div>
                   <div className="hidden md:block">
                     <p className="text-sm font-medium dark:text-white">{user.username}</p>
-                    <p className="text-xs text-gray-500">Level {user.level}</p>
+                    <p className="text-xs text-gray-500">Niveau {user.level}</p>
                   </div>
                 </Link>
                 <button onClick={logout} className="btn-ghost text-sm text-danger-400">
-                  Logout
+                  Déconnexion
                 </button>
               </div>
             ) : (
               <div className="hidden sm:flex items-center gap-2">
                 <Link href="/login" className="btn-ghost text-sm">
-                  Login
+                  Connexion
                 </Link>
                 <Link href="/login" className="btn-primary text-sm !px-4 !py-2">
-                  Sign Up
+                  S&apos;inscrire
                 </Link>
               </div>
             )}
@@ -141,10 +141,10 @@ export function Navbar() {
             {!user && (
               <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-800 flex gap-2">
                 <Link href="/login" className="btn-outline flex-1 text-center text-sm !py-2">
-                  Login
+                  Connexion
                 </Link>
                 <Link href="/login" className="btn-primary flex-1 text-center text-sm !py-2">
-                  Sign Up
+                  S&apos;inscrire
                 </Link>
               </div>
             )}

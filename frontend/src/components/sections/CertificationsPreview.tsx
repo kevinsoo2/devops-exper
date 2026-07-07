@@ -6,28 +6,28 @@ import { Award, Clock, BookOpen, ChevronRight, CheckCircle } from 'lucide-react'
 const certifications = [
   {
     title: 'DevOps Foundations',
-    level: 'Beginner',
-    duration: '4 weeks',
+    level: 'Débutant',
+    duration: '4 semaines',
     modules: 8,
-    description: 'Core DevOps principles, culture, and practices.',
+    description: 'Principes fondamentaux du DevOps, culture et pratiques.',
     skills: ['CI/CD Basics', 'Version Control', 'Agile & DevOps Culture', 'Monitoring Intro'],
     badge_color: 'from-green-400 to-emerald-500',
   },
   {
     title: 'Cloud Native Engineer',
-    level: 'Intermediate',
-    duration: '8 weeks',
+    level: 'Intermédiaire',
+    duration: '8 semaines',
     modules: 12,
-    description: 'Design and deploy cloud-native applications at scale.',
+    description: 'Concevoir et déployer des applications cloud-native à grande échelle.',
     skills: ['Kubernetes', 'Microservices', 'Service Mesh', 'Cloud Design Patterns'],
     badge_color: 'from-primary-400 to-primary-600',
   },
   {
     title: 'Platform Engineering Expert',
-    level: 'Advanced',
-    duration: '12 weeks',
+    level: 'Avancé',
+    duration: '12 semaines',
     modules: 16,
-    description: 'Build internal developer platforms and drive organizational transformation.',
+    description: 'Construire des plateformes internes pour développeurs et piloter la transformation organisationnelle.',
     skills: ['Platform Design', 'Developer Experience', 'GitOps', 'SRE Practices'],
     badge_color: 'from-purple-400 to-purple-600',
   },
@@ -43,10 +43,10 @@ export function CertificationsPreview() {
             Certifications
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl font-bold dark:text-white">
-            Earn Industry <span className="gradient-text">Recognized Credentials</span>
+            Obtenez des <span className="gradient-text">Certifications Reconnues</span>
           </h2>
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
-            Validate your skills with comprehensive certifications backed by practical assessments.
+            Validez vos compétences avec des certifications complètes basées sur des évaluations pratiques.
           </p>
         </div>
 
@@ -60,8 +60,8 @@ export function CertificationsPreview() {
 
               <div className="flex items-center gap-2 mb-2">
                 <span className={`text-xs px-2 py-0.5 rounded-full border ${
-                  cert.level === 'Beginner' ? 'difficulty-beginner' :
-                  cert.level === 'Intermediate' ? 'difficulty-intermediate' :
+                  cert.level === 'Débutant' ? 'difficulty-beginner' :
+                  cert.level === 'Intermédiaire' ? 'difficulty-intermediate' :
                   'difficulty-advanced'
                 }`}>
                   {cert.level}
@@ -93,7 +93,7 @@ export function CertificationsPreview() {
                 href="/certifications"
                 className="mt-6 inline-flex items-center gap-1 text-sm text-primary-400 hover:text-primary-300 font-medium"
               >
-                Learn More <ChevronRight size={14} />
+                En savoir plus <ChevronRight size={14} />
               </Link>
             </div>
           ))}
@@ -101,7 +101,7 @@ export function CertificationsPreview() {
 
         <div className="text-center mt-12">
           <Link href="/certifications" className="btn-outline inline-flex items-center gap-2">
-            View All Certifications <ChevronRight size={18} />
+            Voir toutes les Certifications <ChevronRight size={18} />
           </Link>
         </div>
       </div>

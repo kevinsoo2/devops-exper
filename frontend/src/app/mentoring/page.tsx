@@ -54,10 +54,10 @@ export default function MentoringPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold dark:text-white">
-            1-on-1 <span className="gradient-text">Mentoring</span>
+            <span className="gradient-text">Mentorat</span> 1-on-1
           </h1>
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
-            Get personalized guidance from industry experts to accelerate your DevOps career.
+            Bénéficiez d&apos;un accompagnement personnalisé par des experts pour accélérer votre carrière DevOps.
           </p>
         </div>
 
@@ -65,11 +65,11 @@ export default function MentoringPage() {
         <div className="flex items-center justify-center gap-2 mb-8">
           <button onClick={() => setActiveView('mentors')}
             className={`px-4 py-2 rounded-lg text-sm font-medium ${activeView === 'mentors' ? 'bg-primary-500 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400'}`}>
-            Browse Mentors
+            Parcourir les Mentors
           </button>
           <button onClick={() => setActiveView('sessions')}
             className={`px-4 py-2 rounded-lg text-sm font-medium ${activeView === 'sessions' ? 'bg-primary-500 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400'}`}>
-            My Sessions
+            Mes Sessions
           </button>
         </div>
 
@@ -109,11 +109,11 @@ export default function MentoringPage() {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className={`text-xs font-medium ${mentor.available ? 'text-success-400' : 'text-gray-500'}`}>
-                        {mentor.available ? 'Available' : 'Fully Booked'}
+                        {mentor.available ? 'Disponible' : 'Complet'}
                       </span>
                       {mentor.available && (
                         <button onClick={() => setBookingMentor(mentor.id)} className="btn-primary text-xs !px-3 !py-1.5">
-                          Book Session
+                          Réserver une Session
                         </button>
                       )}
                     </div>
@@ -129,14 +129,14 @@ export default function MentoringPage() {
             {sessions.length === 0 ? (
               <div className="card text-center py-12">
                 <Calendar size={40} className="mx-auto text-gray-400 mb-4" />
-                <p className="text-gray-500">No sessions booked yet.</p>
+                <p className="text-gray-500">Aucune session réservée pour le moment.</p>
               </div>
             ) : (
               sessions.map((session) => (
                 <div key={session.id} className="card flex items-center justify-between">
                   <div>
                     <h3 className="font-semibold dark:text-white">{session.topic}</h3>
-                    <p className="text-sm text-gray-500">with {session.mentor}</p>
+                    <p className="text-sm text-gray-500">avec {session.mentor}</p>
                     <p className="text-xs text-gray-400 mt-1 flex items-center gap-1"><Calendar size={12} /> {session.date}</p>
                   </div>
                   <span className={`text-xs px-2 py-1 rounded-full ${
@@ -152,17 +152,17 @@ export default function MentoringPage() {
         {bookingMentor && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <div className="card max-w-md w-full">
-              <h2 className="text-xl font-bold dark:text-white mb-4">Book a Session</h2>
+              <h2 className="text-xl font-bold dark:text-white mb-4">Réserver une Session</h2>
               <form onSubmit={handleBook} className="space-y-4">
                 <input type="date" value={bookingData.date}
                   onChange={(e) => setBookingData({ ...bookingData, date: e.target.value })}
                   className="input-field" required />
-                <input type="text" placeholder="Topic to discuss" value={bookingData.topic}
+                <input type="text" placeholder="Sujet à discuter" value={bookingData.topic}
                   onChange={(e) => setBookingData({ ...bookingData, topic: e.target.value })}
                   className="input-field" required />
                 <div className="flex gap-2">
-                  <button type="button" onClick={() => setBookingMentor(null)} className="btn-outline flex-1">Cancel</button>
-                  <button type="submit" className="btn-primary flex-1">Confirm Booking</button>
+                  <button type="button" onClick={() => setBookingMentor(null)} className="btn-outline flex-1">Annuler</button>
+                  <button type="submit" className="btn-primary flex-1">Confirmer la Réservation</button>
                 </div>
               </form>
             </div>

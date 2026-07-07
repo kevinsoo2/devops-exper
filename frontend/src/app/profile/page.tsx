@@ -45,17 +45,17 @@ export default function ProfilePage() {
       const data = await auth.updateProfile(form);
       setAuth(data.user, localStorage.getItem('token') || '');
       setStatus('success');
-      setMessage('Profile updated successfully!');
+      setMessage('Profil mis à jour avec succès !');
     } catch (err: any) {
       setStatus('error');
-      setMessage(err.message || 'Failed to update profile.');
+      setMessage(err.message || 'Échec de la mise à jour du profil.');
     }
     setLoading(false);
   };
 
   if (authLoading) {
     return <div className="min-h-screen pt-24 pb-16 dark:bg-dark flex items-center justify-center">
-      <div className="animate-pulse text-gray-500">Loading...</div>
+      <div className="animate-pulse text-gray-500">Chargement...</div>
     </div>;
   }
 
@@ -63,8 +63,8 @@ export default function ProfilePage() {
     <div className="min-h-screen pt-24 pb-16 dark:bg-dark">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold dark:text-white">Edit Profile</h1>
-          <p className="text-gray-500 mt-1">Update your personal information and social links.</p>
+          <h1 className="text-3xl font-bold dark:text-white">Modifier le Profil</h1>
+          <p className="text-gray-500 mt-1">Mettez à jour vos informations personnelles et liens sociaux.</p>
         </div>
 
         <div className="card">
@@ -75,7 +75,7 @@ export default function ProfilePage() {
             </div>
             <div>
               <p className="font-bold dark:text-white text-lg">{user?.username}</p>
-              <p className="text-sm text-gray-500">Level {user?.level || 1} &middot; {user?.xp_points || 0} XP</p>
+              <p className="text-sm text-gray-500">Niveau {user?.level || 1} &middot; {user?.xp_points || 0} XP</p>
             </div>
           </div>
 
@@ -94,7 +94,7 @@ export default function ProfilePage() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium dark:text-gray-300 mb-1">Username</label>
+              <label className="block text-sm font-medium dark:text-gray-300 mb-1">Nom d&apos;utilisateur</label>
               <input type="text" value={form.username}
                 onChange={(e) => setForm({ ...form, username: e.target.value })}
                 className="input-field" required />
@@ -110,22 +110,22 @@ export default function ProfilePage() {
               <textarea value={form.bio}
                 onChange={(e) => setForm({ ...form, bio: e.target.value })}
                 className="input-field min-h-[100px]"
-                placeholder="Tell us about yourself..." />
+                placeholder="Parlez-nous de vous..." />
             </div>
             <div>
-              <label className="block text-sm font-medium dark:text-gray-300 mb-1">GitHub URL</label>
+              <label className="block text-sm font-medium dark:text-gray-300 mb-1">URL GitHub</label>
               <input type="url" value={form.github_url}
                 onChange={(e) => setForm({ ...form, github_url: e.target.value })}
                 className="input-field" placeholder="https://github.com/username" />
             </div>
             <div>
-              <label className="block text-sm font-medium dark:text-gray-300 mb-1">LinkedIn URL</label>
+              <label className="block text-sm font-medium dark:text-gray-300 mb-1">URL LinkedIn</label>
               <input type="url" value={form.linkedin_url}
                 onChange={(e) => setForm({ ...form, linkedin_url: e.target.value })}
                 className="input-field" placeholder="https://linkedin.com/in/username" />
             </div>
             <button type="submit" disabled={loading} className="btn-primary w-full flex items-center justify-center gap-2">
-              <Save size={18} /> {loading ? 'Saving...' : 'Save Changes'}
+              <Save size={18} /> {loading ? 'Enregistrement...' : 'Enregistrer les Modifications'}
             </button>
           </form>
         </div>

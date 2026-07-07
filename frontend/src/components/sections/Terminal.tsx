@@ -55,13 +55,13 @@ export function Terminal() {
         <div className="text-center mb-12">
           <span className="section-badge">
             <TerminalIcon size={16} />
-            Interactive Terminal
+            Terminal Interactif
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl font-bold dark:text-white">
-            Experience <span className="gradient-text">Real Workflows</span>
+            Découvrez des <span className="gradient-text">Workflows Réels</span>
           </h2>
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
-            Watch real DevOps workflows come to life. This is what your daily work looks like.
+            Regardez de vrais workflows DevOps prendre vie. Voici à quoi ressemble votre travail quotidien.
           </p>
         </div>
 
@@ -80,7 +80,7 @@ export function Terminal() {
               disabled={isRunning}
               className="flex items-center gap-1 text-xs text-primary-400 hover:text-primary-300 disabled:opacity-50"
             >
-              <Play size={12} /> Replay
+              <Play size={12} /> Rejouer
             </button>
           </div>
 

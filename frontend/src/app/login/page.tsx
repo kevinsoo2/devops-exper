@@ -29,7 +29,7 @@ export default function LoginPage() {
       }
       router.push('/dashboard');
     } catch (err: any) {
-      setError(err.message || 'Authentication failed. Please try again.');
+      setError(err.message || 'Échec de l\'authentification. Veuillez réessayer.');
     }
     setLoading(false);
   };
@@ -44,10 +44,10 @@ export default function LoginPage() {
               {isLogin ? <LogIn size={28} className="text-white" /> : <UserPlus size={28} className="text-white" />}
             </div>
             <h1 className="text-2xl font-bold dark:text-white">
-              {isLogin ? 'Welcome Back' : 'Create Account'}
+              {isLogin ? 'Bon Retour' : 'Créer un Compte'}
             </h1>
             <p className="text-sm text-gray-500 mt-1">
-              {isLogin ? 'Sign in to continue your learning journey.' : 'Start your DevOps learning journey today.'}
+              {isLogin ? 'Connectez-vous pour continuer votre parcours.' : 'Commencez votre apprentissage DevOps dès aujourd\'hui.'}
             </p>
           </div>
 
@@ -64,36 +64,36 @@ export default function LoginPage() {
             {!isLogin && (
               <div className="relative">
                 <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input type="text" placeholder="Username" value={form.username}
+                <input type="text" placeholder="Nom d'utilisateur" value={form.username}
                   onChange={(e) => setForm({ ...form, username: e.target.value })}
                   className="input-field pl-10" required={!isLogin} />
               </div>
             )}
             <div className="relative">
               <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input type="email" placeholder="Email address" value={form.email}
+              <input type="email" placeholder="Adresse email" value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 className="input-field pl-10" required />
             </div>
             <div className="relative">
               <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input type="password" placeholder="Password" value={form.password}
+              <input type="password" placeholder="Mot de passe" value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 className="input-field pl-10" required minLength={6} />
             </div>
             <button type="submit" disabled={loading} className="btn-primary w-full">
-              {loading ? 'Processing...' : isLogin ? 'Sign In' : 'Create Account'}
+              {loading ? 'Traitement...' : isLogin ? 'Se connecter' : 'Créer le compte'}
             </button>
           </form>
 
           {/* Toggle */}
           <div className="mt-6 text-center text-sm">
             <span className="text-gray-500">
-              {isLogin ? "Don't have an account?" : 'Already have an account?'}
+              {isLogin ? "Pas encore de compte ?" : 'Vous avez déjà un compte ?'}
             </span>
             <button onClick={() => { setIsLogin(!isLogin); setError(''); }}
               className="ml-2 text-primary-400 hover:text-primary-300 font-medium">
-              {isLogin ? 'Sign Up' : 'Sign In'}
+              {isLogin ? 'S\'inscrire' : 'Se connecter'}
             </button>
           </div>
         </div>

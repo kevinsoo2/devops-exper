@@ -5,9 +5,9 @@ import { ArrowRight, Zap, Users, BookOpen, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const stats = [
-  { label: 'Active Learners', value: '15K+', icon: Users },
-  { label: 'Courses', value: '120+', icon: BookOpen },
-  { label: 'Labs Completed', value: '50K+', icon: Zap },
+  { label: 'Apprenants Actifs', value: '15K+', icon: Users },
+  { label: 'Formations', value: '120+', icon: BookOpen },
+  { label: 'Labs Complétés', value: '50K+', icon: Zap },
   { label: 'Certifications', value: '25+', icon: Award },
 ];
 
@@ -38,7 +38,7 @@ export function Hero() {
           >
             <span className="section-badge">
               <Zap size={16} className="text-accent-400" />
-              Earn XP & Level Up Your Career
+              Gagnez des XP et boostez votre carrière
             </span>
           </motion.div>
 
@@ -49,10 +49,10 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="mt-8 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black dark:text-white leading-tight"
           >
-            Master{' '}
+            Maîtrisez le{' '}
             <span className="gradient-text">DevOps</span>
             <br />
-            Like a Pro
+            comme un Pro
           </motion.h1>
 
           <motion.p
@@ -61,9 +61,9 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mt-6 text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto"
           >
-            The complete platform for DevOps mastery. Learn CI/CD, Kubernetes, Cloud,
-            Infrastructure as Code and more with hands-on labs, certifications, and a
-            gamified learning experience.
+            La plateforme complète pour maîtriser le DevOps. Apprenez le CI/CD, Kubernetes, Cloud,
+            l&apos;Infrastructure as Code et bien plus avec des labs pratiques, certifications et une
+            expérience d&apos;apprentissage gamifiée.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -74,10 +74,10 @@ export function Hero() {
             className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <Link href="/courses" className="btn-primary flex items-center gap-2">
-              Start Learning <ArrowRight size={18} />
+              Commencer à apprendre <ArrowRight size={18} />
             </Link>
             <Link href="/roadmap" className="btn-outline">
-              View Roadmap
+              Voir le Parcours
             </Link>
           </motion.div>
 

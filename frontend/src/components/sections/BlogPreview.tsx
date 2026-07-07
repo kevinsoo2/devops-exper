@@ -59,10 +59,10 @@ export function BlogPreview() {
             Blog & Articles
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl font-bold dark:text-white">
-            Latest from Our <span className="gradient-text">Blog</span>
+            Derniers articles du <span className="gradient-text">Blog</span>
           </h2>
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
-            Stay up-to-date with the latest DevOps trends, tutorials, and best practices.
+            Restez à jour avec les dernières tendances, tutoriels et bonnes pratiques DevOps.
           </p>
         </div>
 
@@ -116,7 +116,7 @@ export function BlogPreview() {
 
         <div className="text-center mt-12">
           <Link href="/blog" className="btn-outline inline-flex items-center gap-2">
-            Read All Articles <ChevronRight size={18} />
+            Lire tous les Articles <ChevronRight size={18} />
           </Link>
         </div>
       </div>

@@ -6,12 +6,12 @@ import { certifications as certsApi } from '@/lib/api';
 
 
 const fallbackCerts = [
-  { id: '1', title: 'DevOps Foundations', level: 'Beginner', duration: '4 weeks', modules: 8, description: 'Core DevOps principles, culture, and practices.', skills: ['CI/CD Basics', 'Version Control', 'Agile & DevOps Culture', 'Monitoring Intro'], badge_color: 'from-green-400 to-emerald-500' },
-  { id: '2', title: 'Cloud Native Engineer', level: 'Intermediate', duration: '8 weeks', modules: 12, description: 'Design and deploy cloud-native applications at scale.', skills: ['Kubernetes', 'Microservices', 'Service Mesh', 'Cloud Design Patterns'], badge_color: 'from-primary-400 to-primary-600' },
-  { id: '3', title: 'Platform Engineering Expert', level: 'Advanced', duration: '12 weeks', modules: 16, description: 'Build internal developer platforms and drive transformation.', skills: ['Platform Design', 'Developer Experience', 'GitOps', 'SRE Practices'], badge_color: 'from-purple-400 to-purple-600' },
-  { id: '4', title: 'CI/CD Specialist', level: 'Intermediate', duration: '6 weeks', modules: 10, description: 'Master continuous integration and deployment pipelines.', skills: ['Pipeline Design', 'Testing Strategies', 'Deployment Patterns', 'Security Scanning'], badge_color: 'from-blue-400 to-blue-600' },
-  { id: '5', title: 'Infrastructure Architect', level: 'Advanced', duration: '10 weeks', modules: 14, description: 'Design scalable and resilient infrastructure solutions.', skills: ['IaC Mastery', 'Multi-Cloud', 'Network Design', 'Cost Optimization'], badge_color: 'from-accent-400 to-accent-600' },
-  { id: '6', title: 'Security Operations', level: 'Advanced', duration: '8 weeks', modules: 12, description: 'Implement DevSecOps practices and security automation.', skills: ['SAST/DAST', 'Container Security', 'Compliance', 'Incident Response'], badge_color: 'from-red-400 to-red-600' },
+  { id: '1', title: 'DevOps Foundations', level: 'Débutant', duration: '4 semaines', modules: 8, description: 'Principes fondamentaux du DevOps, culture et pratiques.', skills: ['CI/CD Basics', 'Version Control', 'Agile & DevOps Culture', 'Monitoring Intro'], badge_color: 'from-green-400 to-emerald-500' },
+  { id: '2', title: 'Cloud Native Engineer', level: 'Intermédiaire', duration: '8 semaines', modules: 12, description: 'Concevoir et déployer des applications cloud-native à grande échelle.', skills: ['Kubernetes', 'Microservices', 'Service Mesh', 'Cloud Design Patterns'], badge_color: 'from-primary-400 to-primary-600' },
+  { id: '3', title: 'Platform Engineering Expert', level: 'Avancé', duration: '12 semaines', modules: 16, description: 'Construire des plateformes internes et piloter la transformation.', skills: ['Platform Design', 'Developer Experience', 'GitOps', 'SRE Practices'], badge_color: 'from-purple-400 to-purple-600' },
+  { id: '4', title: 'CI/CD Specialist', level: 'Intermédiaire', duration: '6 semaines', modules: 10, description: 'Maîtriser les pipelines d\'intégration et déploiement continus.', skills: ['Pipeline Design', 'Testing Strategies', 'Deployment Patterns', 'Security Scanning'], badge_color: 'from-blue-400 to-blue-600' },
+  { id: '5', title: 'Infrastructure Architect', level: 'Avancé', duration: '10 semaines', modules: 14, description: 'Concevoir des solutions d\'infrastructure scalables et résilientes.', skills: ['IaC Mastery', 'Multi-Cloud', 'Network Design', 'Cost Optimization'], badge_color: 'from-accent-400 to-accent-600' },
+  { id: '6', title: 'Security Operations', level: 'Avancé', duration: '8 semaines', modules: 12, description: 'Implémenter les pratiques DevSecOps et l\'automatisation de la sécurité.', skills: ['SAST/DAST', 'Container Security', 'Compliance', 'Incident Response'], badge_color: 'from-red-400 to-red-600' },
 ];
 
 export default function CertificationsPage() {
@@ -30,10 +30,10 @@ export default function CertificationsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold dark:text-white">
-            Professional <span className="gradient-text">Certifications</span>
+            <span className="gradient-text">Certifications</span> Professionnelles
           </h1>
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
-            Validate your DevOps expertise with comprehensive certification programs.
+            Validez votre expertise DevOps avec des programmes de certification complets.
           </p>
         </div>
 
@@ -56,8 +56,8 @@ export default function CertificationsPage() {
                   <Award size={32} className="text-white" />
                 </div>
                 <span className={`text-xs px-2 py-0.5 rounded-full border ${
-                  cert.level === 'Beginner' ? 'difficulty-beginner' :
-                  cert.level === 'Intermediate' ? 'difficulty-intermediate' : 'difficulty-advanced'
+                  cert.level === 'Débutant' ? 'difficulty-beginner' :
+                  cert.level === 'Intermédiaire' ? 'difficulty-intermediate' : 'difficulty-advanced'
                 }`}>{cert.level}</span>
                 <h3 className="text-xl font-bold dark:text-white mt-3 mb-2">{cert.title}</h3>
                 <p className="text-sm text-gray-500 mb-4">{cert.description}</p>

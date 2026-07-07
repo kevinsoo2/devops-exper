@@ -9,15 +9,15 @@ const plans = [
     icon: Zap,
     monthlyPrice: 0,
     yearlyPrice: 0,
-    description: 'Perfect for getting started with DevOps learning.',
+    description: 'Parfait pour débuter avec le DevOps.',
     features: [
-      'Access to 10 free courses',
-      '3 labs per month',
-      'Community forum access',
-      'Basic progress tracking',
-      'Email support',
+      'Accès à 10 formations gratuites',
+      '3 labs par mois',
+      'Accès au forum communautaire',
+      'Suivi de progression basique',
+      'Support par email',
     ],
-    cta: 'Get Started Free',
+    cta: 'Commencer gratuitement',
     popular: false,
     gradient: 'from-gray-500 to-gray-600',
   },
@@ -26,37 +26,37 @@ const plans = [
     icon: Crown,
     monthlyPrice: 29,
     yearlyPrice: 290,
-    description: 'For serious learners ready to accelerate their career.',
+    description: 'Pour les apprenants sérieux prêts à accélérer leur carrière.',
     features: [
-      'All 120+ courses',
-      'Unlimited labs',
-      'All certifications',
-      'Mentoring sessions (2/month)',
-      'Priority support',
-      'Exclusive Discord channels',
-      'Downloadable resources',
+      'Toutes les 120+ formations',
+      'Labs illimités',
+      'Toutes les certifications',
+      'Sessions de mentorat (2/mois)',
+      'Support prioritaire',
+      'Canaux Discord exclusifs',
+      'Ressources téléchargeables',
     ],
-    cta: 'Start Pro Trial',
+    cta: 'Démarrer l\'essai Pro',
     popular: true,
     gradient: 'from-primary-500 to-primary-600',
   },
   {
-    name: 'Enterprise',
+    name: 'Entreprise',
     icon: Rocket,
     monthlyPrice: 99,
     yearlyPrice: 990,
-    description: 'For teams and organizations scaling DevOps skills.',
+    description: 'Pour les équipes et organisations qui développent les compétences DevOps.',
     features: [
-      'Everything in Pro',
-      'Team management dashboard',
-      'Custom learning paths',
-      'Unlimited mentoring',
-      'SSO & SAML integration',
-      'Custom certifications',
-      'Dedicated account manager',
-      'API access',
+      'Tout dans Pro',
+      'Tableau de bord de gestion d\'équipe',
+      'Parcours d\'apprentissage personnalisés',
+      'Mentorat illimité',
+      'Intégration SSO & SAML',
+      'Certifications personnalisées',
+      'Gestionnaire de compte dédié',
+      'Accès API',
     ],
-    cta: 'Contact Sales',
+    cta: 'Contacter l\'équipe commerciale',
     popular: false,
     gradient: 'from-accent-500 to-accent-600',
   },
@@ -71,19 +71,19 @@ export function PricingSection() {
         <div className="text-center mb-12">
           <span className="section-badge">
             <Crown size={16} />
-            Pricing
+            Tarifs
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl font-bold dark:text-white">
-            Simple, <span className="gradient-text">Transparent Pricing</span>
+            Des tarifs <span className="gradient-text">simples et transparents</span>
           </h2>
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
-            Choose the plan that fits your learning goals. All plans include a 14-day free trial.
+            Choisissez le plan adapté à vos objectifs. Tous les plans incluent un essai gratuit de 14 jours.
           </p>
         </div>
 
         {/* Toggle */}
         <div className="flex items-center justify-center gap-4 mb-12">
-          <span className={`text-sm font-medium ${!isYearly ? 'dark:text-white' : 'text-gray-500'}`}>Monthly</span>
+          <span className={`text-sm font-medium ${!isYearly ? 'dark:text-white' : 'text-gray-500'}`}>Mensuel</span>
           <button
             onClick={() => setIsYearly(!isYearly)}
             className={`relative w-14 h-7 rounded-full transition-colors ${
@@ -97,8 +97,8 @@ export function PricingSection() {
             />
           </button>
           <span className={`text-sm font-medium ${isYearly ? 'dark:text-white' : 'text-gray-500'}`}>
-            Yearly
-            <span className="ml-1 text-xs text-success-400">(Save 17%)</span>
+            Annuel
+            <span className="ml-1 text-xs text-success-400">(Économisez 17%)</span>
           </span>
         </div>
 
@@ -116,7 +116,7 @@ export function PricingSection() {
               >
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary-500 text-white text-xs font-bold rounded-full">
-                    Most Popular
+                    Le plus populaire
                   </div>
                 )}
 
@@ -132,7 +132,7 @@ export function PricingSection() {
                     ${price}
                   </span>
                   {price > 0 && (
-                    <span className="text-gray-500 text-sm">/{isYearly ? 'year' : 'month'}</span>
+                    <span className="text-gray-500 text-sm">/{isYearly ? 'an' : 'mois'}</span>
                   )}
                 </div>
 

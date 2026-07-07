@@ -6,57 +6,57 @@ import { FlaskConical, Terminal, Clock, Zap, ChevronRight, Shield, Cloud, GitBra
 const features = [
   {
     icon: Terminal,
-    title: 'Real Environments',
-    description: 'Spin up actual cloud environments with pre-configured tools and services.',
+    title: 'Environnements Réels',
+    description: 'Lancez de vrais environnements cloud avec des outils et services pré-configurés.',
   },
   {
     icon: Shield,
-    title: 'Safe to Experiment',
-    description: 'Isolated sandboxes so you can break things without consequences.',
+    title: 'Expérimentez en sécurité',
+    description: 'Des bacs à sable isolés pour expérimenter sans conséquences.',
   },
   {
     icon: Clock,
-    title: 'Guided & Timed',
-    description: 'Step-by-step instructions with optional time challenges for XP bonuses.',
+    title: 'Guidé et Chronométré',
+    description: 'Instructions étape par étape avec des défis chronométrés optionnels pour des bonus XP.',
   },
   {
     icon: Zap,
-    title: 'Instant Feedback',
-    description: 'Automated validation checks your work in real-time as you progress.',
+    title: 'Feedback Instantané',
+    description: 'La validation automatique vérifie votre travail en temps réel.',
   },
 ];
 
 const labsData = [
   {
-    title: 'Deploy a Multi-Container App with Docker Compose',
-    difficulty: 'Beginner',
+    title: 'Déployer une App Multi-Conteneurs avec Docker Compose',
+    difficulty: 'Débutant',
     duration: '30 min',
     xp: 150,
-    category: 'Containers',
+    category: 'Conteneurs',
     icon: Terminal,
   },
   {
-    title: 'Set Up a Kubernetes Cluster with kubeadm',
-    difficulty: 'Intermediate',
+    title: 'Mettre en Place un Cluster Kubernetes avec kubeadm',
+    difficulty: 'Intermédiaire',
     duration: '60 min',
     xp: 300,
     category: 'Orchestration',
     icon: Cloud,
   },
   {
-    title: 'Build a CI/CD Pipeline with GitHub Actions',
-    difficulty: 'Beginner',
+    title: 'Construire un Pipeline CI/CD avec GitHub Actions',
+    difficulty: 'Débutant',
     duration: '45 min',
     xp: 200,
     category: 'CI/CD',
     icon: GitBranch,
   },
   {
-    title: 'Implement Zero-Trust Network with Istio',
-    difficulty: 'Advanced',
+    title: 'Implémenter un Réseau Zero-Trust avec Istio',
+    difficulty: 'Avancé',
     duration: '90 min',
     xp: 500,
-    category: 'Security',
+    category: 'Sécurité',
     icon: Shield,
   },
 ];
@@ -68,13 +68,13 @@ export function LabsPreview() {
         <div className="text-center mb-12">
           <span className="section-badge">
             <FlaskConical size={16} />
-            Hands-On Labs
+            Labs Pratiques
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl font-bold dark:text-white">
-            Learn by <span className="gradient-text">Doing</span>
+            Apprenez en <span className="gradient-text">Pratiquant</span>
           </h2>
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
-            Real-world labs with live environments. No theory-only learning here.
+            Des labs concrets avec des environnements réels. Pas d&apos;apprentissage uniquement théorique ici.
           </p>
         </div>
 
@@ -106,8 +106,8 @@ export function LabsPreview() {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <span className={`text-xs px-2 py-0.5 rounded-full border ${
-                      lab.difficulty === 'Beginner' ? 'difficulty-beginner' :
-                      lab.difficulty === 'Intermediate' ? 'difficulty-intermediate' :
+                      lab.difficulty === 'Débutant' ? 'difficulty-beginner' :
+                      lab.difficulty === 'Intermédiaire' ? 'difficulty-intermediate' :
                       'difficulty-advanced'
                     }`}>
                       {lab.difficulty}
@@ -129,7 +129,7 @@ export function LabsPreview() {
 
         <div className="text-center mt-12">
           <Link href="/labs" className="btn-primary inline-flex items-center gap-2">
-            Start a Lab <ChevronRight size={18} />
+            Lancer un Lab <ChevronRight size={18} />
           </Link>
         </div>
       </div>

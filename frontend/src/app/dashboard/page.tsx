@@ -21,11 +21,11 @@ const fallbackStats = {
 };
 
 const recentActivity = [
-  { type: 'lesson', title: 'Completed: Docker Networking', xp: 50, time: '2 hours ago' },
-  { type: 'quiz', title: 'Passed: CI/CD Fundamentals Quiz', xp: 100, time: '5 hours ago' },
-  { type: 'lab', title: 'Completed: K8s Cluster Setup Lab', xp: 300, time: '1 day ago' },
-  { type: 'achievement', title: 'Earned: Lab Rat Achievement', xp: 200, time: '1 day ago' },
-  { type: 'lesson', title: 'Completed: Terraform Modules', xp: 50, time: '2 days ago' },
+  { type: 'lesson', title: 'Terminé : Docker Networking', xp: 50, time: 'Il y a 2 heures' },
+  { type: 'quiz', title: 'Réussi : Quiz Fondamentaux CI/CD', xp: 100, time: 'Il y a 5 heures' },
+  { type: 'lab', title: 'Terminé : Lab Setup Cluster K8s', xp: 300, time: 'Il y a 1 jour' },
+  { type: 'achievement', title: 'Obtenu : Succès Lab Rat', xp: 200, time: 'Il y a 1 jour' },
+  { type: 'lesson', title: 'Terminé : Modules Terraform', xp: 50, time: 'Il y a 2 jours' },
 ];
 
 const enrolledCourses = [
@@ -54,17 +54,17 @@ export default function DashboardPage() {
 
   if (authLoading) {
     return <div className="min-h-screen pt-24 pb-16 dark:bg-dark flex items-center justify-center">
-      <div className="animate-pulse text-gray-500">Loading...</div>
+      <div className="animate-pulse text-gray-500">Chargement...</div>
     </div>;
   }
 
   const stats = [
-    { label: 'XP Points', value: userStats.xp_points.toLocaleString(), icon: Zap, color: 'text-accent-400' },
-    { label: 'Level', value: userStats.level, icon: TrendingUp, color: 'text-primary-400' },
-    { label: 'Courses', value: `${userStats.courses_completed}/${userStats.courses_enrolled}`, icon: BookOpen, color: 'text-secondary-400' },
-    { label: 'Labs Done', value: userStats.labs_completed, icon: Target, color: 'text-success-400' },
-    { label: 'Day Streak', value: userStats.streak_days, icon: Clock, color: 'text-danger-400' },
-    { label: 'Achievements', value: userStats.achievements_earned, icon: Trophy, color: 'text-purple-400' },
+    { label: 'Points XP', value: userStats.xp_points.toLocaleString(), icon: Zap, color: 'text-accent-400' },
+    { label: 'Niveau', value: userStats.level, icon: TrendingUp, color: 'text-primary-400' },
+    { label: 'Formations', value: `${userStats.courses_completed}/${userStats.courses_enrolled}`, icon: BookOpen, color: 'text-secondary-400' },
+    { label: 'Labs Faits', value: userStats.labs_completed, icon: Target, color: 'text-success-400' },
+    { label: 'Jours Consécutifs', value: userStats.streak_days, icon: Clock, color: 'text-danger-400' },
+    { label: 'Succès', value: userStats.achievements_earned, icon: Trophy, color: 'text-purple-400' },
   ];
 
   return (
@@ -73,9 +73,9 @@ export default function DashboardPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold dark:text-white">
-            Welcome back, <span className="gradient-text">{user?.username || 'Learner'}</span>
+            Bienvenue, <span className="gradient-text">{user?.username || 'Apprenant'}</span>
           </h1>
-          <p className="text-gray-500 mt-1">Here&apos;s your learning progress overview.</p>
+          <p className="text-gray-500 mt-1">Voici un aperçu de votre progression.</p>
         </div>
 
         {/* Stats Grid */}
@@ -96,7 +96,7 @@ export default function DashboardPage() {
           {/* Enrolled Courses */}
           <div className="card">
             <h2 className="font-bold dark:text-white mb-4 flex items-center gap-2">
-              <BookOpen size={18} className="text-primary-400" /> My Courses
+              <BookOpen size={18} className="text-primary-400" /> Mes Formations
             </h2>
             <div className="space-y-4">
               {enrolledCourses.map((course) => (
@@ -117,7 +117,7 @@ export default function DashboardPage() {
           {/* Recent Activity */}
           <div className="card">
             <h2 className="font-bold dark:text-white mb-4 flex items-center gap-2">
-              <BarChart3 size={18} className="text-secondary-400" /> Recent Activity
+              <BarChart3 size={18} className="text-secondary-400" /> Activité Récente
             </h2>
             <div className="space-y-3">
               {recentActivity.map((activity, idx) => (

@@ -114,13 +114,13 @@ export function CoursesPreview() {
         <div className="text-center mb-12">
           <span className="section-badge">
             <BookOpen size={16} />
-            Popular Courses
+            Formations Populaires
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl font-bold dark:text-white">
-            Learn From <span className="gradient-text">Industry Experts</span>
+            Apprenez avec des <span className="gradient-text">Experts du Secteur</span>
           </h2>
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
-            Structured courses with hands-on projects, quizzes, and real-world scenarios.
+            Des formations structurées avec des projets pratiques, quiz et scénarios réels.
           </p>
         </div>
 
@@ -133,8 +133,8 @@ export function CoursesPreview() {
               <div className="flex items-center gap-2 mb-2">
                 <span className="skill-tag">{course.category}</span>
                 <span className={`text-xs px-2 py-0.5 rounded-full border ${
-                  course.level === 'Beginner' ? 'difficulty-beginner' :
-                  course.level === 'Intermediate' ? 'difficulty-intermediate' :
+                  course.level === 'Beginner' || course.level === 'Débutant' ? 'difficulty-beginner' :
+                  course.level === 'Intermediate' || course.level === 'Intermédiaire' ? 'difficulty-intermediate' :
                   'difficulty-advanced'
                 }`}>
                   {course.level}
@@ -161,7 +161,7 @@ export function CoursesPreview() {
 
         <div className="text-center mt-12">
           <Link href="/courses" className="btn-primary inline-flex items-center gap-2">
-            Browse All Courses <ChevronRight size={18} />
+            Voir toutes les Formations <ChevronRight size={18} />
           </Link>
         </div>
       </div>

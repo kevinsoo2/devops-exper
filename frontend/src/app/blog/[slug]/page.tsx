@@ -75,7 +75,7 @@ export default function BlogPostPage() {
     <div className="min-h-screen pt-24 pb-16 dark:bg-dark">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link href="/blog" className="flex items-center gap-2 text-sm text-gray-500 hover:text-primary-400 mb-6">
-          <ArrowLeft size={16} /> Back to Blog
+          <ArrowLeft size={16} /> Retour au Blog
         </Link>
 
         <article>

@@ -5,18 +5,18 @@ import { HelpCircle, Clock, Zap, Filter, Trophy } from 'lucide-react';
 import { quizzes as quizzesApi } from '@/lib/api';
 
 
-const categories = ['All', 'Docker', 'Kubernetes', 'CI/CD', 'Cloud', 'Linux', 'IaC', 'Security'];
-const difficulties = ['All', 'Beginner', 'Intermediate', 'Advanced'];
+const categories = ['Tous', 'Docker', 'Kubernetes', 'CI/CD', 'Cloud', 'Linux', 'IaC', 'Sécurité'];
+const difficulties = ['Tous', 'Débutant', 'Intermédiaire', 'Avancé'];
 
 const fallbackQuizzes = [
-  { id: '1', title: 'Docker Fundamentals', category: 'Docker', difficulty: 'Beginner', questions: 15, duration: '10 min', xp: 100, best_score: null },
-  { id: '2', title: 'Kubernetes Core Concepts', category: 'Kubernetes', difficulty: 'Intermediate', questions: 20, duration: '15 min', xp: 200, best_score: 85 },
-  { id: '3', title: 'CI/CD Pipeline Design', category: 'CI/CD', difficulty: 'Intermediate', questions: 18, duration: '12 min', xp: 150, best_score: null },
-  { id: '4', title: 'AWS Services Overview', category: 'Cloud', difficulty: 'Beginner', questions: 25, duration: '20 min', xp: 150, best_score: 92 },
-  { id: '5', title: 'Linux Commands Mastery', category: 'Linux', difficulty: 'Beginner', questions: 30, duration: '15 min', xp: 100, best_score: 78 },
-  { id: '6', title: 'Terraform Advanced Patterns', category: 'IaC', difficulty: 'Advanced', questions: 12, duration: '10 min', xp: 250, best_score: null },
-  { id: '7', title: 'Container Security', category: 'Security', difficulty: 'Advanced', questions: 15, duration: '12 min', xp: 200, best_score: null },
-  { id: '8', title: 'Kubernetes Networking', category: 'Kubernetes', difficulty: 'Advanced', questions: 10, duration: '8 min', xp: 200, best_score: 60 },
+  { id: '1', title: 'Docker Fondamentaux', category: 'Docker', difficulty: 'Débutant', questions: 15, duration: '10 min', xp: 100, best_score: null },
+  { id: '2', title: 'Kubernetes Concepts Clés', category: 'Kubernetes', difficulty: 'Intermédiaire', questions: 20, duration: '15 min', xp: 200, best_score: 85 },
+  { id: '3', title: 'Conception de Pipelines CI/CD', category: 'CI/CD', difficulty: 'Intermédiaire', questions: 18, duration: '12 min', xp: 150, best_score: null },
+  { id: '4', title: 'Aperçu des Services AWS', category: 'Cloud', difficulty: 'Débutant', questions: 25, duration: '20 min', xp: 150, best_score: 92 },
+  { id: '5', title: 'Maîtrise des Commandes Linux', category: 'Linux', difficulty: 'Débutant', questions: 30, duration: '15 min', xp: 100, best_score: 78 },
+  { id: '6', title: 'Terraform Patterns Avancés', category: 'IaC', difficulty: 'Avancé', questions: 12, duration: '10 min', xp: 250, best_score: null },
+  { id: '7', title: 'Sécurité des Conteneurs', category: 'Sécurité', difficulty: 'Avancé', questions: 15, duration: '12 min', xp: 200, best_score: null },
+  { id: '8', title: 'Réseau Kubernetes', category: 'Kubernetes', difficulty: 'Avancé', questions: 10, duration: '8 min', xp: 200, best_score: 60 },
 ];
 
 export default function QuizzesPage() {
@@ -33,8 +33,8 @@ export default function QuizzesPage() {
   }, []);
 
   const filtered = quizList.filter((q) => {
-    const matchCat = category === 'All' || q.category === category;
-    const matchDiff = difficulty === 'All' || q.difficulty === difficulty;
+    const matchCat = category === 'Tous' || q.category === category;
+    const matchDiff = difficulty === 'Tous' || q.difficulty === difficulty;
     return matchCat && matchDiff;
   });
 
@@ -43,10 +43,10 @@ export default function QuizzesPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold dark:text-white">
-            Knowledge <span className="gradient-text">Quizzes</span>
+            <span className="gradient-text">Quiz</span> de Connaissances
           </h1>
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
-            Test your DevOps knowledge and earn XP with timed quizzes.
+            Testez vos connaissances DevOps et gagnez des XP avec des quiz chronométrés.
           </p>
         </div>
 
@@ -86,8 +86,8 @@ export default function QuizzesPage() {
               <div key={quiz.id} className="card-hover">
                 <div className="flex items-center justify-between mb-3">
                   <span className={`text-xs px-2 py-0.5 rounded-full border ${
-                    quiz.difficulty === 'Beginner' ? 'difficulty-beginner' :
-                    quiz.difficulty === 'Intermediate' ? 'difficulty-intermediate' : 'difficulty-advanced'
+                    quiz.difficulty === 'Débutant' ? 'difficulty-beginner' :
+                    quiz.difficulty === 'Intermédiaire' ? 'difficulty-intermediate' : 'difficulty-advanced'
                   }`}>{quiz.difficulty}</span>
                   <span className="text-xs text-accent-400 font-medium">+{quiz.xp} XP</span>
                 </div>
@@ -103,11 +103,11 @@ export default function QuizzesPage() {
                 {quiz.best_score !== null && (
                   <div className="flex items-center gap-2 text-sm">
                     <Trophy size={14} className="text-accent-400" />
-                    <span className="text-gray-500">Best: <strong className="dark:text-white">{quiz.best_score}%</strong></span>
+                    <span className="text-gray-500">Meilleur : <strong className="dark:text-white">{quiz.best_score}%</strong></span>
                   </div>
                 )}
                 <button className="mt-4 w-full btn-outline text-sm !py-2">
-                  {quiz.best_score !== null ? 'Retake Quiz' : 'Start Quiz'}
+                  {quiz.best_score !== null ? 'Refaire le Quiz' : 'Commencer le Quiz'}
                 </button>
               </div>
             ))}

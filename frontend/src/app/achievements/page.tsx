@@ -6,22 +6,22 @@ import { achievements as achievementsApi } from '@/lib/api';
 
 
 const fallbackAchievements = [
-  { id: '1', title: 'First Steps', description: 'Complete your first lesson', rarity: 'common', xp: 50, earned: true, icon: '🎯' },
-  { id: '2', title: 'Docker Rookie', description: 'Complete the Docker basics course', rarity: 'common', xp: 100, earned: true, icon: '🐳' },
-  { id: '3', title: 'Lab Rat', description: 'Complete 10 hands-on labs', rarity: 'rare', xp: 200, earned: true, icon: '🧪' },
-  { id: '4', title: 'Quiz Master', description: 'Score 100% on 5 quizzes', rarity: 'rare', xp: 250, earned: false, icon: '🧠' },
-  { id: '5', title: 'Kubernetes Captain', description: 'Complete all Kubernetes courses', rarity: 'epic', xp: 500, earned: false, icon: '⚓' },
-  { id: '6', title: 'Community Star', description: 'Get 50 likes on forum posts', rarity: 'rare', xp: 200, earned: true, icon: '⭐' },
-  { id: '7', title: 'Speed Demon', description: 'Complete a lab in under 50% of allotted time', rarity: 'epic', xp: 300, earned: false, icon: '⚡' },
-  { id: '8', title: 'Certified Pro', description: 'Earn 3 certifications', rarity: 'epic', xp: 500, earned: false, icon: '🏆' },
-  { id: '9', title: 'Pipeline Architect', description: 'Build 20 CI/CD pipelines in labs', rarity: 'legendary', xp: 750, earned: false, icon: '🏗️' },
-  { id: '10', title: 'Cloud Sovereign', description: 'Complete all cloud provider courses', rarity: 'legendary', xp: 1000, earned: false, icon: '☁️' },
-  { id: '11', title: 'Mentor Mode', description: 'Complete 10 mentoring sessions', rarity: 'legendary', xp: 800, earned: false, icon: '🎓' },
-  { id: '12', title: 'Streak King', description: 'Maintain a 30-day learning streak', rarity: 'epic', xp: 400, earned: false, icon: '🔥' },
+  { id: '1', title: 'Premiers Pas', description: 'Complétez votre première leçon', rarity: 'common', xp: 50, earned: true, icon: '🎯' },
+  { id: '2', title: 'Docker Rookie', description: 'Complétez la formation Docker basics', rarity: 'common', xp: 100, earned: true, icon: '🐳' },
+  { id: '3', title: 'Lab Rat', description: 'Complétez 10 labs pratiques', rarity: 'rare', xp: 200, earned: true, icon: '🧪' },
+  { id: '4', title: 'Quiz Master', description: 'Obtenez 100% à 5 quiz', rarity: 'rare', xp: 250, earned: false, icon: '🧠' },
+  { id: '5', title: 'Kubernetes Captain', description: 'Complétez toutes les formations Kubernetes', rarity: 'epic', xp: 500, earned: false, icon: '⚓' },
+  { id: '6', title: 'Community Star', description: 'Obtenez 50 likes sur vos posts du forum', rarity: 'rare', xp: 200, earned: true, icon: '⭐' },
+  { id: '7', title: 'Speed Demon', description: 'Complétez un lab en moins de 50% du temps imparti', rarity: 'epic', xp: 300, earned: false, icon: '⚡' },
+  { id: '8', title: 'Certifié Pro', description: 'Obtenez 3 certifications', rarity: 'epic', xp: 500, earned: false, icon: '🏆' },
+  { id: '9', title: 'Pipeline Architect', description: 'Construisez 20 pipelines CI/CD en labs', rarity: 'legendary', xp: 750, earned: false, icon: '🏗️' },
+  { id: '10', title: 'Cloud Sovereign', description: 'Complétez toutes les formations cloud provider', rarity: 'legendary', xp: 1000, earned: false, icon: '☁️' },
+  { id: '11', title: 'Mode Mentor', description: 'Complétez 10 sessions de mentorat', rarity: 'legendary', xp: 800, earned: false, icon: '🎓' },
+  { id: '12', title: 'Streak King', description: 'Maintenez une série de 30 jours consécutifs', rarity: 'epic', xp: 400, earned: false, icon: '🔥' },
 ];
 
-const rarityFilter = ['All', 'Common', 'Rare', 'Epic', 'Legendary'];
-const statusFilter = ['All', 'Earned', 'Locked'];
+const rarityFilter = ['Tous', 'Commun', 'Rare', 'Épique', 'Légendaire'];
+const statusFilter = ['Tous', 'Obtenu', 'Verrouillé'];
 
 export default function AchievementsPage() {
   const [achievementList, setAchievementList] = useState(fallbackAchievements);
@@ -36,11 +36,25 @@ export default function AchievementsPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  const rarityMap: Record<string, string> = {
+    'commun': 'common',
+    'rare': 'rare',
+    'épique': 'epic',
+    'légendaire': 'legendary',
+  };
+
   const filtered = achievementList.filter((a) => {
-    const matchRarity = rarity === 'All' || a.rarity.toLowerCase() === rarity.toLowerCase();
-    const matchStatus = status === 'All' || (status === 'Earned' && a.earned) || (status === 'Locked' && !a.earned);
+    const matchRarity = rarity === 'Tous' || a.rarity.toLowerCase() === (rarityMap[rarity.toLowerCase()] || rarity.toLowerCase());
+    const matchStatus = status === 'Tous' || (status === 'Obtenu' && a.earned) || (status === 'Verrouillé' && !a.earned);
     return matchRarity && matchStatus;
   });
+
+  const rarityDisplayMap: Record<string, string> = {
+    'common': 'commun',
+    'rare': 'rare',
+    'epic': 'épique',
+    'legendary': 'légendaire',
+  };
 
   const earnedCount = achievementList.filter(a => a.earned).length;
 
@@ -49,14 +63,14 @@ export default function AchievementsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold dark:text-white">
-            <span className="gradient-text">Achievements</span>
+            <span className="gradient-text">Succès</span>
           </h1>
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
-            Unlock achievements by completing courses, labs, and challenges.
+            Débloquez des succès en complétant des formations, labs et défis.
           </p>
           <div className="mt-4 inline-flex items-center gap-2 text-sm">
             <Trophy size={16} className="text-accent-400" />
-            <span className="dark:text-white font-medium">{earnedCount}/{achievementList.length} earned</span>
+            <span className="dark:text-white font-medium">{earnedCount}/{achievementList.length} obtenu(s)</span>
           </div>
         </div>
 
@@ -101,7 +115,7 @@ export default function AchievementsPage() {
                 <p className="text-xs text-gray-500 mt-1">{achievement.description}</p>
                 <div className="mt-3 flex items-center justify-center gap-2">
                   <span className={`text-xs px-2 py-0.5 rounded-full border rarity-${achievement.rarity}`}>
-                    {achievement.rarity}
+                    {rarityDisplayMap[achievement.rarity] || achievement.rarity}
                   </span>
                   <span className="text-xs text-accent-400">+{achievement.xp} XP</span>
                 </div>

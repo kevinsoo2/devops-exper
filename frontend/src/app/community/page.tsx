@@ -6,17 +6,17 @@ import { community as communityApi } from '@/lib/api';
 import { useAuthStore } from '@/lib/store';
 
 
-const categoryTabs = ['All', 'General', 'Help', 'Showcase', 'Jobs', 'Events'];
+const categoryTabs = ['Tous', 'Général', 'Aide', 'Showcase', 'Emplois', 'Événements'];
 
 const fallbackThreads = [
-  { id: '1', title: 'Best practices for Kubernetes in production?', author: 'DevOpsJohn', category: 'Help', replies: 12, likes: 24, created_at: '2024-03-15T10:00:00Z' },
-  { id: '2', title: 'My journey from sysadmin to SRE', author: 'SarahOps', category: 'General', replies: 8, likes: 45, created_at: '2024-03-14T08:00:00Z' },
-  { id: '3', title: 'Showcase: Automated multi-cloud deployment pipeline', author: 'CloudMaster', category: 'Showcase', replies: 15, likes: 67, created_at: '2024-03-13T14:00:00Z' },
-  { id: '4', title: 'Senior DevOps Engineer position at Stripe', author: 'HiringManager', category: 'Jobs', replies: 3, likes: 12, created_at: '2024-03-12T09:00:00Z' },
-  { id: '5', title: 'Terraform state management strategies', author: 'IaCPro', category: 'Help', replies: 20, likes: 38, created_at: '2024-03-11T16:00:00Z' },
-  { id: '6', title: 'DevOps Meetup - March 2024 recap', author: 'EventOrg', category: 'Events', replies: 5, likes: 22, created_at: '2024-03-10T11:00:00Z' },
-  { id: '7', title: 'How to handle secrets in GitHub Actions?', author: 'NewDev', category: 'Help', replies: 9, likes: 15, created_at: '2024-03-09T13:00:00Z' },
-  { id: '8', title: 'Monitoring at scale with Prometheus + Thanos', author: 'MetricsGuru', category: 'Showcase', replies: 11, likes: 52, created_at: '2024-03-08T07:00:00Z' },
+  { id: '1', title: 'Meilleures pratiques pour Kubernetes en production ?', author: 'DevOpsJohn', category: 'Aide', replies: 12, likes: 24, created_at: '2024-03-15T10:00:00Z' },
+  { id: '2', title: 'Mon parcours de sysadmin à SRE', author: 'SarahOps', category: 'Général', replies: 8, likes: 45, created_at: '2024-03-14T08:00:00Z' },
+  { id: '3', title: 'Showcase : Pipeline de déploiement multi-cloud automatisé', author: 'CloudMaster', category: 'Showcase', replies: 15, likes: 67, created_at: '2024-03-13T14:00:00Z' },
+  { id: '4', title: 'Poste Senior DevOps Engineer chez Stripe', author: 'HiringManager', category: 'Emplois', replies: 3, likes: 12, created_at: '2024-03-12T09:00:00Z' },
+  { id: '5', title: 'Stratégies de gestion du state Terraform', author: 'IaCPro', category: 'Aide', replies: 20, likes: 38, created_at: '2024-03-11T16:00:00Z' },
+  { id: '6', title: 'Meetup DevOps - Récap Mars 2024', author: 'EventOrg', category: 'Événements', replies: 5, likes: 22, created_at: '2024-03-10T11:00:00Z' },
+  { id: '7', title: 'Comment gérer les secrets dans GitHub Actions ?', author: 'NewDev', category: 'Aide', replies: 9, likes: 15, created_at: '2024-03-09T13:00:00Z' },
+  { id: '8', title: 'Monitoring à grande échelle avec Prometheus + Thanos', author: 'MetricsGuru', category: 'Showcase', replies: 11, likes: 52, created_at: '2024-03-08T07:00:00Z' },
 ];
 
 export default function CommunityPage() {
@@ -25,7 +25,7 @@ export default function CommunityPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('All');
   const [showCreate, setShowCreate] = useState(false);
-  const [newThread, setNewThread] = useState({ title: '', content: '', category: 'General' });
+  const [newThread, setNewThread] = useState({ title: '', content: '', category: 'Général' });
 
   useEffect(() => {
     communityApi.threads()
@@ -34,7 +34,7 @@ export default function CommunityPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const filtered = activeTab === 'All' ? threads : threads.filter((t) => t.category === activeTab);
+  const filtered = activeTab === 'Tous' ? threads : threads.filter((t) => t.category === activeTab);
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,13 +51,13 @@ export default function CommunityPage() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-4xl font-bold dark:text-white">
-              <span className="gradient-text">Community</span> Forum
+              Forum <span className="gradient-text">Communautaire</span>
             </h1>
-            <p className="mt-2 text-gray-500">Discuss, share, and learn with fellow DevOps engineers.</p>
+            <p className="mt-2 text-gray-500">Discutez, partagez et apprenez avec d&apos;autres ingénieurs DevOps.</p>
           </div>
           {user && (
             <button onClick={() => setShowCreate(true)} className="btn-primary flex items-center gap-2">
-              <Plus size={18} /> New Thread
+              <Plus size={18} /> Nouveau Sujet
             </button>
           )}
         </div>
@@ -77,24 +77,24 @@ export default function CommunityPage() {
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <div className="card max-w-lg w-full">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold dark:text-white">New Thread</h2>
+                <h2 className="text-xl font-bold dark:text-white">Nouveau Sujet</h2>
                 <button onClick={() => setShowCreate(false)}><X size={20} /></button>
               </div>
               <form onSubmit={handleCreate} className="space-y-4">
-                <input type="text" placeholder="Thread title" value={newThread.title}
+                <input type="text" placeholder="Titre du sujet" value={newThread.title}
                   onChange={(e) => setNewThread({ ...newThread, title: e.target.value })}
                   className="input-field" required />
-                <textarea placeholder="What's on your mind?" value={newThread.content}
+                <textarea placeholder="Qu'avez-vous en tête ?" value={newThread.content}
                   onChange={(e) => setNewThread({ ...newThread, content: e.target.value })}
                   className="input-field min-h-[120px]" required />
                 <select value={newThread.category}
                   onChange={(e) => setNewThread({ ...newThread, category: e.target.value })}
                   className="input-field">
-                  {categoryTabs.filter(t => t !== 'All').map((c) => (
+                  {categoryTabs.filter(t => t !== 'Tous').map((c) => (
                     <option key={c} value={c}>{c}</option>
                   ))}
                 </select>
-                <button type="submit" className="btn-primary w-full">Post Thread</button>
+                <button type="submit" className="btn-primary w-full">Publier le Sujet</button>
               </form>
             </div>
           </div>
@@ -121,8 +121,8 @@ export default function CommunityPage() {
                     </div>
                     <h3 className="font-semibold dark:text-white">{thread.title}</h3>
                     <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
-                      <span>by {thread.author}</span>
-                      <span className="flex items-center gap-1"><MessageSquare size={12} /> {thread.replies} replies</span>
+                      <span>par {thread.author}</span>
+                      <span className="flex items-center gap-1"><MessageSquare size={12} /> {thread.replies} réponses</span>
                       <span className="flex items-center gap-1"><ThumbsUp size={12} /> {thread.likes}</span>
                     </div>
                   </div>

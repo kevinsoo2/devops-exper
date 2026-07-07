@@ -72,7 +72,7 @@ export default function LabDetailPage() {
     <div className="min-h-screen pt-24 pb-16 dark:bg-dark">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link href="/labs" className="flex items-center gap-2 text-sm text-gray-500 hover:text-primary-400 mb-6">
-          <ArrowLeft size={16} /> Back to Labs
+          <ArrowLeft size={16} /> Retour aux Labs
         </Link>
 
         <div className="flex items-center gap-2 mb-4">
@@ -89,25 +89,25 @@ export default function LabDetailPage() {
 
         <div className="flex items-center gap-4 text-sm text-gray-500 mb-8">
           <span className="flex items-center gap-1"><Clock size={14} /> {data.duration}</span>
-          <span className="flex items-center gap-1"><Zap size={14} /> {data.xp} XP reward</span>
+          <span className="flex items-center gap-1"><Zap size={14} /> {data.xp} XP récompense</span>
         </div>
 
         {started ? (
           <div className="card border-success-500/50 mb-8">
             <div className="flex items-center gap-2 text-success-400 mb-2">
-              <CheckCircle size={20} /> Lab Environment Ready
+              <CheckCircle size={20} /> Environnement du Lab Prêt
             </div>
-            <p className="text-sm text-gray-500">Your lab environment is spinning up. Follow the objectives below.</p>
+            <p className="text-sm text-gray-500">Votre environnement de lab se lance. Suivez les objectifs ci-dessous.</p>
           </div>
         ) : (
           <button onClick={handleStart} disabled={starting} className="btn-primary mb-8 flex items-center gap-2">
-            <Play size={18} /> {starting ? 'Starting...' : 'Start Lab'}
+            <Play size={18} /> {starting ? 'Démarrage...' : 'Lancer le Lab'}
           </button>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="card">
-            <h2 className="font-bold dark:text-white mb-4">Objectives</h2>
+            <h2 className="font-bold dark:text-white mb-4">Objectifs</h2>
             <ul className="space-y-2">
               {(data.objectives || fallbackLab.objectives).map((obj: string, i: number) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
@@ -120,7 +120,7 @@ export default function LabDetailPage() {
 
           <div className="space-y-6">
             <div className="card">
-              <h2 className="font-bold dark:text-white mb-4">Prerequisites</h2>
+              <h2 className="font-bold dark:text-white mb-4">Prérequis</h2>
               <ul className="space-y-2">
                 {(data.prerequisites || fallbackLab.prerequisites).map((p: string, i: number) => (
                   <li key={i} className="flex items-center gap-2 text-sm text-gray-500">
@@ -130,7 +130,7 @@ export default function LabDetailPage() {
               </ul>
             </div>
             <div className="card">
-              <h2 className="font-bold dark:text-white mb-4">Tools Used</h2>
+              <h2 className="font-bold dark:text-white mb-4">Outils Utilisés</h2>
               <div className="flex flex-wrap gap-2">
                 {(data.tools || fallbackLab.tools).map((t: string) => (
                   <span key={t} className="skill-tag">{t}</span>

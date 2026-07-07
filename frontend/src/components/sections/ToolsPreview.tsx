@@ -4,79 +4,79 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Wrench, ExternalLink, ChevronRight } from 'lucide-react';
 
-const categories = ['All', 'CI/CD', 'Containers', 'Cloud', 'Monitoring', 'IaC', 'Security'];
+const categories = ['Tous', 'CI/CD', 'Conteneurs', 'Cloud', 'Monitoring', 'IaC', 'Sécurité'];
 
 const toolsData = [
   {
     name: 'Docker',
-    category: 'Containers',
-    description: 'Build, share, and run containerized applications',
+    category: 'Conteneurs',
+    description: 'Construisez, partagez et exécutez des applications conteneurisées',
     icon: 'fa-brands fa-docker',
     color: 'text-blue-400',
-    difficulty: 'Beginner',
+    difficulty: 'Débutant',
   },
   {
     name: 'Kubernetes',
-    category: 'Containers',
-    description: 'Container orchestration for production workloads',
+    category: 'Conteneurs',
+    description: 'Orchestration de conteneurs pour les charges de travail en production',
     icon: 'fa-solid fa-dharmachakra',
     color: 'text-blue-300',
-    difficulty: 'Intermediate',
+    difficulty: 'Intermédiaire',
   },
   {
     name: 'Terraform',
     category: 'IaC',
-    description: 'Infrastructure as Code for multi-cloud environments',
+    description: 'Infrastructure as Code pour les environnements multi-cloud',
     icon: 'fa-solid fa-cube',
     color: 'text-purple-400',
-    difficulty: 'Intermediate',
+    difficulty: 'Intermédiaire',
   },
   {
     name: 'Jenkins',
     category: 'CI/CD',
-    description: 'Extensible open-source automation server',
+    description: 'Serveur d\'automatisation open-source extensible',
     icon: 'fa-solid fa-gear',
     color: 'text-red-400',
-    difficulty: 'Intermediate',
+    difficulty: 'Intermédiaire',
   },
   {
     name: 'Prometheus',
     category: 'Monitoring',
-    description: 'Metrics and alerting for cloud-native apps',
+    description: 'Métriques et alertes pour les applications cloud-native',
     icon: 'fa-solid fa-fire',
     color: 'text-orange-400',
-    difficulty: 'Intermediate',
+    difficulty: 'Intermédiaire',
   },
   {
     name: 'AWS',
     category: 'Cloud',
-    description: 'Leading cloud platform with 200+ services',
+    description: 'Plateforme cloud leader avec plus de 200 services',
     icon: 'fa-brands fa-aws',
     color: 'text-orange-300',
-    difficulty: 'Beginner',
+    difficulty: 'Débutant',
   },
   {
     name: 'GitHub Actions',
     category: 'CI/CD',
-    description: 'CI/CD workflows directly in your repository',
+    description: 'Workflows CI/CD directement dans votre dépôt',
     icon: 'fa-brands fa-github',
     color: 'text-gray-300',
-    difficulty: 'Beginner',
+    difficulty: 'Débutant',
   },
   {
     name: 'Vault',
-    category: 'Security',
-    description: 'Secrets management and data protection',
+    category: 'Sécurité',
+    description: 'Gestion des secrets et protection des données',
     icon: 'fa-solid fa-lock',
     color: 'text-yellow-400',
-    difficulty: 'Advanced',
+    difficulty: 'Avancé',
   },
 ];
 
 export function ToolsPreview() {
   const [filter, setFilter] = useState('All');
 
-  const filtered = filter === 'All' ? toolsData : toolsData.filter((t) => t.category === filter);
+  const filtered = filter === 'Tous' ? toolsData : toolsData.filter((t) => t.category === filter);
 
   return (
     <section className="py-24 bg-gray-50 dark:bg-dark">
@@ -84,13 +84,13 @@ export function ToolsPreview() {
         <div className="text-center mb-12">
           <span className="section-badge">
             <Wrench size={16} />
-            DevOps Toolbox
+            Boîte à outils DevOps
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl font-bold dark:text-white">
-            Master the <span className="gradient-text">Essential Tools</span>
+            Maîtrisez les <span className="gradient-text">Outils Essentiels</span>
           </h2>
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
-            From containers to cloud platforms, learn the tools that power modern DevOps.
+            Des conteneurs aux plateformes cloud, apprenez les outils qui font tourner le DevOps moderne.
           </p>
         </div>
 
@@ -127,8 +127,8 @@ export function ToolsPreview() {
               <p className="text-sm text-gray-500 mb-3">{tool.description}</p>
               <div className="flex items-center justify-between">
                 <span className={`text-xs px-2 py-0.5 rounded-full border ${
-                  tool.difficulty === 'Beginner' ? 'difficulty-beginner' :
-                  tool.difficulty === 'Intermediate' ? 'difficulty-intermediate' :
+                  tool.difficulty === 'Débutant' ? 'difficulty-beginner' :
+                  tool.difficulty === 'Intermédiaire' ? 'difficulty-intermediate' :
                   'difficulty-advanced'
                 }`}>
                   {tool.difficulty}
@@ -141,7 +141,7 @@ export function ToolsPreview() {
 
         <div className="text-center mt-12">
           <Link href="/tools" className="btn-outline inline-flex items-center gap-2">
-            Explore All Tools <ChevronRight size={18} />
+            Explorer tous les Outils <ChevronRight size={18} />
           </Link>
         </div>
       </div>

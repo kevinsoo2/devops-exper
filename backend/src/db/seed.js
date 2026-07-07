@@ -1,5 +1,6 @@
 const { getDb } = require('./connection');
 const bcrypt = require('bcryptjs');
+const { seedCoursesContent } = require('./seed-courses-content');
 require('dotenv').config();
 
 async function seed() {
@@ -250,6 +251,9 @@ async function seed() {
     });
   }
   console.log('✅ Forum threads créés');
+
+  // Seed chapters and lessons for all courses
+  await seedCoursesContent(db);
 
   console.log('\n🎉 Seeding terminé avec succès !');
 }

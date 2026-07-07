@@ -1,40 +1,40 @@
 import Link from 'next/link';
 
 const footerLinks = {
-  Platform: [
-    { label: 'Courses', href: '/courses' },
+  Plateforme: [
+    { label: 'Formations', href: '/courses' },
     { label: 'Labs', href: '/labs' },
-    { label: 'Tools', href: '/tools' },
+    { label: 'Outils', href: '/tools' },
     { label: 'Certifications', href: '/certifications' },
-    { label: 'Roadmap', href: '/roadmap' },
+    { label: 'Parcours', href: '/roadmap' },
   ],
-  Community: [
+  Communauté: [
     { label: 'Forum', href: '/community' },
     { label: 'Blog', href: '/blog' },
-    { label: 'Mentoring', href: '/mentoring' },
-    { label: 'Leaderboard', href: '/achievements' },
+    { label: 'Mentorat', href: '/mentoring' },
+    { label: 'Classement', href: '/achievements' },
     { label: 'Discord', href: '#' },
   ],
-  Resources: [
+  Ressources: [
     { label: 'Documentation', href: '#' },
-    { label: 'API Reference', href: '#' },
+    { label: 'Référence API', href: '#' },
     { label: 'Changelog', href: '#' },
-    { label: 'Status', href: '#' },
+    { label: 'Statut', href: '#' },
     { label: 'Support', href: '#' },
   ],
-  Company: [
-    { label: 'About', href: '#' },
-    { label: 'Careers', href: '#' },
+  Entreprise: [
+    { label: 'À propos', href: '#' },
+    { label: 'Carrières', href: '#' },
     { label: 'Contact', href: '#' },
-    { label: 'Partners', href: '#' },
-    { label: 'Press', href: '#' },
+    { label: 'Partenaires', href: '#' },
+    { label: 'Presse', href: '#' },
   ],
-  Legal: [
-    { label: 'Privacy Policy', href: '#' },
-    { label: 'Terms of Service', href: '#' },
-    { label: 'Cookie Policy', href: '#' },
-    { label: 'GDPR', href: '#' },
-    { label: 'Licenses', href: '#' },
+  Légal: [
+    { label: 'Politique de confidentialité', href: '#' },
+    { label: "Conditions d'utilisation", href: '#' },
+    { label: 'Politique de cookies', href: '#' },
+    { label: 'RGPD', href: '#' },
+    { label: 'Licences', href: '#' },
   ],
 };
 
@@ -60,7 +60,7 @@ export function Footer() {
               <span className="font-bold dark:text-white">DevOps Expert</span>
             </div>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-              The ultimate platform for mastering DevOps engineering.
+              La plateforme ultime pour maîtriser l&apos;ingénierie DevOps.
             </p>
             <div className="flex gap-3">
               {socials.map((social) => (
@@ -99,14 +99,14 @@ export function Footer() {
         {/* Bottom */}
         <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} DevOps Expert Academy. All rights reserved.
+            &copy; {new Date().getFullYear()} DevOps Expert Academy. Tous droits réservés.
           </p>
           <div className="flex items-center gap-4">
             <Link href="#" className="text-xs text-gray-500 hover:text-primary-500">
-              Privacy
+              Confidentialité
             </Link>
             <Link href="#" className="text-xs text-gray-500 hover:text-primary-500">
-              Terms
+              Conditions
             </Link>
             <Link href="#" className="text-xs text-gray-500 hover:text-primary-500">
               Cookies

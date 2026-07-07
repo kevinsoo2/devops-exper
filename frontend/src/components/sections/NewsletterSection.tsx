@@ -17,11 +17,11 @@ export function NewsletterSection() {
     try {
       await blog.subscribe(email);
       setStatus('success');
-      setMessage('Welcome aboard! Check your inbox for confirmation.');
+      setMessage('Bienvenue ! Vérifiez votre boîte de réception pour la confirmation.');
       setEmail('');
     } catch (err: any) {
       setStatus('error');
-      setMessage(err.message || 'Something went wrong. Please try again.');
+      setMessage(err.message || 'Une erreur est survenue. Veuillez réessayer.');
     }
   };
 
@@ -41,10 +41,10 @@ export function NewsletterSection() {
             </div>
 
             <h2 className="text-3xl font-bold dark:text-white">
-              Stay in the <span className="gradient-text">Loop</span>
+              Restez dans la <span className="gradient-text">Boucle</span>
             </h2>
             <p className="mt-3 text-gray-500 max-w-md mx-auto">
-              Get weekly DevOps tips, new course announcements, and exclusive content delivered to your inbox.
+              Recevez chaque semaine des conseils DevOps, des annonces de nouvelles formations et du contenu exclusif.
             </p>
 
             <form onSubmit={handleSubmit} className="mt-8 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
@@ -65,7 +65,7 @@ export function NewsletterSection() {
                   <Loader2 size={18} className="animate-spin" />
                 ) : (
                   <>
-                    <Mail size={18} /> Subscribe
+                    <Mail size={18} /> S&apos;inscrire
                   </>
                 )}
               </button>
@@ -86,7 +86,7 @@ export function NewsletterSection() {
             )}
 
             <p className="mt-4 text-xs text-gray-500">
-              No spam, ever. Unsubscribe anytime.
+              Pas de spam. Désabonnement en un clic.
             </p>
           </div>
         </div>

@@ -57,6 +57,7 @@ async function migrate() {
       title TEXT NOT NULL,
       description TEXT,
       order_index INTEGER NOT NULL,
+      duration_minutes INTEGER DEFAULT 0,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
     )`,
@@ -67,9 +68,10 @@ async function migrate() {
       chapter_id INTEGER NOT NULL,
       title TEXT NOT NULL,
       content TEXT,
-      content_type TEXT DEFAULT 'text' CHECK(content_type IN ('text', 'video', 'interactive')),
+      content_type TEXT DEFAULT 'text' CHECK(content_type IN ('text', 'video', 'quiz', 'exercise', 'interactive')),
       duration_minutes INTEGER,
       order_index INTEGER NOT NULL,
+      is_free INTEGER DEFAULT 0,
       xp_reward INTEGER DEFAULT 10,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (chapter_id) REFERENCES chapters(id) ON DELETE CASCADE
