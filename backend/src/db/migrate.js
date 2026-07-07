@@ -395,13 +395,18 @@ async function migrate() {
   ];
 
   for (const sql of tables) {
-    await db.execute(sql);
+    try {
+      await db.execute({ sql, args: [] });
+    } catch (err) {
+      console.error('❌ Erreur sur la table:', sql.substring(0, 60), err.message);
+      throw err;
+    }
   }
 
   console.log('✅ Migration terminée avec succès ! 24 tables créées.');
 }
 
 migrate().catch((err) => {
-  console.error('❌ Erreur lors de la migration:', err);
+  console.error('❌ Erreur lors de la migration:', err.message || err);
   process.exit(1);
 });
