@@ -2,131 +2,98 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { api } from '@/lib/api';
+import { LogIn, UserPlus, Mail, Lock, User, AlertCircle } from 'lucide-react';
+import { auth } from '@/lib/api';
 import { useAuthStore } from '@/lib/store';
-import { Mail, Lock, User, Infinity } from 'lucide-react';
+
 
 export default function LoginPage() {
-  const [isRegister, setIsRegister] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const setAuth = useAuthStore((s) => s.setAuth);
+  const { setAuth } = useAuthStore();
+  const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [form, setForm] = useState({ username: '', email: '', password: '' });
 
-  async function handleSubmit(e: React.FormEvent) {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
-
     try {
-      if (isRegister) {
-        const data = await api.auth.register({ email, password, name });
+      if (isLogin) {
+        const data = await auth.login({ email: form.email, password: form.password });
         setAuth(data.user, data.token);
       } else {
-        const data = await api.auth.login({ email, password });
+        const data = await auth.register({ username: form.username, email: form.email, password: form.password });
         setAuth(data.user, data.token);
       }
       router.push('/dashboard');
     } catch (err: any) {
-      setError(err.message || 'Une erreur est survenue');
-    } finally {
-      setLoading(false);
+      setError(err.message || 'Authentication failed. Please try again.');
     }
-  }
+    setLoading(false);
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 pt-20">
-      <div className="w-full max-w-md">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 text-2xl font-bold">
-            <Infinity className="w-8 h-8 text-primary" />
-            DevOps<strong className="text-primary-light">Expert</strong>
-          </Link>
-          <p className="text-slate-400 text-sm mt-2">
-            {isRegister ? 'Créez votre compte' : 'Connectez-vous à votre compte'}
-          </p>
-        </div>
+    <div className="min-h-screen pt-24 pb-16 dark:bg-dark flex items-center justify-center">
+      <div className="max-w-md w-full mx-4">
+        <div className="card">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center mb-4">
+              {isLogin ? <LogIn size={28} className="text-white" /> : <UserPlus size={28} className="text-white" />}
+            </div>
+            <h1 className="text-2xl font-bold dark:text-white">
+              {isLogin ? 'Welcome Back' : 'Create Account'}
+            </h1>
+            <p className="text-sm text-gray-500 mt-1">
+              {isLogin ? 'Sign in to continue your learning journey.' : 'Start your DevOps learning journey today.'}
+            </p>
+          </div>
 
-        <div className="card p-8">
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {isRegister && (
-              <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1.5">Nom</label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 rounded-lg bg-dark border border-slate-700 text-white text-sm focus:outline-none focus:border-primary transition"
-                    placeholder="Votre nom"
-                    required
-                  />
-                </div>
+          {/* Error */}
+          {error && (
+            <div className="flex items-center gap-2 p-3 mb-4 rounded-lg bg-danger-500/10 border border-danger-500/20 text-danger-400 text-sm">
+              <AlertCircle size={16} />
+              {error}
+            </div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {!isLogin && (
+              <div className="relative">
+                <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input type="text" placeholder="Username" value={form.username}
+                  onChange={(e) => setForm({ ...form, username: e.target.value })}
+                  className="input-field pl-10" required={!isLogin} />
               </div>
             )}
-
-            <div>
-              <label className="block text-xs font-medium text-slate-400 mb-1.5">Email</label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-dark border border-slate-700 text-white text-sm focus:outline-none focus:border-primary transition"
-                  placeholder="votre@email.com"
-                  required
-                />
-              </div>
+            <div className="relative">
+              <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input type="email" placeholder="Email address" value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                className="input-field pl-10" required />
             </div>
-
-            <div>
-              <label className="block text-xs font-medium text-slate-400 mb-1.5">Mot de passe</label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-dark border border-slate-700 text-white text-sm focus:outline-none focus:border-primary transition"
-                  placeholder="••••••••"
-                  required
-                  minLength={6}
-                />
-              </div>
+            <div className="relative">
+              <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input type="password" placeholder="Password" value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                className="input-field pl-10" required minLength={6} />
             </div>
-
-            {error && (
-              <p className="text-xs text-red-400 bg-red-400/10 px-3 py-2 rounded">{error}</p>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn-primary w-full justify-center py-3"
-            >
-              {loading ? (
-                <i className="fas fa-spinner fa-spin"></i>
-              ) : isRegister ? (
-                'Créer mon compte'
-              ) : (
-                'Se connecter'
-              )}
+            <button type="submit" disabled={loading} className="btn-primary w-full">
+              {loading ? 'Processing...' : isLogin ? 'Sign In' : 'Create Account'}
             </button>
           </form>
 
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => { setIsRegister(!isRegister); setError(''); }}
-              className="text-sm text-slate-400 hover:text-primary-light transition"
-            >
-              {isRegister ? 'Déjà un compte ? Se connecter' : "Pas encore de compte ? S'inscrire"}
+          {/* Toggle */}
+          <div className="mt-6 text-center text-sm">
+            <span className="text-gray-500">
+              {isLogin ? "Don't have an account?" : 'Already have an account?'}
+            </span>
+            <button onClick={() => { setIsLogin(!isLogin); setError(''); }}
+              className="ml-2 text-primary-400 hover:text-primary-300 font-medium">
+              {isLogin ? 'Sign Up' : 'Sign In'}
             </button>
           </div>
         </div>

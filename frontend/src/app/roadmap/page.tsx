@@ -1,11 +1,11 @@
 'use client';
 
-import { RoadmapSection } from '@/components/RoadmapSection';
+import { RoadmapPreview } from '@/components/sections/RoadmapPreview';
 
 export default function RoadmapPage() {
   return (
-    <div className="pt-20">
-      <RoadmapSection />
+    <div className="min-h-screen pt-16 dark:bg-dark">
+      <RoadmapPreview />
     </div>
   );
 }

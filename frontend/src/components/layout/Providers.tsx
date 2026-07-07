@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useAuthStore, useThemeStore } from '@/lib/store';
+import { useAuthStore } from '@/lib/store';
+import { useThemeStore } from '@/lib/store';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const loadAuth = useAuthStore((s) => s.loadFromStorage);

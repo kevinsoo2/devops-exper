@@ -1,25 +1,27 @@
-import { Hero } from '@/components/Hero';
-import { RoadmapSection } from '@/components/RoadmapSection';
-import { CoursesSection } from '@/components/CoursesSection';
-import { ToolsSection } from '@/components/ToolsSection';
-import { LabsSection } from '@/components/LabsSection';
-import { CertificationsSection } from '@/components/CertificationsSection';
-import { Terminal } from '@/components/Terminal';
-import { BlogSection } from '@/components/BlogSection';
-import { PricingSection } from '@/components/PricingSection';
-import { NewsletterSection } from '@/components/NewsletterSection';
+import { Hero } from '@/components/sections/Hero';
+import { RoadmapPreview } from '@/components/sections/RoadmapPreview';
+import { CoursesPreview } from '@/components/sections/CoursesPreview';
+import { ToolsPreview } from '@/components/sections/ToolsPreview';
+import { LabsPreview } from '@/components/sections/LabsPreview';
+import { CertificationsPreview } from '@/components/sections/CertificationsPreview';
+import { Terminal } from '@/components/sections/Terminal';
+import { CommunityPreview } from '@/components/sections/CommunityPreview';
+import { BlogPreview } from '@/components/sections/BlogPreview';
+import { PricingSection } from '@/components/sections/PricingSection';
+import { NewsletterSection } from '@/components/sections/NewsletterSection';
 
-export default function Home() {
+export default function HomePage() {
   return (
     <>
       <Hero />
-      <RoadmapSection />
-      <CoursesSection />
-      <ToolsSection />
-      <LabsSection />
-      <CertificationsSection />
+      <RoadmapPreview />
+      <CoursesPreview />
+      <ToolsPreview />
+      <LabsPreview />
+      <CertificationsPreview />
       <Terminal />
-      <BlogSection />
+      <CommunityPreview />
+      <BlogPreview />
       <PricingSection />
       <NewsletterSection />
     </>

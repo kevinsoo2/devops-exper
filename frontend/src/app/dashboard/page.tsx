@@ -1,120 +1,137 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { BarChart3, BookOpen, Trophy, Zap, Clock, TrendingUp, Target } from 'lucide-react';
+import { stats as statsApi, progress as progressApi } from '@/lib/api';
 import { useAuthStore } from '@/lib/store';
-import { api } from '@/lib/api';
-import { BookOpen, FlaskConical, Award, Clock, TrendingUp } from 'lucide-react';
+
+
+const fallbackStats = {
+  xp_points: 2450,
+  level: 5,
+  courses_enrolled: 4,
+  courses_completed: 2,
+  labs_completed: 12,
+  quizzes_passed: 8,
+  streak_days: 7,
+  achievements_earned: 6,
+  total_learning_hours: 45,
+};
+
+const recentActivity = [
+  { type: 'lesson', title: 'Completed: Docker Networking', xp: 50, time: '2 hours ago' },
+  { type: 'quiz', title: 'Passed: CI/CD Fundamentals Quiz', xp: 100, time: '5 hours ago' },
+  { type: 'lab', title: 'Completed: K8s Cluster Setup Lab', xp: 300, time: '1 day ago' },
+  { type: 'achievement', title: 'Earned: Lab Rat Achievement', xp: 200, time: '1 day ago' },
+  { type: 'lesson', title: 'Completed: Terraform Modules', xp: 50, time: '2 days ago' },
+];
+
+const enrolledCourses = [
+  { title: 'Kubernetes Complete Guide', progress: 65, slug: 'kubernetes-complete' },
+  { title: 'Terraform Infrastructure as Code', progress: 30, slug: 'terraform-iac' },
+  { title: 'GitHub Actions CI/CD', progress: 100, slug: 'github-actions-cicd' },
+  { title: 'Docker Mastery', progress: 100, slug: 'docker-mastery' },
+];
 
 export default function DashboardPage() {
-  const { user, token, isLoading } = useAuthStore();
   const router = useRouter();
-  const [progress, setProgress] = useState<any>(null);
+  const { user, isLoading: authLoading } = useAuthStore();
+  const [userStats, setUserStats] = useState(fallbackStats);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!isLoading && !user) {
+    if (!authLoading && !user) {
       router.push('/login');
       return;
     }
-    if (token) {
-      api.progress.get(token)
-        .then(setProgress)
-        .catch(() => {})
-        .finally(() => setLoading(false));
-    }
-  }, [user, token, isLoading, router]);
+    statsApi.get()
+      .then((data) => { if (data) setUserStats(data); })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [user, authLoading, router]);
 
-  if (isLoading || !user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center pt-20">
-        <i className="fas fa-spinner fa-spin text-2xl text-primary"></i>
-      </div>
-    );
+  if (authLoading) {
+    return <div className="min-h-screen pt-24 pb-16 dark:bg-dark flex items-center justify-center">
+      <div className="animate-pulse text-gray-500">Loading...</div>
+    </div>;
   }
 
-  const stats = progress?.stats || {
-    courses_enrolled: 0,
-    courses_completed: 0,
-    labs_completed: 0,
-    hours_learned: 0,
-    certifications_in_progress: 0,
-  };
-
-  const statCards = [
-    { icon: BookOpen, label: 'Cours inscrits', value: stats.courses_enrolled, color: 'text-primary' },
-    { icon: FlaskConical, label: 'Labs complétés', value: stats.labs_completed, color: 'text-secondary' },
-    { icon: Award, label: 'Certifs en cours', value: stats.certifications_in_progress, color: 'text-amber-400' },
-    { icon: Clock, label: 'Heures apprises', value: stats.hours_learned, color: 'text-emerald-400' },
+  const stats = [
+    { label: 'XP Points', value: userStats.xp_points.toLocaleString(), icon: Zap, color: 'text-accent-400' },
+    { label: 'Level', value: userStats.level, icon: TrendingUp, color: 'text-primary-400' },
+    { label: 'Courses', value: `${userStats.courses_completed}/${userStats.courses_enrolled}`, icon: BookOpen, color: 'text-secondary-400' },
+    { label: 'Labs Done', value: userStats.labs_completed, icon: Target, color: 'text-success-400' },
+    { label: 'Day Streak', value: userStats.streak_days, icon: Clock, color: 'text-danger-400' },
+    { label: 'Achievements', value: userStats.achievements_earned, icon: Trophy, color: 'text-purple-400' },
   ];
 
   return (
-    <div className="min-h-screen pt-24 pb-16 px-6">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen pt-24 pb-16 dark:bg-dark">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-10">
-          <h1 className="text-3xl font-bold mb-2">
-            Bonjour, <span className="gradient-text">{user.name}</span> 👋
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold dark:text-white">
+            Welcome back, <span className="gradient-text">{user?.username || 'Learner'}</span>
           </h1>
-          <p className="text-slate-400">
-            Plan: <span className="text-primary-light font-medium capitalize">{user.plan}</span> • Continuez votre progression DevOps
-          </p>
+          <p className="text-gray-500 mt-1">Here&apos;s your learning progress overview.</p>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-          {statCards.map((stat) => (
-            <div key={stat.label} className="card flex items-center gap-4">
-              <div className={`w-12 h-12 rounded-xl bg-slate-700/50 flex items-center justify-center ${stat.color}`}>
-                <stat.icon className="w-5 h-5" />
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+          {stats.map((stat) => {
+            const Icon = stat.icon;
+            return (
+              <div key={stat.label} className="card text-center">
+                <Icon size={20} className={`mx-auto mb-2 ${stat.color}`} />
+                <p className="text-xl font-bold dark:text-white">{stat.value}</p>
+                <p className="text-xs text-gray-500">{stat.label}</p>
               </div>
-              <div>
-                <p className="text-2xl font-bold">{stat.value}</p>
-                <p className="text-xs text-slate-500">{stat.label}</p>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
-        {/* Recent enrollments */}
-        {progress?.enrollments?.length > 0 && (
-          <div className="mb-10">
-            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-primary" /> Mes formations
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Enrolled Courses */}
+          <div className="card">
+            <h2 className="font-bold dark:text-white mb-4 flex items-center gap-2">
+              <BookOpen size={18} className="text-primary-400" /> My Courses
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {progress.enrollments.slice(0, 4).map((enrollment: any) => (
-                <div key={enrollment.id} className="card flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <i className={`${enrollment.icon || 'fas fa-book'} text-primary`}></i>
+            <div className="space-y-4">
+              {enrolledCourses.map((course) => (
+                <Link key={course.slug} href={`/courses/${course.slug}`} className="block group">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-medium dark:text-gray-300 group-hover:text-primary-400 transition-colors">{course.title}</span>
+                    <span className="text-xs text-gray-500">{course.progress}%</span>
                   </div>
-                  <div className="flex-1">
-                    <h4 className="text-sm font-medium">{enrollment.title}</h4>
-                    <div className="mt-1.5 h-1.5 bg-slate-700 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-primary to-secondary rounded-full"
-                        style={{ width: `${enrollment.progress_percent}%` }}
-                      />
-                    </div>
-                    <span className="text-[10px] text-slate-500 mt-0.5">{enrollment.progress_percent}% complété</span>
+                  <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div className={`h-full rounded-full transition-all ${course.progress === 100 ? 'bg-success-500' : 'bg-primary-500'}`}
+                      style={{ width: `${course.progress}%` }} />
                   </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Recent Activity */}
+          <div className="card">
+            <h2 className="font-bold dark:text-white mb-4 flex items-center gap-2">
+              <BarChart3 size={18} className="text-secondary-400" /> Recent Activity
+            </h2>
+            <div className="space-y-3">
+              {recentActivity.map((activity, idx) => (
+                <div key={idx} className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-800 last:border-0">
+                  <div>
+                    <p className="text-sm dark:text-gray-300">{activity.title}</p>
+                    <p className="text-xs text-gray-500">{activity.time}</p>
+                  </div>
+                  <span className="text-xs text-accent-400 font-medium">+{activity.xp} XP</span>
                 </div>
               ))}
             </div>
           </div>
-        )}
-
-        {/* Empty state */}
-        {loading ? (
-          <div className="card animate-pulse h-40" />
-        ) : stats.courses_enrolled === 0 && (
-          <div className="card text-center py-16">
-            <BookOpen className="w-12 h-12 mx-auto text-slate-600 mb-4" />
-            <h3 className="text-lg font-semibold mb-2">Commencez votre parcours</h3>
-            <p className="text-sm text-slate-400 mb-6">Explorez nos formations et inscrivez-vous pour commencer.</p>
-            <a href="/courses" className="btn-primary">Explorer les cours</a>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );

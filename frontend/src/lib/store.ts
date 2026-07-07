@@ -1,12 +1,16 @@
 import { create } from 'zustand';
 
 interface User {
-  id: number;
+  id: string;
+  username: string;
   email: string;
-  name: string;
-  role: string;
-  plan: string;
-  avatar_url?: string;
+  avatar?: string;
+  xp_points: number;
+  level: number;
+  bio?: string;
+  github_url?: string;
+  linkedin_url?: string;
+  created_at?: string;
 }
 
 interface AuthState {
@@ -18,70 +22,63 @@ interface AuthState {
   loadFromStorage: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  user: null,
-  token: null,
-  isLoading: true,
-
-  setAuth: (user, token) => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('devops-token', token);
-      localStorage.setItem('devops-user', JSON.stringify(user));
-    }
-    set({ user, token, isLoading: false });
-  },
-
-  logout: () => {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('devops-token');
-      localStorage.removeItem('devops-user');
-    }
-    set({ user: null, token: null, isLoading: false });
-  },
-
-  loadFromStorage: () => {
-    if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('devops-token');
-      const userStr = localStorage.getItem('devops-user');
-      if (token && userStr) {
-        try {
-          const user = JSON.parse(userStr);
-          set({ user, token, isLoading: false });
-        } catch {
-          set({ isLoading: false });
-        }
-      } else {
-        set({ isLoading: false });
-      }
-    }
-  },
-}));
-
-// Theme store
 interface ThemeState {
   isDark: boolean;
   toggle: () => void;
   loadFromStorage: () => void;
 }
 
-export const useThemeStore = create<ThemeState>((set, get) => ({
-  isDark: true,
-
-  toggle: () => {
-    const newValue = !get().isDark;
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('devops-theme', newValue ? 'dark' : 'light');
-      document.documentElement.classList.toggle('dark', newValue);
-    }
-    set({ isDark: newValue });
+export const useAuthStore = create<AuthState>((set) => ({
+  user: null,
+  token: null,
+  isLoading: true,
+  setAuth: (user, token) => {
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+    set({ user, token, isLoading: false });
   },
-
+  logout: () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    set({ user: null, token: null, isLoading: false });
+  },
   loadFromStorage: () => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('devops-theme');
-      const isDark = saved !== 'light';
-      document.documentElement.classList.toggle('dark', isDark);
-      set({ isDark });
+    try {
+      const token = localStorage.getItem('token');
+      const userStr = localStorage.getItem('user');
+      if (token && userStr) {
+        const user = JSON.parse(userStr);
+        set({ user, token, isLoading: false });
+      } else {
+        set({ isLoading: false });
+      }
+    } catch {
+      set({ isLoading: false });
     }
+  },
+}));
+
+export const useThemeStore = create<ThemeState>((set) => ({
+  isDark: true,
+  toggle: () =>
+    set((state) => {
+      const newDark = !state.isDark;
+      localStorage.setItem('theme', newDark ? 'dark' : 'light');
+      if (newDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      return { isDark: newDark };
+    }),
+  loadFromStorage: () => {
+    const theme = localStorage.getItem('theme');
+    const isDark = theme !== 'light';
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    set({ isDark });
   },
 }));

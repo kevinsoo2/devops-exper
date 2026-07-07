@@ -1,8 +1,10 @@
-node_modules/
-.next/
+node_modules
+.next
 .env
 .env.local
-.env*.local
-*.log
-.DS_Store
+.env.production
 .vercel
+*.log
+out/
+build/
+.DS_Store
