@@ -4,6 +4,7 @@ interface User {
   id: string;
   username: string;
   email: string;
+  full_name?: string;
   avatar?: string;
   xp_points: number;
   level: number;
@@ -33,16 +34,24 @@ export const useAuthStore = create<AuthState>((set) => ({
   token: null,
   isLoading: true,
   setAuth: (user, token) => {
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(user));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+    }
     set({ user, token, isLoading: false });
   },
   logout: () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+    }
     set({ user: null, token: null, isLoading: false });
   },
   loadFromStorage: () => {
+    if (typeof window === 'undefined') {
+      set({ isLoading: false });
+      return;
+    }
     try {
       const token = localStorage.getItem('token');
       const userStr = localStorage.getItem('user');
@@ -63,22 +72,21 @@ export const useThemeStore = create<ThemeState>((set) => ({
   toggle: () =>
     set((state) => {
       const newDark = !state.isDark;
-      localStorage.setItem('theme', newDark ? 'dark' : 'light');
-      if (newDark) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('theme', newDark ? 'dark' : 'light');
+        document.documentElement.classList.toggle('dark', newDark);
       }
       return { isDark: newDark };
     }),
   loadFromStorage: () => {
-    const theme = localStorage.getItem('theme');
-    const isDark = theme !== 'light';
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
+    if (typeof window === 'undefined') return;
+    try {
+      const theme = localStorage.getItem('theme');
+      const isDark = theme !== 'light';
+      document.documentElement.classList.toggle('dark', isDark);
+      set({ isDark });
+    } catch {
+      set({ isDark: true });
     }
-    set({ isDark });
   },
 }));
