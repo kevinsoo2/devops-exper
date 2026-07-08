@@ -14,6 +14,7 @@ function LearnContent() {
   const lessonId = searchParams.get('lesson');
   const courseSlug = searchParams.get('course');
   const [lesson, setLesson] = useState<any>(null);
+  const [navigation, setNavigation] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [completed, setCompleted] = useState(false);
 
@@ -24,9 +25,9 @@ function LearnContent() {
       .then(r => r.json())
       .then(data => {
         setLesson(data.lesson || null);
+        setNavigation(data.navigation || null);
       })
       .catch(() => {
-        // Fallback: use query params
         setLesson({
           title: searchParams.get('title') || 'Leçon',
           content_type: searchParams.get('type') || 'text',
@@ -192,7 +193,7 @@ function LearnContent() {
         </div>
 
         {/* Complete Button */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-6">
           <div className="text-sm text-gray-500 flex items-center gap-1">
             <Trophy size={14} className="text-accent-400" /> +{lesson?.xp_reward || 10} XP à la complétion
           </div>
@@ -201,12 +202,83 @@ function LearnContent() {
               <CheckCircle size={18} /> Marquer comme complétée
             </button>
           ) : (
-            <div className="flex items-center gap-3">
-              <span className="text-success-400 font-medium text-sm">✅ Leçon complétée ! +{lesson?.xp_reward || 10} XP</span>
+            <span className="text-success-400 font-medium text-sm flex items-center gap-1">
+              <CheckCircle size={16} /> Leçon complétée ! +{lesson?.xp_reward || 10} XP
+            </span>
+          )}
+        </div>
+
+        {/* Progress indicator */}
+        {navigation && (
+          <div className="card mb-6">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs text-gray-500">Progression du cours</span>
+              <span className="text-xs text-primary-400 font-medium">{navigation.current} / {navigation.total} leçons</span>
+            </div>
+            <div className="h-2 bg-gray-800 rounded-full overflow-hidden mb-1">
+              <div 
+                className="h-full bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full transition-all duration-500"
+                style={{ width: `${(navigation.current / navigation.total) * 100}%` }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Course completed! */}
+        {navigation?.isLast && completed && (
+          <div className="card mb-6 border-success-500/30 bg-success-500/5 text-center py-8">
+            <div className="text-4xl mb-3">🎉</div>
+            <h3 className="text-xl font-bold text-white mb-2">Félicitations !</h3>
+            <p className="text-gray-400 text-sm mb-4">
+              Vous avez terminé toutes les leçons de ce cours. Bravo pour votre persévérance !
+            </p>
+            <div className="flex items-center justify-center gap-4 flex-wrap">
               <Link href={courseSlug ? `/courses/${courseSlug}` : '/courses'} className="btn-outline text-sm">
-                Continuer <ArrowRight size={14} />
+                Revoir le cours
+              </Link>
+              <Link href="/courses" className="btn-primary text-sm">
+                Découvrir d'autres formations
               </Link>
             </div>
+          </div>
+        )}
+
+        {/* Navigation prev/next */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {navigation?.prev ? (
+            <Link 
+              href={`/learn?lesson=${navigation.prev.id}&course=${courseSlug || lesson?.course_slug || ''}`}
+              className="card hover:border-primary-500/50 transition group"
+            >
+              <div className="flex items-center gap-2 text-xs text-gray-500 mb-1">
+                <ArrowLeft size={12} /> Leçon précédente
+              </div>
+              <p className="text-sm text-gray-300 group-hover:text-white transition truncate">{navigation.prev.title}</p>
+            </Link>
+          ) : (
+            <div />
+          )}
+          
+          {navigation?.next ? (
+            <Link 
+              href={`/learn?lesson=${navigation.next.id}&course=${courseSlug || lesson?.course_slug || ''}`}
+              className="card hover:border-primary-500/50 transition group text-right"
+            >
+              <div className="flex items-center justify-end gap-2 text-xs text-gray-500 mb-1">
+                Leçon suivante <ArrowRight size={12} />
+              </div>
+              <p className="text-sm text-gray-300 group-hover:text-white transition truncate">{navigation.next.title}</p>
+            </Link>
+          ) : !navigation?.isLast ? null : (
+            <Link 
+              href={courseSlug ? `/courses/${courseSlug}` : '/courses'}
+              className="card hover:border-success-500/50 border-success-500/20 transition group text-right"
+            >
+              <div className="flex items-center justify-end gap-2 text-xs text-success-400 mb-1">
+                Fin du cours <CheckCircle size={12} />
+              </div>
+              <p className="text-sm text-success-400 group-hover:text-success-300 transition">Retour à la page du cours</p>
+            </Link>
           )}
         </div>
       </div>
