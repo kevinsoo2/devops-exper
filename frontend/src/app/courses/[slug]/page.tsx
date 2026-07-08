@@ -170,7 +170,11 @@ export default function CourseDetailPage() {
                 {openChapter === String(chapter.id) && chapter.lessons && (
                   <div className="mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700 pt-4">
                     {chapter.lessons.map((lesson: any, li: number) => (
-                      <div key={lesson.id || li} className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+                      <Link
+                        key={lesson.id || li}
+                        href={`/learn?lesson=${lesson.id}&course=${params.slug}&title=${encodeURIComponent(lesson.title)}&type=${lesson.content_type}&duration=${lesson.duration_minutes}`}
+                        className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
+                      >
                         <div className="flex items-center gap-3">
                           {enrolled ? (
                             <PlayCircle size={16} className="text-primary-400" />
@@ -187,7 +191,7 @@ export default function CourseDetailPage() {
                           )}
                         </div>
                         <span className="text-xs text-gray-500">{lesson.duration_minutes || lesson.duration || ''} min</span>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 )}

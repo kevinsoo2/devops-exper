@@ -6,6 +6,11 @@
 async function seedCoursesContent(db) {
   console.log('\n📚 Insertion des chapitres et leçons...');
 
+  // Clean existing data to avoid duplicates on re-deploy
+  await db.execute({ sql: 'DELETE FROM lessons', args: [] });
+  await db.execute({ sql: 'DELETE FROM chapters', args: [] });
+  console.log('  🧹 Tables chapters/lessons nettoyées');
+
   // Helper function to insert a chapter and return its ID
   async function insertChapter(courseId, title, description, orderIndex, durationMinutes) {
     await db.execute({
