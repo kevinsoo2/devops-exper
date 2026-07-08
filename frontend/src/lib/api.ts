@@ -47,7 +47,7 @@ export const auth = {
 export const courses = {
   list: (params?: { category?: string; level?: string; search?: string }) => {
     const query = new URLSearchParams(params as any).toString();
-    return fetchApi<any[]>(`/courses${query ? `?${query}` : ''}`);
+    return fetchApi<{ courses: any[] }>(`/courses${query ? `?${query}` : ''}`).then(data => data.courses || []);
   },
   get: (slug: string) => fetchApi<any>(`/courses/${slug}`),
   enroll: (courseId: string) =>
@@ -62,7 +62,7 @@ export const courses = {
 export const labs = {
   list: (params?: { difficulty?: string; category?: string }) => {
     const query = new URLSearchParams(params as any).toString();
-    return fetchApi<any[]>(`/labs${query ? `?${query}` : ''}`);
+    return fetchApi<{ labs: any[] }>(`/labs${query ? `?${query}` : ''}`).then(data => data.labs || []);
   },
   get: (slug: string) => fetchApi<any>(`/labs/${slug}`),
   start: (labId: string) =>
@@ -77,13 +77,13 @@ export const labs = {
 export const tools = {
   list: (params?: { category?: string }) => {
     const query = new URLSearchParams(params as any).toString();
-    return fetchApi<any[]>(`/tools${query ? `?${query}` : ''}`);
+    return fetchApi<{ tools: any[] }>(`/tools${query ? `?${query}` : ''}`).then(data => data.tools || []);
   },
   get: (slug: string) => fetchApi<any>(`/tools/${slug}`),
 };
 
 export const certifications = {
-  list: () => fetchApi<any[]>('/certifications'),
+  list: () => fetchApi<{ certifications: any[] }>('/certifications').then(data => data.certifications || []),
   get: (slug: string) => fetchApi<any>(`/certifications/${slug}`),
   start: (certId: string) =>
     fetchApi<any>(`/certifications/${certId}/start`, { method: 'POST' }),
@@ -92,7 +92,7 @@ export const certifications = {
 export const blog = {
   list: (params?: { tag?: string; search?: string }) => {
     const query = new URLSearchParams(params as any).toString();
-    return fetchApi<any[]>(`/blog${query ? `?${query}` : ''}`);
+    return fetchApi<{ posts: any[] }>(`/blog${query ? `?${query}` : ''}`).then(data => data.posts || []);
   },
   get: (slug: string) => fetchApi<any>(`/blog/${slug}`),
   subscribe: (email: string) =>
@@ -104,7 +104,7 @@ export const blog = {
 
 export const stats = {
   get: () => fetchApi<any>('/stats'),
-  roadmap: () => fetchApi<any[]>('/stats/roadmap'),
+  roadmap: () => fetchApi<{ roadmap: any[] }>('/stats/roadmap').then(data => data.roadmap || []),
 };
 
 export const progress = {
@@ -116,7 +116,7 @@ export const progress = {
 export const quizzes = {
   list: (params?: { category?: string; difficulty?: string }) => {
     const query = new URLSearchParams(params as any).toString();
-    return fetchApi<any[]>(`/quizzes${query ? `?${query}` : ''}`);
+    return fetchApi<{ quizzes: any[] }>(`/quizzes${query ? `?${query}` : ''}`).then(data => data.quizzes || []);
   },
   get: (quizId: string) => fetchApi<any>(`/quizzes/${quizId}`),
   submit: (quizId: string, answers: any) =>
@@ -129,7 +129,7 @@ export const quizzes = {
 export const community = {
   threads: (params?: { category?: string }) => {
     const query = new URLSearchParams(params as any).toString();
-    return fetchApi<any[]>(`/community/threads${query ? `?${query}` : ''}`);
+    return fetchApi<{ threads: any[] }>(`/community/threads${query ? `?${query}` : ''}`).then(data => data.threads || []);
   },
   thread: (threadId: string) => fetchApi<any>(`/community/threads/${threadId}`),
   createThread: (data: { title: string; content: string; category: string }) =>
@@ -145,8 +145,8 @@ export const community = {
 };
 
 export const achievements = {
-  list: () => fetchApi<any[]>('/achievements'),
-  mine: () => fetchApi<any[]>('/achievements/mine'),
+  list: () => fetchApi<{ achievements: any[] }>('/achievements').then(data => data.achievements || []),
+  mine: () => fetchApi<{ earned: any[] }>('/achievements/mine').then(data => data.earned || []),
 };
 
 export const mentoring = {

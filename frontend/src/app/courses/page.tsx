@@ -5,8 +5,16 @@ import Link from 'next/link';
 import { BookOpen, Search, Clock, Users, Star, Filter } from 'lucide-react';
 import { courses as coursesApi } from '@/lib/api';
 
-const categories = ['Tous', 'Containerisation', 'CI/CD', 'Cloud', 'IaC', 'Orchestration', 'Monitoring', 'Fondations', 'Sécurité'];
-const levels = ['Tous', 'Débutant', 'Intermédiaire', 'Avancé'];
+const categories = ['Tous', 'conteneurisation', 'cicd', 'cloud', 'iac', 'orchestration', 'monitoring', 'systeme', 'securite', 'gitops', 'sre'];
+const categoryLabels: Record<string, string> = {
+  'Tous': 'Tous', 'conteneurisation': 'Conteneurisation', 'cicd': 'CI/CD', 'cloud': 'Cloud',
+  'iac': 'IaC', 'orchestration': 'Orchestration', 'monitoring': 'Monitoring', 
+  'systeme': 'Système', 'securite': 'Sécurité', 'gitops': 'GitOps', 'sre': 'SRE'
+};
+const levels = ['Tous', 'debutant', 'intermediaire', 'avance'];
+const levelLabels: Record<string, string> = {
+  'Tous': 'Tous', 'debutant': 'Débutant', 'intermediaire': 'Intermédiaire', 'avance': 'Avancé'
+};
 
 const fallbackCourses = [
   { id: '1', title: 'Docker Mastery', slug: 'docker-mastery', description: 'Docker complet de zéro aux déploiements en production.', category: 'Containerisation', level: 'Débutant', duration_hours: 12, enrolled_count: 3420, rating: 4.8, instructor: 'Alex DevOps' },
@@ -21,22 +29,22 @@ const fallbackCourses = [
 ];
 
 export default function CoursesPage() {
-  const [courseList, setCourseList] = useState(fallbackCourses);
+  const [courseList, setCourseList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
-  const [category, setCategory] = useState('All');
-  const [level, setLevel] = useState('All');
+  const [category, setCategory] = useState('Tous');
+  const [level, setLevel] = useState('Tous');
 
   useEffect(() => {
     coursesApi
       .list()
-      .then((data) => { if (data && data.length > 0) setCourseList(data); })
-      .catch(() => {})
+      .then((data) => { setCourseList(data || []); })
+      .catch((err) => { console.error('API Error:', err); })
       .finally(() => setLoading(false));
   }, []);
 
   const filtered = courseList.filter((course) => {
-    const matchesSearch = course.title.toLowerCase().includes(search.toLowerCase()) || course.description.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = course.title.toLowerCase().includes(search.toLowerCase()) || (course.description || '').toLowerCase().includes(search.toLowerCase());
     const matchesCategory = category === 'Tous' || course.category === category;
     const matchesLevel = level === 'Tous' || course.level === level;
     return matchesSearch && matchesCategory && matchesLevel;
@@ -77,7 +85,7 @@ export default function CoursesPage() {
                   category === cat ? 'bg-primary-500 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
                 }`}
               >
-                {cat}
+                {categoryLabels[cat] || cat}
               </button>
             ))}
           </div>
@@ -92,7 +100,7 @@ export default function CoursesPage() {
                   level === lvl ? 'bg-secondary-500 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
                 }`}
               >
-                {lvl}
+                {levelLabels[lvl] || lvl}
               </button>
             ))}
           </div>
