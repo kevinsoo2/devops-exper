@@ -149,7 +149,7 @@ export function CoursesPreview() {
                   <Clock size={14} /> {course.duration_hours}h
                 </span>
                 <span className="flex items-center gap-1">
-                  <Users size={14} /> {course.enrolled_count.toLocaleString()}
+                  <Users size={14} /> {(course.enrolled_count || (course as any).enrollment_count || 0).toLocaleString()}
                 </span>
                 <span className="flex items-center gap-1">
                   <Star size={14} className="text-accent-400" /> {course.rating}

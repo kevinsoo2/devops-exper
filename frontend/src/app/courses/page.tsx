@@ -142,7 +142,7 @@ export default function CoursesPage() {
                   <p className="text-sm text-gray-500 mt-1 line-clamp-2">{course.description}</p>
                   <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
                     <span className="flex items-center gap-1"><Clock size={14} /> {course.duration_hours || 0}h</span>
-                    <span className="flex items-center gap-1"><Users size={14} /> {(course.enrollment_count || 0).toLocaleString()}</span>
+                    <span className="flex items-center gap-1"><Users size={14} /> {((course as any).enrollment_count || course.enrolled_count || 0).toLocaleString()}</span>
                     <span className="flex items-center gap-1"><Star size={14} className="text-accent-400" /> {course.rating || 0}</span>
                   </div>
                 </Link>

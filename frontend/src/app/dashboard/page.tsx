@@ -59,7 +59,7 @@ export default function DashboardPage() {
   }
 
   const stats = [
-    { label: 'Points XP', value: userStats.xp_points.toLocaleString(), icon: Zap, color: 'text-accent-400' },
+    { label: 'Points XP', value: (userStats.xp_points || 0).toLocaleString(), icon: Zap, color: 'text-accent-400' },
     { label: 'Niveau', value: userStats.level, icon: TrendingUp, color: 'text-primary-400' },
     { label: 'Formations', value: `${userStats.courses_completed}/${userStats.courses_enrolled}`, icon: BookOpen, color: 'text-secondary-400' },
     { label: 'Labs Faits', value: userStats.labs_completed, icon: Target, color: 'text-success-400' },
