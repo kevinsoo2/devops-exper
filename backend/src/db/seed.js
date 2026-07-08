@@ -1,6 +1,7 @@
 const { getDb } = require('./connection');
 const bcrypt = require('bcryptjs');
 const { seedCoursesContent } = require('./seed-courses-content');
+const { seedLessonContent } = require('./seed-lesson-content');
 require('dotenv').config();
 
 async function seed() {
@@ -254,6 +255,9 @@ async function seed() {
 
   // Seed chapters and lessons for all courses
   await seedCoursesContent(db);
+
+  // Seed lesson content (educational text)
+  await seedLessonContent();
 
   console.log('\n🎉 Seeding terminé avec succès !');
 }
