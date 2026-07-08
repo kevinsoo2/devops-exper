@@ -230,7 +230,16 @@ function LearnContent() {
         {/* Lesson Content */}
         <div className="card mb-6">
           <div className="prose prose-invert max-w-none">
-            {renderContent(lesson?.content || '')}
+            {lesson?.content ? renderContent(lesson.content) : (
+              <div className="text-gray-400 text-sm space-y-3">
+                <h2 className="text-xl font-bold text-white">{lesson?.title || searchParams.get('title')}</h2>
+                <p>Cette leçon fait partie du chapitre « <strong className="text-white">{lesson?.chapter_title}</strong> » du cours « <strong className="text-white">{lesson?.course_title}</strong> ».</p>
+                <p>Le contenu détaillé de cette leçon est en cours de chargement. Si vous voyez ce message, veuillez rafraîchir la page dans quelques instants.</p>
+                <div className="mt-4 p-4 bg-gray-800/50 rounded-lg">
+                  <p className="text-xs text-gray-500">💡 Astuce : Le premier chargement peut prendre jusqu'à 50 secondes sur le plan gratuit Render (cold start).</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
