@@ -68,8 +68,12 @@ export default function CourseDetailPage() {
 
   useEffect(() => {
     coursesApi.get(params.slug as string)
-      .then((data) => setCourse(data))
-      .catch(() => setCourse(fallbackCourse))
+      .then((data) => {
+        // API returns { course: { ...courseData, chapters, reviews, enrollment } }
+        const courseData = data.course || data;
+        setCourse(courseData);
+      })
+      .catch(() => setCourse(null))
       .finally(() => setLoading(false));
   }, [params.slug]);
 
@@ -95,9 +99,15 @@ export default function CourseDetailPage() {
     );
   }
 
-  if (!course) return null;
-  const chapters = course.chapters || fallbackCourse.chapters;
-  const reviews = course.reviews || fallbackCourse.reviews;
+  if (!course) {
+    return (
+      <div className="min-h-screen pt-24 pb-16 dark:bg-dark flex items-center justify-center">
+        <p className="text-gray-500">Cours non trouvé</p>
+      </div>
+    );
+  }
+  const chapters = course.chapters || [];
+  const reviews = course.reviews || [];
 
   return (
     <div className="min-h-screen pt-24 pb-16 dark:bg-dark">
@@ -109,19 +119,23 @@ export default function CourseDetailPage() {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-3">
-            <span className="skill-tag">{course.category || fallbackCourse.category}</span>
+            <span className="skill-tag">{course.category}</span>
             <span className={`text-xs px-2 py-0.5 rounded-full border ${
-              (course.level || fallbackCourse.level) === 'Beginner' || (course.level || fallbackCourse.level) === 'Débutant' ? 'difficulty-beginner' :
-              (course.level || fallbackCourse.level) === 'Intermediate' || (course.level || fallbackCourse.level) === 'Intermédiaire' ? 'difficulty-intermediate' : 'difficulty-advanced'
-            }`}>{course.level || fallbackCourse.level}</span>
+              course.level === 'debutant' ? 'difficulty-easy' :
+              course.level === 'intermediaire' ? 'difficulty-medium' : 'difficulty-hard'
+            }`}>{course.level === 'debutant' ? 'Débutant' : course.level === 'intermediaire' ? 'Intermédiaire' : 'Avancé'}</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold dark:text-white">{course.title || fallbackCourse.title}</h1>
-          <p className="mt-4 text-gray-500">{course.description || fallbackCourse.description}</p>
+          <h1 className="text-3xl sm:text-4xl font-bold dark:text-white">{course.title}</h1>
+          <p className="mt-4 text-gray-500">{course.description}</p>
           <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-gray-500">
-            <span className="flex items-center gap-1"><Clock size={14} /> {course.duration_hours || fallbackCourse.duration_hours}h</span>
-            <span className="flex items-center gap-1"><Users size={14} /> {(course.enrolled_count || fallbackCourse.enrolled_count).toLocaleString()} inscrits</span>
-            <span className="flex items-center gap-1"><Star size={14} className="text-accent-400" /> {course.rating || fallbackCourse.rating}</span>
-            <span>par {course.instructor || fallbackCourse.instructor}</span>
+            <span className="flex items-center gap-1"><Clock size={14} /> {course.duration_hours || 0}h</span>
+            <span className="flex items-center gap-1"><Users size={14} /> {(course.enrollment_count || 0).toLocaleString()} inscrits</span>
+            <span className="flex items-center gap-1"><Star size={14} className="text-accent-400" /> {course.rating || 0}</span>
+            <span>par {course.instructor || 'DevOps Expert'}</span>
+          </div>
+          <div className="mt-3 text-sm text-gray-500">
+            <span className="font-medium">{chapters.length} chapitres</span> • 
+            <span className="ml-1">{chapters.reduce((acc: number, ch: any) => acc + (ch.lessons?.length || 0), 0)} leçons</span>
           </div>
         </div>
 
@@ -142,30 +156,37 @@ export default function CourseDetailPage() {
         <div className="mb-12">
           <h2 className="text-xl font-bold dark:text-white mb-4">Contenu de la Formation</h2>
           <div className="space-y-3">
-            {chapters.map((chapter: Chapter, idx: number) => (
-              <div key={chapter.id} className="card">
+            {chapters.map((chapter: any, idx: number) => (
+              <div key={chapter.id || idx} className="card">
                 <button
-                  onClick={() => setOpenChapter(openChapter === chapter.id ? null : chapter.id)}
+                  onClick={() => setOpenChapter(openChapter === String(chapter.id) ? null : String(chapter.id))}
                   className="w-full flex items-center justify-between"
                 >
                   <span className="font-semibold dark:text-white">
                     {idx + 1}. {chapter.title}
                   </span>
-                  {openChapter === chapter.id ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                  {openChapter === String(chapter.id) ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                 </button>
-                {openChapter === chapter.id && (
+                {openChapter === String(chapter.id) && chapter.lessons && (
                   <div className="mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700 pt-4">
-                    {chapter.lessons.map((lesson) => (
-                      <div key={lesson.id} className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+                    {chapter.lessons.map((lesson: any, li: number) => (
+                      <div key={lesson.id || li} className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
                         <div className="flex items-center gap-3">
                           {enrolled ? (
                             <PlayCircle size={16} className="text-primary-400" />
+                          ) : lesson.is_free ? (
+                            <PlayCircle size={16} className="text-success-400" />
                           ) : (
                             <Lock size={16} className="text-gray-400" />
                           )}
                           <span className="text-sm dark:text-gray-300">{lesson.title}</span>
+                          {lesson.content_type && (
+                            <span className="text-xs px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-500">
+                              {lesson.content_type}
+                            </span>
+                          )}
                         </div>
-                        <span className="text-xs text-gray-500">{lesson.duration}</span>
+                        <span className="text-xs text-gray-500">{lesson.duration_minutes || lesson.duration || ''} min</span>
                       </div>
                     ))}
                   </div>
