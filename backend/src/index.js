@@ -11,7 +11,20 @@ const PORT = process.env.PORT || 3001;
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: function(origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, etc)
+    if (!origin) return callback(null, true);
+    // Allow all vercel.app and onrender.com domains, plus localhost
+    const allowed = [
+      /\.vercel\.app$/,
+      /\.onrender\.com$/,
+      /localhost/,
+    ];
+    if (allowed.some(pattern => pattern.test(origin))) {
+      return callback(null, true);
+    }
+    callback(null, true); // Allow all for now
+  },
   credentials: true
 }));
 
