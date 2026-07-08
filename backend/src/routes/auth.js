@@ -9,7 +9,10 @@ const router = express.Router();
 const registerSchema = z.object({
   email: z.string().email('Email invalide'),
   password: z.string().min(6, 'Le mot de passe doit contenir au moins 6 caractères'),
-  full_name: z.string().min(2, 'Le nom doit contenir au moins 2 caractères')
+  full_name: z.string().min(2, 'Le nom doit contenir au moins 2 caractères').optional(),
+  username: z.string().min(2, 'Le nom d\'utilisateur doit contenir au moins 2 caractères').optional()
+}).refine(data => data.full_name || data.username, {
+  message: 'Un nom ou nom d\'utilisateur est requis'
 });
 
 const loginSchema = z.object({
@@ -47,7 +50,9 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: validation.error.errors[0].message });
     }
 
-    const { email, password, full_name } = validation.data;
+    const { email, password, full_name, username } = validation.data;
+    const displayName = full_name || username;
+    const userUsername = username || email.split('@')[0];
     const db = getDb();
 
     // Check if email exists
@@ -61,18 +66,17 @@ router.post('/register', async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const username = generateUsername(full_name);
 
     const result = await db.execute({
       sql: `INSERT INTO users (email, password, username, full_name) VALUES (?, ?, ?, ?)`,
-      args: [email, hashedPassword, username, full_name]
+      args: [email, hashedPassword, userUsername, displayName]
     });
 
     const user = {
       id: Number(result.lastInsertRowid),
       email,
-      username,
-      full_name,
+      username: userUsername,
+      full_name: displayName,
       role: 'user'
     };
 
