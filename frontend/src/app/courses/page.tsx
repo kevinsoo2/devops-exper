@@ -132,18 +132,18 @@ export default function CoursesPage() {
                     <BookOpen size={36} className="text-primary-400 group-hover:scale-110 transition-transform" />
                   </div>
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="skill-tag text-xs">{course.category}</span>
+                    <span className="skill-tag text-xs">{categoryLabels[course.category] || course.category}</span>
                     <span className={`text-xs px-2 py-0.5 rounded-full border ${
-                      course.level === 'Débutant' ? 'difficulty-beginner' :
-                      course.level === 'Intermédiaire' ? 'difficulty-intermediate' : 'difficulty-advanced'
-                    }`}>{course.level}</span>
+                      course.level === 'debutant' ? 'difficulty-easy' :
+                      course.level === 'intermediaire' ? 'difficulty-medium' : 'difficulty-hard'
+                    }`}>{levelLabels[course.level] || course.level}</span>
                   </div>
                   <h3 className="font-bold dark:text-white group-hover:text-primary-400 transition-colors">{course.title}</h3>
                   <p className="text-sm text-gray-500 mt-1 line-clamp-2">{course.description}</p>
                   <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
-                    <span className="flex items-center gap-1"><Clock size={14} /> {course.duration_hours}h</span>
-                    <span className="flex items-center gap-1"><Users size={14} /> {course.enrolled_count.toLocaleString()}</span>
-                    <span className="flex items-center gap-1"><Star size={14} className="text-accent-400" /> {course.rating}</span>
+                    <span className="flex items-center gap-1"><Clock size={14} /> {course.duration_hours || 0}h</span>
+                    <span className="flex items-center gap-1"><Users size={14} /> {(course.enrollment_count || 0).toLocaleString()}</span>
+                    <span className="flex items-center gap-1"><Star size={14} className="text-accent-400" /> {course.rating || 0}</span>
                   </div>
                 </Link>
               ))}
