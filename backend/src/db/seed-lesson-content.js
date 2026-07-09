@@ -3971,59 +3971,475 @@ Après chaque incident SEV1/SEV2 :
 
 
 // ============================================================
-// GENERIC FALLBACK CONTENT
+// GENERIC FALLBACK CONTENT — SMART GENERATION
 // ============================================================
 
+function simpleHash(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash);
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 function generateGenericContent(lessonTitle, chapterTitle, courseTitle) {
-  return `# ${lessonTitle}
+  const title = lessonTitle.toLowerCase();
+  const chapter = chapterTitle.toLowerCase();
+  const course = courseTitle.toLowerCase();
 
-## Introduction
+  let sections = [];
 
-Cette leçon fait partie du chapitre « **${chapterTitle}** » dans le cours « **${courseTitle}** ».
+  sections.push(`# ${lessonTitle}\n`);
+  sections.push(`> **Chapitre** : ${chapterTitle} | **Cours** : ${courseTitle}\n`);
 
-## Objectifs d'apprentissage
+  // Context section based on course
+  sections.push(generateContextSection(lessonTitle, course));
 
-À la fin de cette leçon, vous serez capable de :
-- Comprendre les concepts fondamentaux liés à « ${lessonTitle} »
-- Appliquer ces concepts dans un contexte DevOps professionnel
-- Mettre en pratique les techniques présentées
+  // Objectives
+  sections.push(`## Objectifs de cette leçon\n\nÀ l'issue de cette leçon, vous serez capable de :\n`);
+  const objectives = generateObjectives(title, chapter, course);
+  sections.push(objectives.map(o => `- ${o}`).join('\n') + '\n');
 
-## Concepts clés
+  // Main content with code examples
+  sections.push(`## Concepts clés\n`);
+  sections.push(generateMainContent(title, chapter, course));
 
-### Vue d'ensemble
+  // Practical section
+  sections.push(`\n## Mise en pratique\n`);
+  sections.push(generatePracticalContent(title, chapter, course));
 
-Le sujet « ${lessonTitle} » est un élément essentiel dans le parcours DevOps moderne. Il s'intègre dans le contexte plus large de ${chapterTitle.toLowerCase()}, un domaine qui nécessite une compréhension approfondie des outils et méthodologies actuels.
+  // Key takeaways
+  sections.push(`\n## Points à retenir\n`);
+  sections.push(generateKeyTakeaways(title, chapter, course));
 
-### Pourquoi c'est important
-
-Dans un environnement de production, la maîtrise de ce sujet permet d'améliorer :
-- La **fiabilité** des systèmes
-- La **productivité** des équipes
-- L'**automatisation** des processus
-- La **sécurité** de l'infrastructure
-
-## Application pratique
-
-Pour mettre en pratique ces concepts :
-1. Commencez par comprendre la théorie présentée
-2. Expérimentez dans un environnement de test
-3. Appliquez progressivement dans vos projets
-4. Documentez vos apprentissages et partagez avec votre équipe
-
-## Ressources complémentaires
-
-- Documentation officielle du projet
-- Communauté et forums de discussion
-- Labs pratiques de la plateforme DevOps Expert Academy
-
-## Points à retenir
-
-- Ce sujet est fondamental pour la suite du cours
-- La pratique régulière est essentielle pour la maîtrise
-- N'hésitez pas à expérimenter et à poser des questions`;
+  return sections.join('\n');
 }
 
 
+
+// ============================================================
+// HELPER FUNCTIONS FOR GENERIC CONTENT
+// ============================================================
+
+function generateContextSection(lessonTitle, course) {
+  if (course.includes('docker')) {
+    return `## Contexte\n\nDans l'écosystème Docker et de la conteneurisation, ${lessonTitle.toLowerCase()} est un concept fondamental que tout ingénieur DevOps doit maîtriser pour gérer efficacement les applications conteneurisées en production.\n`;
+  } else if (course.includes('kubernetes')) {
+    return `## Contexte\n\nDans l'orchestration avec Kubernetes, ${lessonTitle.toLowerCase()} joue un rôle crucial dans la gestion des workloads distribués et l'automatisation du déploiement à grande échelle.\n`;
+  } else if (course.includes('terraform')) {
+    return `## Contexte\n\nDans la gestion d'infrastructure as code avec Terraform, ${lessonTitle.toLowerCase()} est essentiel pour provisionner et maintenir une infrastructure reproductible et versionée.\n`;
+  } else if (course.includes('réseau') || course.includes('network')) {
+    return `## Contexte\n\nLa compréhension de ${lessonTitle.toLowerCase()} est indispensable pour tout ingénieur DevOps. Les réseaux sont le fondement de toute communication entre services distribués.\n`;
+  } else if (course.includes('linux') || course.includes('système')) {
+    return `## Contexte\n\nL'administration système Linux est la base du DevOps. La maîtrise de ${lessonTitle.toLowerCase()} vous permettra de gérer efficacement vos serveurs et environnements de production.\n`;
+  } else if (course.includes('ci/cd') || course.includes('github')) {
+    return `## Contexte\n\nDans un pipeline CI/CD moderne, ${lessonTitle.toLowerCase()} est un élément clé pour automatiser le cycle de vie du développement logiciel, du commit au déploiement en production.\n`;
+  } else if (course.includes('monitoring') || course.includes('prometheus')) {
+    return `## Contexte\n\nL'observabilité est un pilier du DevOps moderne. ${lessonTitle} permet de surveiller, alerter et diagnostiquer les problèmes de vos systèmes distribués.\n`;
+  } else if (course.includes('devsecops') || course.includes('sécurité')) {
+    return `## Contexte\n\nLa sécurité ne doit plus être une étape finale du développement. ${lessonTitle} s'intègre dans une approche DevSecOps pour protéger vos applications et infrastructure dès les premières étapes.\n`;
+  } else if (course.includes('gitops') || course.includes('argocd')) {
+    return `## Contexte\n\nLe GitOps est un paradigme de déploiement qui utilise Git comme source de vérité. ${lessonTitle} est un concept clé pour implémenter des déploiements déclaratifs et automatisés.\n`;
+  } else if (course.includes('aws') || course.includes('cloud')) {
+    return `## Contexte\n\nSur AWS, ${lessonTitle.toLowerCase()} fait partie des services et concepts essentiels pour architecturer des applications cloud-native résilientes et scalables.\n`;
+  } else if (course.includes('ansible')) {
+    return `## Contexte\n\nAvec Ansible, ${lessonTitle.toLowerCase()} est un aspect fondamental de l'automatisation de la configuration et du déploiement d'applications sur vos serveurs.\n`;
+  } else if (course.includes('sre') || course.includes('fiabilité')) {
+    return `## Contexte\n\nEn Site Reliability Engineering, ${lessonTitle.toLowerCase()} est une pratique essentielle pour garantir la fiabilité, la disponibilité et les performances des services en production.\n`;
+  }
+  return `## Contexte\n\nDans le parcours DevOps, ${lessonTitle.toLowerCase()} est une compétence importante qui contribue à votre expertise globale en ingénierie de plateforme et automatisation.\n`;
+}
+
+function generateObjectives(title, chapter, course) {
+  const objectives = [];
+
+  if (title.includes('introduction') || title.includes('concepts') || title.includes('fondament')) {
+    objectives.push("Comprendre les principes fondamentaux et l'architecture");
+    objectives.push("Identifier les cas d'utilisation dans un environnement professionnel");
+    objectives.push("Connaître l'historique et l'évolution de la technologie");
+  } else if (title.includes('installation') || title.includes('configuration') || title.includes('déploiement') || title.includes('mise en place')) {
+    objectives.push("Installer et configurer l'outil dans différents environnements");
+    objectives.push("Valider la configuration avec des tests appropriés");
+    objectives.push("Résoudre les problèmes d'installation courants");
+  } else if (title.includes('commandes') || title.includes('cli') || title.includes('utilisation')) {
+    objectives.push("Maîtriser les commandes essentielles du quotidien");
+    objectives.push("Automatiser les tâches récurrentes");
+    objectives.push("Diagnostiquer les erreurs courantes");
+  } else if (title.includes('sécurité') || title.includes('securis') || title.includes('protection')) {
+    objectives.push("Identifier les vulnérabilités et vecteurs d'attaque");
+    objectives.push("Implémenter les contre-mesures appropriées");
+    objectives.push("Auditer la conformité aux standards de sécurité");
+  } else if (title.includes('monitoring') || title.includes('surveillance') || title.includes('observ')) {
+    objectives.push("Configurer la collecte de métriques pertinentes");
+    objectives.push("Créer des alertes basées sur des seuils significatifs");
+    objectives.push("Diagnostiquer les incidents à partir des données collectées");
+  } else if (title.includes('exercice') || title.includes('pratique') || title.includes('lab') || title.includes('projet')) {
+    objectives.push("Appliquer les concepts théoriques dans un environnement réel");
+    objectives.push("Développer un réflexe de résolution de problèmes");
+    objectives.push("Valider votre compréhension par la pratique");
+  } else if (title.includes('avancé') || title.includes('optimisation') || title.includes('performance')) {
+    objectives.push("Optimiser les configurations pour la production");
+    objectives.push("Appliquer les bonnes pratiques d'architecture avancée");
+    objectives.push("Mesurer et améliorer les performances");
+  } else if (title.includes('réseau') || title.includes('network') || title.includes('dns') || title.includes('tcp')) {
+    objectives.push("Comprendre les flux réseau et protocoles impliqués");
+    objectives.push("Diagnostiquer les problèmes de connectivité");
+    objectives.push("Configurer les règles de routage et filtrage");
+  } else if (title.includes('stockage') || title.includes('volume') || title.includes('persist')) {
+    objectives.push("Choisir la stratégie de stockage adaptée au besoin");
+    objectives.push("Configurer la persistance des données de manière fiable");
+    objectives.push("Mettre en place des sauvegardes et plans de reprise");
+  } else if (title.includes('automatisation') || title.includes('pipeline') || title.includes('workflow')) {
+    objectives.push("Concevoir des workflows automatisés et maintenables");
+    objectives.push("Implémenter des mécanismes de retry et de rollback");
+    objectives.push("Monitorer et optimiser les pipelines existants");
+  } else {
+    objectives.push(`Comprendre en profondeur le concept de ${title}`);
+    objectives.push("Appliquer les bonnes pratiques dans un contexte de production");
+    objectives.push("Intégrer ce savoir dans votre workflow DevOps quotidien");
+  }
+
+  objectives.push("Documenter vos apprentissages et partager avec l'équipe");
+  return objectives;
+}
+
+function generateMainContent(title, chapter, course) {
+  let content = '';
+  const hash = simpleHash(title + chapter + course);
+  const pattern = hash % 5;
+
+  switch(pattern) {
+    case 0:
+      content += `### Principes fondamentaux\n\nLe sujet « **${capitalize(title)}** » repose sur plusieurs principes importants :\n\n`;
+      content += `1. **Compréhension du contexte** : Avant d'implémenter, il est crucial de comprendre pourquoi cette approche est utilisée et quels problèmes elle résout.\n`;
+      content += `2. **Architecture** : La conception et la structure sous-jacente déterminent la scalabilité et la maintenabilité.\n`;
+      content += `3. **Bonnes pratiques** : Suivre les recommandations de la communauté et les standards de l'industrie.\n\n`;
+      content += generateCodeExample(title, chapter, course);
+      break;
+    case 1:
+      content += `### Architecture et fonctionnement\n\nPour bien comprendre « **${capitalize(title)}** », il faut d'abord saisir son architecture :\n\n`;
+      content += `- **Composants principaux** : chaque élément a un rôle précis dans l'ensemble du système\n`;
+      content += `- **Flux de données** : comprendre comment les informations circulent entre les composants\n`;
+      content += `- **Points d'intégration** : savoir comment connecter avec les autres outils de l'écosystème\n\n`;
+      content += generateCodeExample(title, chapter, course);
+      break;
+    case 2:
+      content += `### Implémentation pas à pas\n\nVoici les étapes clés pour implémenter « **${capitalize(title)}** » dans votre environnement :\n\n`;
+      content += `**Étape 1** : Préparer l'environnement et les prérequis\n`;
+      content += `**Étape 2** : Configurer les composants de base\n`;
+      content += `**Étape 3** : Tester et valider le fonctionnement\n`;
+      content += `**Étape 4** : Optimiser pour la production\n\n`;
+      content += generateCodeExample(title, chapter, course);
+      break;
+    case 3:
+      content += `### Comparaison et choix\n\nDans le contexte de « **${capitalize(title)}** », plusieurs approches sont possibles :\n\n`;
+      content += `| Approche | Avantages | Inconvénients |\n`;
+      content += `|----------|-----------|---------------|\n`;
+      content += `| Standard | Simple, bien documenté | Peut manquer de flexibilité |\n`;
+      content += `| Avancé | Plus de contrôle | Complexité accrue |\n`;
+      content += `| Cloud-native | Scalable, managé | Coût, vendor lock-in |\n\n`;
+      content += generateCodeExample(title, chapter, course);
+      break;
+    case 4:
+      content += `### Les erreurs à éviter\n\nLors de la mise en œuvre de « **${capitalize(title)}** », voici les pièges courants :\n\n`;
+      content += `- ❌ Ne pas tester suffisamment avant la mise en production\n`;
+      content += `- ❌ Ignorer la documentation et les runbooks\n`;
+      content += `- ❌ Sur-complexifier la solution\n`;
+      content += `- ✅ Commencer simple et itérer\n`;
+      content += `- ✅ Automatiser les tâches répétitives\n`;
+      content += `- ✅ Monitorer et alerter dès le début\n\n`;
+      content += generateCodeExample(title, chapter, course);
+      break;
+  }
+
+  return content;
+}
+
+function generateCodeExample(title, chapter, course) {
+  if (course.includes('docker')) {
+    return generateDockerExample(title);
+  } else if (course.includes('kubernetes')) {
+    return generateK8sExample(title);
+  } else if (course.includes('terraform')) {
+    return generateTerraformExample(title);
+  } else if (course.includes('linux') || course.includes('système')) {
+    return generateLinuxExample(title);
+  } else if (course.includes('réseau') || course.includes('network')) {
+    return generateNetworkExample(title);
+  } else if (course.includes('ci/cd') || course.includes('github')) {
+    return generateCICDExample(title);
+  } else if (course.includes('monitoring') || course.includes('prometheus')) {
+    return generateMonitoringExample(title);
+  } else if (course.includes('ansible')) {
+    return generateAnsibleExample(title);
+  } else if (course.includes('aws') || course.includes('cloud')) {
+    return generateAWSExample(title);
+  } else if (course.includes('sécurité') || course.includes('devsecops')) {
+    return generateSecurityExample(title);
+  } else if (course.includes('gitops') || course.includes('argocd')) {
+    return generateGitOpsExample(title);
+  } else if (course.includes('sre') || course.includes('fiabilité')) {
+    return generateSREExample(title);
+  }
+  return generateGenericExample(title);
+}
+
+function generateDockerExample(title) {
+  const hash = simpleHash(title);
+  const variant = hash % 6;
+  switch(variant) {
+    case 0:
+      return `### Exemple pratique\n\n\`\`\`dockerfile\n# Dockerfile optimisé pour ${capitalize(title)}\nFROM node:18-alpine AS builder\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci --only=production\nCOPY src/ ./src/\nRUN npm run build\n\nFROM node:18-alpine\nWORKDIR /app\nCOPY --from=builder /app/dist ./dist\nCOPY --from=builder /app/node_modules ./node_modules\nUSER node\nEXPOSE 3000\nCMD ["node", "dist/server.js"]\n\`\`\`\n`;
+    case 1:
+      return `### Exemple pratique\n\n\`\`\`bash\n# Commandes Docker pour ${title}\ndocker build -t mon-app:latest .\ndocker tag mon-app:latest registry.example.com/mon-app:v1.2.3\ndocker push registry.example.com/mon-app:v1.2.3\n\n# Vérifier l'image\ndocker inspect mon-app:latest\ndocker history mon-app:latest\n\n# Lancer avec les bonnes options\ndocker run -d \\\\\n  --name mon-app \\\\\n  --restart=unless-stopped \\\\\n  --memory=512m --cpus=1.0 \\\\\n  -p 8080:3000 \\\\\n  mon-app:latest\n\`\`\`\n`;
+    case 2:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# docker-compose.yml pour ${title}\nservices:\n  app:\n    build:\n      context: .\n      dockerfile: Dockerfile\n    ports:\n      - "3000:3000"\n    environment:\n      - NODE_ENV=production\n      - DB_HOST=postgres\n    depends_on:\n      postgres:\n        condition: service_healthy\n    deploy:\n      resources:\n        limits:\n          memory: 512M\n\n  postgres:\n    image: postgres:15-alpine\n    volumes:\n      - pgdata:/var/lib/postgresql/data\n    healthcheck:\n      test: ["CMD-SHELL", "pg_isready"]\n      interval: 5s\n\nvolumes:\n  pgdata:\n\`\`\`\n`;
+    case 3:
+      return `### Exemple pratique\n\n\`\`\`bash\n# Diagnostic et debugging Docker - ${title}\n# Voir les logs en temps réel\ndocker logs -f --tail 100 mon-conteneur\n\n# Inspecter le réseau\ndocker network inspect bridge\n\n# Voir l'utilisation des ressources\ndocker stats --no-stream\n\n# Exécuter un shell dans un conteneur\ndocker exec -it mon-conteneur /bin/sh\n\n# Exporter/Importer une image\ndocker save mon-app:v1 | gzip > mon-app-v1.tar.gz\ndocker load < mon-app-v1.tar.gz\n\`\`\`\n`;
+    case 4:
+      return `### Exemple pratique\n\n\`\`\`dockerfile\n# Dockerfile sécurisé - ${title}\nFROM alpine:3.18\nRUN addgroup -S appgroup && adduser -S appuser -G appgroup\nRUN apk add --no-cache ca-certificates tzdata\nWORKDIR /app\nCOPY --chown=appuser:appgroup ./bin/app ./app\nUSER appuser\nHEALTHCHECK --interval=30s --timeout=3s \\\\\n  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/health || exit 1\nENTRYPOINT ["./app"]\n\`\`\`\n`;
+    default:
+      return '### Exemple pratique\n\n```bash\n# Gestion des volumes et données - ' + title + '\n# Créer un volume nommé\ndocker volume create app-data\n\n# Backup d\'un volume\ndocker run --rm -v app-data:/data -v $(pwd):/backup \\\\\n  alpine tar czf /backup/data-backup.tar.gz -C /data .\n\n# Nettoyage des ressources inutilisées\ndocker system prune -af --volumes\ndocker image prune -af --filter "until=720h"\n```\n';
+  }
+}
+
+function generateK8sExample(title) {
+  const hash = simpleHash(title);
+  const variant = hash % 6;
+  switch(variant) {
+    case 0:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Deployment Kubernetes - ${capitalize(title)}\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: app-deployment\n  labels:\n    app: web\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      containers:\n      - name: web\n        image: app:v2.0\n        ports:\n        - containerPort: 8080\n        resources:\n          requests:\n            cpu: "100m"\n            memory: "128Mi"\n          limits:\n            cpu: "500m"\n            memory: "256Mi"\n\`\`\`\n`;
+    case 1:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Service et Ingress - ${capitalize(title)}\napiVersion: v1\nkind: Service\nmetadata:\n  name: web-service\nspec:\n  selector:\n    app: web\n  ports:\n  - port: 80\n    targetPort: 8080\n---\napiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: web-ingress\n  annotations:\n    cert-manager.io/cluster-issuer: letsencrypt-prod\nspec:\n  ingressClassName: nginx\n  tls:\n  - hosts:\n    - app.example.com\n    secretName: app-tls\n  rules:\n  - host: app.example.com\n    http:\n      paths:\n      - path: /\n        pathType: Prefix\n        backend:\n          service:\n            name: web-service\n            port:\n              number: 80\n\`\`\`\n`;
+    case 2:
+      return `### Exemple pratique\n\n\`\`\`bash\n# Commandes kubectl essentielles - ${title}\n# Gestion des pods\nkubectl get pods -o wide\nkubectl describe pod mon-pod\nkubectl logs -f deployment/mon-app --all-containers\n\n# Debugging\nkubectl run debug --image=busybox -it --rm -- sh\nkubectl port-forward svc/mon-service 8080:80\n\n# Scaling et rollout\nkubectl scale deployment mon-app --replicas=5\nkubectl rollout status deployment/mon-app\nkubectl rollout undo deployment/mon-app\n\`\`\`\n`;
+    case 3:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# HorizontalPodAutoscaler - ${capitalize(title)}\napiVersion: autoscaling/v2\nkind: HorizontalPodAutoscaler\nmetadata:\n  name: app-hpa\nspec:\n  scaleTargetRef:\n    apiVersion: apps/v1\n    kind: Deployment\n    name: app-deployment\n  minReplicas: 2\n  maxReplicas: 10\n  metrics:\n  - type: Resource\n    resource:\n      name: cpu\n      target:\n        type: Utilization\n        averageUtilization: 70\n  - type: Resource\n    resource:\n      name: memory\n      target:\n        type: Utilization\n        averageUtilization: 80\n\`\`\`\n`;
+    case 4:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# NetworkPolicy - ${capitalize(title)}\napiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nmetadata:\n  name: api-network-policy\nspec:\n  podSelector:\n    matchLabels:\n      app: api\n  policyTypes:\n  - Ingress\n  - Egress\n  ingress:\n  - from:\n    - podSelector:\n        matchLabels:\n          app: frontend\n    ports:\n    - port: 3000\n  egress:\n  - to:\n    - podSelector:\n        matchLabels:\n          app: database\n    ports:\n    - port: 5432\n\`\`\`\n`;
+    default:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# PodDisruptionBudget et probes - ${capitalize(title)}\napiVersion: policy/v1\nkind: PodDisruptionBudget\nmetadata:\n  name: app-pdb\nspec:\n  minAvailable: 2\n  selector:\n    matchLabels:\n      app: web\n---\n# Probes de santé\nspec:\n  containers:\n  - name: app\n    livenessProbe:\n      httpGet:\n        path: /healthz\n        port: 8080\n      initialDelaySeconds: 15\n      periodSeconds: 10\n    readinessProbe:\n      httpGet:\n        path: /ready\n        port: 8080\n      initialDelaySeconds: 5\n\`\`\`\n`;
+  }
+}
+
+function generateTerraformExample(title) {
+  const hash = simpleHash(title);
+  const variant = hash % 5;
+  switch(variant) {
+    case 0:
+      return `### Exemple pratique\n\n\`\`\`hcl\n# Infrastructure Terraform - ${capitalize(title)}\nresource "aws_instance" "app" {\n  ami           = data.aws_ami.ubuntu.id\n  instance_type = var.instance_type\n  subnet_id     = aws_subnet.private.id\n\n  vpc_security_group_ids = [aws_security_group.app.id]\n\n  user_data = templatefile("scripts/init.sh", {\n    environment = var.environment\n    app_version = var.app_version\n  })\n\n  tags = merge(local.common_tags, {\n    Name = "\${var.environment}-app-server"\n  })\n}\n\nresource "aws_security_group" "app" {\n  name_prefix = "\${var.environment}-app-"\n  vpc_id      = aws_vpc.main.id\n\n  ingress {\n    from_port   = 443\n    to_port     = 443\n    protocol    = "tcp"\n    cidr_blocks = [var.allowed_cidr]\n  }\n}\n\`\`\`\n`;
+    case 1:
+      return `### Exemple pratique\n\n\`\`\`hcl\n# Module Terraform - ${capitalize(title)}\nmodule "vpc" {\n  source = "./modules/vpc"\n\n  vpc_cidr       = "10.0.0.0/16"\n  environment    = var.environment\n  azs            = ["eu-west-1a", "eu-west-1b"]\n  public_subnets = ["10.0.1.0/24", "10.0.2.0/24"]\n  private_subnets = ["10.0.10.0/24", "10.0.20.0/24"]\n}\n\nmodule "rds" {\n  source = "./modules/rds"\n\n  vpc_id          = module.vpc.vpc_id\n  subnet_ids      = module.vpc.private_subnet_ids\n  instance_class  = "db.t3.medium"\n  engine_version  = "15.4"\n  database_name   = "application"\n}\n\`\`\`\n`;
+    case 2:
+      return `### Exemple pratique\n\n\`\`\`hcl\n# Variables et locals - ${capitalize(title)}\nvariable "environment" {\n  type        = string\n  description = "Environnement (dev/staging/prod)"\n  validation {\n    condition     = contains(["dev", "staging", "prod"], var.environment)\n    error_message = "Environnement invalide."\n  }\n}\n\nlocals {\n  name_prefix = "\${var.project}-\${var.environment}"\n  common_tags = {\n    Environment = var.environment\n    ManagedBy   = "terraform"\n    Team        = var.team\n  }\n}\n\noutput "endpoint" {\n  value       = aws_lb.main.dns_name\n  description = "URL du load balancer"\n}\n\`\`\`\n`;
+    case 3:
+      return `### Exemple pratique\n\n\`\`\`bash\n# Workflow Terraform - ${title}\n# Initialiser le projet\nterraform init\n\n# Valider la syntaxe\nterraform validate\n\n# Planifier les changements\nterraform plan -out=tfplan -var-file=prod.tfvars\n\n# Appliquer le plan\nterraform apply tfplan\n\n# Gérer le state\nterraform state list\nterraform state show aws_instance.app\nterraform import aws_s3_bucket.existing my-bucket\n\`\`\`\n`;
+    default:
+      return `### Exemple pratique\n\n\`\`\`hcl\n# Backend et providers - ${capitalize(title)}\nterraform {\n  required_version = ">= 1.5.0"\n\n  required_providers {\n    aws = {\n      source  = "hashicorp/aws"\n      version = "~> 5.0"\n    }\n  }\n\n  backend "s3" {\n    bucket         = "terraform-state-prod"\n    key            = "infra/terraform.tfstate"\n    region         = "eu-west-1"\n    encrypt        = true\n    dynamodb_table = "terraform-locks"\n  }\n}\n\nprovider "aws" {\n  region = var.aws_region\n  default_tags {\n    tags = local.common_tags\n  }\n}\n\`\`\`\n`;
+  }
+}
+
+function generateLinuxExample(title) {
+  const hash = simpleHash(title);
+  const variant = hash % 6;
+  switch(variant) {
+    case 0:
+      return `### Exemple pratique\n\n\`\`\`bash\n# Administration système - ${title}\n# Gestion des services\nsudo systemctl status nginx\nsudo systemctl restart nginx\njournalctl -u nginx --since "10 minutes ago"\n\n# Surveillance des ressources\nfree -h\ndf -h\niostat -x 1 5\nsar -u 1 10\n\n# Gestion des utilisateurs\nsudo useradd -m -s /bin/bash -G docker devops\nsudo passwd devops\n\`\`\`\n`;
+    case 1:
+      return '### Exemple pratique\n\n```bash\n# Script bash - ' + title + '\n#!/bin/bash\nset -euo pipefail\n\nLOG_DIR="/var/log/app"\nMAX_SIZE="100M"\n\n# Rotation des logs\nfind "$LOG_DIR" -name "*.log" -size +$MAX_SIZE -exec gzip {} \\;\nfind "$LOG_DIR" -name "*.gz" -mtime +30 -delete\n\n# Vérification espace disque\nUSAGE=$(df -h / | awk \'NR==2 {print $5}\' | tr -d \'%\')\nif [ "$USAGE" -gt 85 ]; then\n  echo "ALERTE: Espace disque à ${USAGE}%" | mail -s "Disk Alert" admin@example.com\nfi\n```\n';
+    case 2:
+      return `### Exemple pratique\n\n\`\`\`bash\n# Réseau et diagnostic - ${title}\n# Connexions actives\nss -tlnp\nnetstat -tuln\n\n# DNS et résolution\ndig example.com +short\nnslookup example.com\n\n# Diagnostic réseau\ntraceroute -n example.com\nmtr --report example.com\ncurl -v -o /dev/null https://api.example.com/health\n\n# Firewall\nsudo ufw status verbose\nsudo ufw allow from 10.0.0.0/8 to any port 22\n\`\`\`\n`;
+    case 3:
+      return '### Exemple pratique\n\n```bash\n# Gestion des fichiers et recherche - ' + title + '\n# Recherche avancée\nfind /var/log -name "*.log" -mtime -7 -size +10M\ngrep -rn "ERROR" /var/log/app/ --include="*.log"\n\n# Manipulation de texte\nawk \'{print $1, $4}\' /var/log/nginx/access.log | sort | uniq -c | sort -rn | head -20\nsed -i \'s/old_value/new_value/g\' /etc/app/config.yml\n\n# Archivage et compression\ntar czf backup-$(date +%Y%m%d).tar.gz /opt/app/data/\n```\n';
+    case 4:
+      return `### Exemple pratique\n\n\`\`\`bash\n# Gestion des processus - ${title}\n# Surveillance en temps réel\ntop -bn1 | head -20\nps aux --sort=-%mem | head -10\n\n# Limiter les ressources (cgroups)\nsystemd-run --scope -p MemoryMax=512M ./mon-script.sh\n\n# Planification de tâches\n# Éditer la crontab\ncrontab -e\n# Backup quotidien à 2h du matin\n# 0 2 * * * /opt/scripts/backup.sh >> /var/log/backup.log 2>&1\n\n# Surveiller un processus\nwatch -n 2 'ps aux | grep [n]ginx'\n\`\`\`\n`;
+    default:
+      return `### Exemple pratique\n\n\`\`\`bash\n# Sécurité système - ${title}\n# Audit des permissions\nfind / -perm -4000 -type f 2>/dev/null  # Fichiers SUID\nfind /home -name ".ssh" -exec ls -la {} \\;\n\n# Durcissement SSH\nsudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config\nsudo sed -i 's/#PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config\nsudo systemctl restart sshd\n\n# Mise à jour de sécurité\nsudo apt update && sudo apt upgrade -y --security\n\`\`\`\n`;
+  }
+}
+
+function generateNetworkExample(title) {
+  const hash = simpleHash(title);
+  const variant = hash % 4;
+  switch(variant) {
+    case 0:
+      return `### Exemple pratique\n\n\`\`\`bash\n# Diagnostic réseau - ${title}\n# Analyse de trafic\nsudo tcpdump -i eth0 -n port 80 -c 100\nsudo tcpdump -i any -w capture.pcap host 10.0.1.5\n\n# Test de connectivité\nnc -zv 10.0.1.5 443\ncurl -sS -o /dev/null -w "%{http_code} %{time_total}s" https://api.example.com\n\n# Résolution DNS\ndig +trace example.com\ndig @8.8.8.8 example.com A +short\n\`\`\`\n`;
+    case 1:
+      return `### Exemple pratique\n\n\`\`\`bash\n# Configuration réseau - ${title}\n# Interfaces et routes\nip addr show\nip route show\nip route add 10.10.0.0/16 via 192.168.1.1\n\n# Firewall avec nftables\nsudo nft add table inet filter\nsudo nft add chain inet filter input '{ type filter hook input priority 0; policy drop; }'\nsudo nft add rule inet filter input tcp dport { 22, 80, 443 } accept\nsudo nft add rule inet filter input ct state established,related accept\n\`\`\`\n`;
+    case 2:
+      return `### Exemple pratique\n\n\`\`\`nginx\n# Configuration reverse proxy - ${title}\nupstream backend {\n    least_conn;\n    server 10.0.1.10:3000;\n    server 10.0.1.11:3000;\n    server 10.0.1.12:3000;\n}\n\nserver {\n    listen 443 ssl http2;\n    server_name api.example.com;\n\n    ssl_certificate /etc/ssl/certs/app.crt;\n    ssl_certificate_key /etc/ssl/private/app.key;\n\n    location / {\n        proxy_pass http://backend;\n        proxy_set_header Host $host;\n        proxy_set_header X-Real-IP $remote_addr;\n        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n    }\n}\n\`\`\`\n`;
+    default:
+      return `### Exemple pratique\n\n\`\`\`bash\n# Surveillance réseau - ${title}\n# Bande passante et latence\niperf3 -s  # Serveur\niperf3 -c 10.0.1.5 -t 30  # Client\n\n# Statistiques réseau\nss -s  # Résumé des sockets\nnstat  # Statistiques réseau\n\n# Détection de problèmes\nmtr --report-wide --report-cycles 10 example.com\nping -c 10 -i 0.2 gateway.local\n\n# ARP et voisins\nip neigh show\narp -a\n\`\`\`\n`;
+  }
+}
+
+function generateCICDExample(title) {
+  const hash = simpleHash(title);
+  const variant = hash % 5;
+  switch(variant) {
+    case 0:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# GitHub Actions workflow - ${capitalize(title)}\nname: CI Pipeline\non:\n  push:\n    branches: [main, develop]\n  pull_request:\n    branches: [main]\n\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version: '20'\n          cache: 'npm'\n      - run: npm ci\n      - run: npm run lint\n      - run: npm test -- --coverage\n      - uses: actions/upload-artifact@v4\n        with:\n          name: coverage\n          path: coverage/\n\`\`\`\n`;
+    case 1:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Pipeline de déploiement - ${capitalize(title)}\njobs:\n  deploy:\n    runs-on: ubuntu-latest\n    needs: [test, build]\n    if: github.ref == 'refs/heads/main'\n    environment: production\n    steps:\n      - uses: actions/checkout@v4\n      - name: Configure AWS credentials\n        uses: aws-actions/configure-aws-credentials@v4\n        with:\n          role-to-assume: arn:aws:iam::123456:role/deploy\n          aws-region: eu-west-1\n      - name: Deploy to ECS\n        run: |\n          aws ecs update-service \\\\\n            --cluster prod \\\\\n            --service api \\\\\n            --force-new-deployment\n      - name: Wait for stability\n        run: |\n          aws ecs wait services-stable \\\\\n            --cluster prod --services api\n\`\`\`\n`;
+    case 2:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Build et push Docker image - ${capitalize(title)}\njobs:\n  build:\n    runs-on: ubuntu-latest\n    outputs:\n      image_tag: \${{ steps.meta.outputs.tags }}\n    steps:\n      - uses: actions/checkout@v4\n      - uses: docker/setup-buildx-action@v3\n      - uses: docker/login-action@v3\n        with:\n          registry: ghcr.io\n          username: \${{ github.actor }}\n          password: \${{ secrets.GITHUB_TOKEN }}\n      - id: meta\n        uses: docker/metadata-action@v5\n        with:\n          images: ghcr.io/\${{ github.repository }}\n          tags: |\n            type=sha\n            type=semver,pattern={{version}}\n      - uses: docker/build-push-action@v5\n        with:\n          push: true\n          tags: \${{ steps.meta.outputs.tags }}\n          cache-from: type=gha\n          cache-to: type=gha,mode=max\n\`\`\`\n`;
+    case 3:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Tests matriciels et cache - ${capitalize(title)}\njobs:\n  test:\n    strategy:\n      matrix:\n        os: [ubuntu-latest, macos-latest]\n        node: [18, 20, 22]\n      fail-fast: false\n    runs-on: \${{ matrix.os }}\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version: \${{ matrix.node }}\n      - uses: actions/cache@v4\n        with:\n          path: ~/.npm\n          key: \${{ runner.os }}-node-\${{ matrix.node }}-\${{ hashFiles('package-lock.json') }}\n      - run: npm ci\n      - run: npm test\n\`\`\`\n`;
+    default:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Sécurité dans le pipeline - ${capitalize(title)}\njobs:\n  security:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - name: Run Trivy vulnerability scanner\n        uses: aquasecurity/trivy-action@master\n        with:\n          scan-type: 'fs'\n          severity: 'CRITICAL,HIGH'\n          exit-code: '1'\n      - name: Run Semgrep\n        uses: returntocorp/semgrep-action@v1\n        with:\n          config: p/owasp-top-ten\n      - name: Check secrets\n        uses: trufflesecurity/trufflehog@main\n        with:\n          extra_args: --only-verified\n\`\`\`\n`;
+  }
+}
+
+function generateMonitoringExample(title) {
+  const hash = simpleHash(title);
+  const variant = hash % 5;
+  switch(variant) {
+    case 0:
+      return `### Exemple pratique\n\n\`\`\`promql\n# Requêtes PromQL - ${title}\n# Taux d'erreurs HTTP (5xx) sur 5 minutes\nsum(rate(http_requests_total{status=~"5.."}[5m])) by (service)\n  /\nsum(rate(http_requests_total[5m])) by (service)\n\n# Latence P95\nhistogram_quantile(0.95,\n  sum(rate(http_request_duration_seconds_bucket[5m])) by (le, service)\n)\n\n# Utilisation CPU par pod\nsum(rate(container_cpu_usage_seconds_total[5m])) by (pod)\n  /\nsum(kube_pod_container_resource_limits{resource="cpu"}) by (pod)\n\`\`\`\n`;
+    case 1:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Règles d'alerte Prometheus - ${capitalize(title)}\ngroups:\n- name: application\n  rules:\n  - alert: HighErrorRate\n    expr: |\n      sum(rate(http_requests_total{status=~"5.."}[5m])) by (service)\n        / sum(rate(http_requests_total[5m])) by (service) > 0.05\n    for: 5m\n    labels:\n      severity: critical\n    annotations:\n      summary: "Taux d'erreur > 5% pour {{ $labels.service }}"\n      description: "Le service {{ $labels.service }} a un taux d'erreur de {{ $value | humanizePercentage }}"\n\n  - alert: HighLatency\n    expr: |\n      histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, service)) > 2\n    for: 10m\n    labels:\n      severity: warning\n\`\`\`\n`;
+    case 2:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Configuration Prometheus scrape - ${capitalize(title)}\nscrape_configs:\n  - job_name: 'kubernetes-pods'\n    kubernetes_sd_configs:\n      - role: pod\n    relabel_configs:\n      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]\n        action: keep\n        regex: true\n      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_port]\n        action: replace\n        target_label: __address__\n        regex: (.+)\n        replacement: \${1}:\${2}\n\`\`\`\n`;
+    case 3:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Dashboard Grafana JSON - ${capitalize(title)}\n# grafana/dashboards/overview.json (provisioning)\napiVersion: 1\nproviders:\n  - name: default\n    folder: ''\n    type: file\n    options:\n      path: /var/lib/grafana/dashboards\n\n# Datasource provisioning\napiVersion: 1\ndatasources:\n  - name: Prometheus\n    type: prometheus\n    url: http://prometheus:9090\n    isDefault: true\n  - name: Loki\n    type: loki\n    url: http://loki:3100\n\`\`\`\n`;
+    default:
+      return `### Exemple pratique\n\n\`\`\`bash\n# Instrumentation et métriques - ${title}\n# Vérifier les métriques exposées\ncurl -s http://localhost:9090/metrics | grep -v '^#' | head -20\n\n# Node exporter - métriques système\ncurl -s http://localhost:9100/metrics | grep node_cpu\n\n# Blackbox exporter - probes externes\ncurl -s "http://localhost:9115/probe?target=https://example.com&module=http_2xx"\n\n# Alertmanager - vérifier les alertes actives\ncurl -s http://localhost:9093/api/v2/alerts | jq '.[].labels.alertname'\n\`\`\`\n`;
+  }
+}
+
+function generateAnsibleExample(title) {
+  const hash = simpleHash(title);
+  const variant = hash % 4;
+  switch(variant) {
+    case 0:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Playbook Ansible - ${capitalize(title)}\n---\n- name: Configuration serveur web\n  hosts: webservers\n  become: yes\n  vars:\n    app_port: 3000\n    app_user: appuser\n\n  tasks:\n    - name: Installer les paquets nécessaires\n      apt:\n        name: "{{ item }}"\n        state: present\n        update_cache: yes\n      loop:\n        - nginx\n        - certbot\n        - python3-certbot-nginx\n\n    - name: Créer l'utilisateur applicatif\n      user:\n        name: "{{ app_user }}"\n        shell: /bin/bash\n        groups: docker\n        append: yes\n\n    - name: Déployer la configuration nginx\n      template:\n        src: templates/nginx.conf.j2\n        dest: /etc/nginx/sites-available/app\n      notify: Restart nginx\n\n  handlers:\n    - name: Restart nginx\n      systemd:\n        name: nginx\n        state: restarted\n\`\`\`\n`;
+    case 1:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Rôle Ansible - ${capitalize(title)}\n# roles/docker/tasks/main.yml\n---\n- name: Ajouter la clé GPG Docker\n  apt_key:\n    url: https://download.docker.com/linux/ubuntu/gpg\n    state: present\n\n- name: Ajouter le repo Docker\n  apt_repository:\n    repo: "deb https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"\n    state: present\n\n- name: Installer Docker\n  apt:\n    name:\n      - docker-ce\n      - docker-ce-cli\n      - containerd.io\n    state: present\n\n- name: Démarrer et activer Docker\n  systemd:\n    name: docker\n    state: started\n    enabled: yes\n\`\`\`\n`;
+    case 2:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Inventaire dynamique et variables - ${capitalize(title)}\n# inventory/production.yml\nall:\n  vars:\n    ansible_user: deploy\n    ansible_ssh_private_key_file: ~/.ssh/deploy_key\n  children:\n    webservers:\n      hosts:\n        web1:\n          ansible_host: 10.0.1.10\n        web2:\n          ansible_host: 10.0.1.11\n    databases:\n      hosts:\n        db1:\n          ansible_host: 10.0.2.10\n          db_role: primary\n        db2:\n          ansible_host: 10.0.2.11\n          db_role: replica\n\`\`\`\n\n\`\`\`bash\n# Exécution\nansible-playbook -i inventory/production.yml site.yml --diff\nansible-playbook site.yml --tags "deploy" --limit webservers\n\`\`\`\n`;
+    default:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Ansible Vault et secrets - ${capitalize(title)}\n# Chiffrer un fichier de variables\n# ansible-vault encrypt vars/secrets.yml\n\n# vars/secrets.yml (chiffré)\ndb_password: "S3cur3P@ss!"\napi_token: "sk-abc123def456"\n\n# Utilisation dans un playbook\n- name: Déployer avec secrets\n  hosts: app_servers\n  vars_files:\n    - vars/secrets.yml\n  tasks:\n    - name: Configurer l'application\n      template:\n        src: app.env.j2\n        dest: /opt/app/.env\n        mode: '0600'\n        owner: appuser\n\`\`\`\n\n\`\`\`bash\n# Exécuter avec le vault password\nansible-playbook site.yml --ask-vault-pass\nansible-playbook site.yml --vault-password-file ~/.vault_pass\n\`\`\`\n`;
+  }
+}
+
+function generateAWSExample(title) {
+  const hash = simpleHash(title);
+  const variant = hash % 5;
+  switch(variant) {
+    case 0:
+      return `### Exemple pratique\n\n\`\`\`bash\n# AWS CLI - ${title}\n# Gestion des instances EC2\naws ec2 describe-instances --filters "Name=tag:Environment,Values=production" \\\\\n  --query 'Reservations[].Instances[].{ID:InstanceId,IP:PublicIpAddress,State:State.Name}'\n\n# Gestion S3\naws s3 sync ./build s3://my-app-bucket/static/ --delete\naws s3api put-bucket-policy --bucket my-app-bucket --policy file://policy.json\n\n# Logs CloudWatch\naws logs get-log-events --log-group-name /ecs/api --log-stream-name latest \\\\\n  --limit 50 --start-from-head\n\`\`\`\n`;
+    case 1:
+      return `### Exemple pratique\n\n\`\`\`hcl\n# AWS avec Terraform - ${capitalize(title)}\nresource "aws_ecs_service" "api" {\n  name            = "api-service"\n  cluster         = aws_ecs_cluster.main.id\n  task_definition = aws_ecs_task_definition.api.arn\n  desired_count   = 3\n  launch_type     = "FARGATE"\n\n  network_configuration {\n    subnets         = module.vpc.private_subnet_ids\n    security_groups = [aws_security_group.ecs.id]\n  }\n\n  load_balancer {\n    target_group_arn = aws_lb_target_group.api.arn\n    container_name   = "api"\n    container_port   = 3000\n  }\n}\n\`\`\`\n`;
+    case 2:
+      return `### Exemple pratique\n\n\`\`\`hcl\n# IAM et sécurité AWS - ${capitalize(title)}\nresource "aws_iam_role" "ecs_task" {\n  name = "ecs-task-role"\n  assume_role_policy = jsonencode({\n    Version = "2012-10-17"\n    Statement = [{\n      Action = "sts:AssumeRole"\n      Effect = "Allow"\n      Principal = {\n        Service = "ecs-tasks.amazonaws.com"\n      }\n    }]\n  })\n}\n\nresource "aws_iam_role_policy" "s3_access" {\n  name = "s3-read-access"\n  role = aws_iam_role.ecs_task.id\n  policy = jsonencode({\n    Version = "2012-10-17"\n    Statement = [{\n      Effect   = "Allow"\n      Action   = ["s3:GetObject", "s3:ListBucket"]\n      Resource = ["arn:aws:s3:::my-bucket", "arn:aws:s3:::my-bucket/*"]\n    }]\n  })\n}\n\`\`\`\n`;
+    case 3:
+      return `### Exemple pratique\n\n\`\`\`bash\n# AWS ECS et déploiement - ${title}\n# Mettre à jour un service ECS\naws ecs update-service \\\\\n  --cluster production \\\\\n  --service api \\\\\n  --task-definition api:42 \\\\\n  --force-new-deployment\n\n# Attendre la stabilisation\naws ecs wait services-stable --cluster production --services api\n\n# Voir les tâches en cours\naws ecs list-tasks --cluster production --service-name api\n\n# Exécuter une commande dans un conteneur ECS (ECS Exec)\naws ecs execute-command \\\\\n  --cluster production \\\\\n  --task arn:aws:ecs:eu-west-1:123456:task/abc123 \\\\\n  --container api \\\\\n  --interactive --command "/bin/sh"\n\`\`\`\n`;
+    default:
+      return `### Exemple pratique\n\n\`\`\`hcl\n# ALB et Auto Scaling AWS - ${capitalize(title)}\nresource "aws_lb" "main" {\n  name               = "app-alb"\n  internal           = false\n  load_balancer_type = "application"\n  subnets            = module.vpc.public_subnet_ids\n  security_groups    = [aws_security_group.alb.id]\n}\n\nresource "aws_lb_listener" "https" {\n  load_balancer_arn = aws_lb.main.arn\n  port              = 443\n  protocol          = "HTTPS"\n  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"\n  certificate_arn   = aws_acm_certificate.main.arn\n\n  default_action {\n    type             = "forward"\n    target_group_arn = aws_lb_target_group.app.arn\n  }\n}\n\`\`\`\n`;
+  }
+}
+
+function generateSecurityExample(title) {
+  const hash = simpleHash(title);
+  const variant = hash % 4;
+  switch(variant) {
+    case 0:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Pipeline sécurité - ${capitalize(title)}\n# .github/workflows/security.yml\njobs:\n  security-scan:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - name: Trivy filesystem scan\n        uses: aquasecurity/trivy-action@master\n        with:\n          scan-type: fs\n          severity: CRITICAL,HIGH\n          exit-code: 1\n      - name: Gitleaks - détection de secrets\n        uses: gitleaks/gitleaks-action@v2\n      - name: OWASP Dependency Check\n        run: |\n          npm audit --audit-level=high\n          npx better-npm-audit audit\n\`\`\`\n`;
+    case 1:
+      return `### Exemple pratique\n\n\`\`\`bash\n# Scan de vulnérabilités - ${title}\n# Scanner une image avec Trivy\ntrivy image --severity HIGH,CRITICAL mon-app:latest\n\n# Scanner le filesystem\ntrivy fs --security-checks vuln,config ./\n\n# Scanner les dépendances\ntrivy fs --scanners vuln package-lock.json\n\n# Générer un SBOM\ntrivy image --format cyclonedx -o sbom.json mon-app:latest\n\n# Vérifier les politiques OPA\nconftest test deployment.yaml -p policy/\n\`\`\`\n`;
+    case 2:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Politique de sécurité Kubernetes - ${capitalize(title)}\napiVersion: v1\nkind: Pod\nmetadata:\n  name: secure-pod\nspec:\n  securityContext:\n    runAsNonRoot: true\n    runAsUser: 1000\n    fsGroup: 2000\n  containers:\n  - name: app\n    image: app:v1\n    securityContext:\n      allowPrivilegeEscalation: false\n      readOnlyRootFilesystem: true\n      capabilities:\n        drop:\n          - ALL\n    resources:\n      limits:\n        cpu: "500m"\n        memory: "256Mi"\n\`\`\`\n`;
+    default:
+      return `### Exemple pratique\n\n\`\`\`bash\n# Gestion des secrets et chiffrement - ${title}\n# Chiffrer avec SOPS\nsops --encrypt --age age1xxx... secrets.yaml > secrets.enc.yaml\nsops --decrypt secrets.enc.yaml\n\n# Sealed Secrets pour Kubernetes\nkubeseal --format yaml < secret.yaml > sealed-secret.yaml\nkubectl apply -f sealed-secret.yaml\n\n# Rotation de secrets\nvault write -f transit/keys/app/rotate\nvault read database/creds/readonly  # Credentials dynamiques\n\`\`\`\n`;
+  }
+}
+
+function generateGitOpsExample(title) {
+  const hash = simpleHash(title);
+  const variant = hash % 4;
+  switch(variant) {
+    case 0:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Application ArgoCD - ${capitalize(title)}\napiVersion: argoproj.io/v1alpha1\nkind: Application\nmetadata:\n  name: mon-app\n  namespace: argocd\nspec:\n  project: default\n  source:\n    repoURL: https://github.com/org/k8s-manifests\n    targetRevision: main\n    path: apps/mon-app/overlays/production\n  destination:\n    server: https://kubernetes.default.svc\n    namespace: production\n  syncPolicy:\n    automated:\n      prune: true\n      selfHeal: true\n    syncOptions:\n      - CreateNamespace=true\n\`\`\`\n`;
+    case 1:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Kustomize overlay - ${capitalize(title)}\n# base/kustomization.yaml\nresources:\n  - deployment.yaml\n  - service.yaml\n  - ingress.yaml\n\n# overlays/production/kustomization.yaml\nbases:\n  - ../../base\nnamePrefix: prod-\nnamespace: production\npatches:\n  - target:\n      kind: Deployment\n      name: app\n    patch: |\n      - op: replace\n        path: /spec/replicas\n        value: 5\nimages:\n  - name: app\n    newTag: v2.1.0\n\`\`\`\n`;
+    case 2:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Flux CD - ${capitalize(title)}\napiVersion: source.toolkit.fluxcd.io/v1\nkind: GitRepository\nmetadata:\n  name: app-manifests\n  namespace: flux-system\nspec:\n  interval: 1m\n  url: https://github.com/org/manifests\n  ref:\n    branch: main\n---\napiVersion: kustomize.toolkit.fluxcd.io/v1\nkind: Kustomization\nmetadata:\n  name: app\n  namespace: flux-system\nspec:\n  interval: 5m\n  path: ./apps/production\n  prune: true\n  sourceRef:\n    kind: GitRepository\n    name: app-manifests\n  healthChecks:\n    - kind: Deployment\n      name: app\n      namespace: production\n\`\`\`\n`;
+    default:
+      return `### Exemple pratique\n\n\`\`\`bash\n# Workflow GitOps - ${title}\n# Structure du repo de manifestes\n# manifests/\n# ├── base/\n# │   ├── deployment.yaml\n# │   ├── service.yaml\n# │   └── kustomization.yaml\n# ├── overlays/\n# │   ├── dev/\n# │   ├── staging/\n# │   └── production/\n# └── apps/\n#     └── argocd-app.yaml\n\n# Promouvoir une version\ncd manifests/overlays/production\nkustomize edit set image app=registry.example.com/app:v2.1.0\ngit add . && git commit -m "release: promote app v2.1.0 to production"\ngit push origin main\n# ArgoCD détecte le changement et déploie automatiquement\n\`\`\`\n`;
+  }
+}
+
+function generateSREExample(title) {
+  const hash = simpleHash(title);
+  const variant = hash % 4;
+  switch(variant) {
+    case 0:
+      return `### Exemple pratique\n\n\`\`\`promql\n# SLI et Error Budget - ${title}\n# SLI de disponibilité (fenêtre 30 jours)\nsum(rate(http_requests_total{status!~"5.."}[30d]))\n  /\nsum(rate(http_requests_total[30d]))\n\n# Burn rate (consommation du budget)\n(\n  1 - (\n    sum(rate(http_requests_total{status!~"5.."}[1h]))\n    / sum(rate(http_requests_total[1h]))\n  )\n) / (1 - 0.999)  # SLO = 99.9%\n\n# Alerte multi-window burn rate\n# Fenêtre rapide (5min) ET lente (1h)\n(\n  (1 - sli_ratio:5m) > 14.4 * (1 - 0.999)\n  AND\n  (1 - sli_ratio:1h) > 14.4 * (1 - 0.999)\n)\n\`\`\`\n`;
+    case 1:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Runbook d'incident - ${capitalize(title)}\n# runbooks/high-error-rate.md structure :\n# 1. Vérification :\ndiagnostic_commands:\n  - kubectl get pods -l app=api | grep -v Running\n  - kubectl logs -l app=api --tail=50 --since=5m\n  - curl -s http://api-service/health | jq .\n\n# 2. Actions de mitigation :\nmitigation_steps:\n  - Vérifier les déploiements récents: kubectl rollout history deployment/api\n  - Rollback si nécessaire: kubectl rollout undo deployment/api\n  - Scaler si surcharge: kubectl scale deployment/api --replicas=10\n  - Activer le circuit breaker si dépendance en erreur\n\n# 3. Escalation :\nescalation:\n  - 5min sans résolution: Alerter le tech lead\n  - 15min: Incident commander\n  - 30min: Management notification\n\`\`\`\n`;
+    case 2:
+      return `### Exemple pratique\n\n\`\`\`bash\n# Chaos Engineering - ${title}\n# Chaos Mesh - injection de pannes\nkubectl apply -f - <<EOF\napiVersion: chaos-mesh.org/v1alpha1\nkind: PodChaos\nmetadata:\n  name: pod-kill-test\nspec:\n  action: pod-kill\n  mode: one\n  selector:\n    namespaces: [production]\n    labelSelectors:\n      app: api\n  scheduler:\n    cron: "@every 2h"\nEOF\n\n# Litmus Chaos - test de résilience réseau\n# Vérifier la tolérance aux pannes réseau\nkubectl apply -f network-delay-experiment.yaml\n\n# Vérifier que le SLO est maintenu pendant le chaos\ncurl -s http://prometheus:9090/api/v1/query?query=sli_ratio:5m\n\`\`\`\n`;
+    default:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Capacity Planning - ${capitalize(title)}\n# Requêtes de planification de capacité\n\n# Prévision de croissance (régression linéaire)\n# predict_linear(metric[duration], seconds_ahead)\npredict_linear(\n  sum(container_memory_usage_bytes{namespace=\"prod\"})[7d:1h], 30*24*3600\n)\n\n# Saturation des ressources\nsum(kube_pod_container_resource_requests{resource=\"cpu\"})\n  /\nsum(kube_node_status_allocatable{resource=\"cpu\"})\n\n# Toil budget - temps passé sur les tâches manuelles\n# Objectif: < 50% du temps de l'équipe SRE\n# Automatiser les tâches récurrentes identifiées\n# Mesurer: incidents/semaine, temps moyen de résolution\n\`\`\`\n`;
+  }
+}
+
+function generateGenericExample(title) {
+  const hash = simpleHash(title);
+  const variant = hash % 4;
+  switch(variant) {
+    case 0:
+      return '### Exemple pratique\n\n```bash\n# Mise en pratique - ' + title + '\n# Vérifier l\'état du système\nsystemctl status --no-pager\nfree -h && df -h\n\n# Diagnostic rapide\njournalctl --since "30 minutes ago" -p err\ndmesg | tail -20\n\n# Documentation\necho "## $(date +%Y-%m-%d) - ' + title + '" >> /opt/docs/runbook.md\necho "Procédure validée et documentée" >> /opt/docs/runbook.md\n```\n';
+    case 1:
+      return '### Exemple pratique\n\n```bash\n# Automatisation - ' + title + '\n#!/bin/bash\nset -euo pipefail\n\nTIMESTAMP=$(date +%Y%m%d_%H%M%S)\nLOG_FILE="/var/log/devops/task-${TIMESTAMP}.log"\n\necho "[INFO] Début de l\'opération: ' + title + '" | tee -a "$LOG_FILE"\n\n# Exécution avec retry\nfor i in {1..3}; do\n  if command_to_execute; then\n    echo "[OK] Opération réussie" | tee -a "$LOG_FILE"\n    break\n  fi\n  echo "[RETRY] Tentative $i échouée, retry dans 10s..." | tee -a "$LOG_FILE"\n  sleep 10\ndone\n```\n';
+    case 2:
+      return `### Exemple pratique\n\n\`\`\`yaml\n# Configuration déclarative - ${capitalize(title)}\n---\nproject:\n  name: devops-platform\n  environment: production\n  version: "2.0"\n\ncomponents:\n  - name: api\n    replicas: 3\n    resources:\n      cpu: "500m"\n      memory: "512Mi"\n    healthcheck:\n      endpoint: /health\n      interval: 10s\n\n  - name: worker\n    replicas: 2\n    resources:\n      cpu: "1000m"\n      memory: "1Gi"\n\nmonitoring:\n  enabled: true\n  alerting:\n    slack_channel: "#ops-alerts"\n\`\`\`\n`;
+    default:
+      return `### Exemple pratique\n\n\`\`\`bash\n# Workflow DevOps - ${title}\n# 1. Vérification pré-déploiement\necho "=== Pre-flight checks ==="\nkubectl cluster-info\nkubectl get nodes\nhelm list -A\n\n# 2. Déploiement\necho "=== Deploying ==="\nhelm upgrade --install app ./chart \\\\\n  --namespace production \\\\\n  --values values-prod.yaml \\\\\n  --wait --timeout 5m\n\n# 3. Validation post-déploiement\necho "=== Post-deploy validation ==="\nkubectl rollout status deployment/app -n production\ncurl -sf http://app.example.com/health || exit 1\necho "Deployment successful!"\n\`\`\`\n`;
+  }
+}
+
+function generatePracticalContent(title, chapter, course) {
+  const hash = simpleHash(title + chapter);
+  const variant = hash % 5;
+
+  switch(variant) {
+    case 0:
+      return `Pour mettre en pratique « **${capitalize(title)}** », suivez cet exercice :\n\n1. **Environnement** : Créez un environnement de test isolé (VM, conteneur, ou cloud sandbox)\n2. **Implémentation** : Reproduisez les exemples ci-dessus en les adaptant à votre contexte\n3. **Tests** : Validez chaque étape avec des tests automatisés\n4. **Documentation** : Documentez votre configuration dans un README ou un wiki d'équipe\n5. **Review** : Faites relire votre implémentation par un pair\n`;
+    case 1:
+      return `### Exercice guidé\n\nCréez un mini-projet qui implémente « **${capitalize(title)}** » :\n\n- Commencez par définir les prérequis et dépendances\n- Implémentez une version minimale fonctionnelle\n- Ajoutez les tests et la validation\n- Intégrez dans un pipeline CI/CD\n- Mesurez les résultats et itérez\n\n> **Conseil** : Versionnez tout dans Git dès le début, même les brouillons. L'historique vous aidera à comprendre votre progression.\n`;
+    case 2:
+      return `### Travaux pratiques\n\n**Objectif** : Implémenter ${capitalize(title)} dans un environnement réaliste.\n\n**Pré-requis** :\n- Un terminal Linux (ou WSL2 sous Windows)\n- Docker et Docker Compose installés\n- Un éditeur de code (VS Code recommandé)\n\n**Étapes** :\n1. Clonez le repository d'exercices du cours\n2. Naviguez vers le dossier de l'exercice\n3. Suivez les instructions du README.md\n4. Validez avec les tests fournis : \`make test\`\n`;
+    case 3:
+      return `### Atelier pratique\n\nAppliquez les concepts de « **${capitalize(title)}** » en situation réelle :\n\n| Étape | Action | Validation |\n|-------|--------|------------|\n| 1 | Setup de l'environnement | Tous les services démarrent |\n| 2 | Configuration initiale | Tests de smoke passent |\n| 3 | Ajout des fonctionnalités | Tests d'intégration OK |\n| 4 | Hardening production | Scan de sécurité clean |\n| 5 | Monitoring | Dashboards et alertes actifs |\n\n> **Challenge bonus** : Automatisez l'ensemble du processus dans un Makefile ou un script.\n`;
+    default:
+      return `### Mise en situation\n\nImaginez que vous devez implémenter « **${capitalize(title)}** » pour un client avec les contraintes suivantes :\n- Haute disponibilité (99.9% SLA)\n- Budget limité (utiliser des outils open-source)\n- Équipe de 3 ingénieurs DevOps\n- Deadline : 2 semaines\n\n**Votre plan d'action** :\n1. Identifier les composants critiques\n2. Prioriser par impact business\n3. Implémenter de manière itérative\n4. Automatiser les tâches récurrentes\n5. Documenter pour le handover\n`;
+  }
+}
+
+function generateKeyTakeaways(title, chapter, course) {
+  const hash = simpleHash(title + course);
+  const variant = hash % 4;
+
+  const topicName = capitalize(title);
+
+  switch(variant) {
+    case 0:
+      return `- **${topicName}** est un élément fondamental de l'écosystème DevOps moderne\n- L'automatisation et la reproductibilité sont les clés du succès\n- Testez toujours dans un environnement isolé avant la production\n- La documentation est aussi importante que l'implémentation\n- Mesurez l'impact de chaque changement avec des métriques\n`;
+    case 1:
+      return `- La maîtrise de **${topicName}** vous distinguera en tant qu'ingénieur DevOps\n- Commencez simple, puis itérez vers la complexité\n- Les bonnes pratiques évoluent : restez en veille technologique\n- Partagez vos apprentissages avec votre équipe (lunch & learn, wiki)\n- L'échec en environnement de test est un apprentissage, pas une erreur\n`;
+    case 2:
+      return `- **${topicName}** s'intègre dans une chaîne d'outils plus large\n- La sécurité doit être intégrée dès la conception (shift-left)\n- L'observabilité (logs, métriques, traces) est indispensable en production\n- Privilégiez l'approche Infrastructure as Code pour la reproductibilité\n- Chaque décision technique doit être documentée (ADR - Architecture Decision Record)\n`;
+    default:
+      return `- Retenez les principes avant les commandes : les outils changent, les concepts restent\n- **${topicName}** contribue directement à la vélocité et la fiabilité de votre équipe\n- Pratiquez régulièrement : créez des labs personnels pour expérimenter\n- Collaborez avec les développeurs pour une adoption réussie\n- Mesurez le ROI de chaque amélioration pour justifier les investissements\n`;
+  }
+}
 
 // ============================================================
 // MAIN SEED FUNCTION
