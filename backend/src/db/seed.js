@@ -141,7 +141,62 @@ async function seed() {
     // Chaos Engineering
     ['Chaos Engineering : Litmus sur K8s', 'chaos-litmus-kubernetes', 'Injectez du chaos dans votre cluster Kubernetes avec Litmus.', 'sre', 'difficile', 60, 'kubernetes', 'Installez Litmus, créez des expériences et analysez les résultats.', 40],
     // Virtualisation
-    ['VMware : Créer un cluster HA', 'vmware-cluster-ha', 'Créez un cluster VMware vSphere avec HA et DRS.', 'virtualisation', 'difficile', 75, 'mixed', 'Configurez vCenter, ajoutez des hôtes et activez HA/DRS.', 45]
+    ['VMware : Créer un cluster HA', 'vmware-cluster-ha', 'Créez un cluster VMware vSphere avec HA et DRS.', 'virtualisation', 'difficile', 75, 'mixed', 'Configurez vCenter, ajoutez des hôtes et activez HA/DRS.', 45],
+    // Nouveaux labs supplémentaires
+    // Docker avancé
+    ['Docker : Multi-stage build optimisé', 'docker-multistage-build', 'Réduisez une image de 1.2GB à 50MB avec les multi-stage builds.', 'conteneurisation', 'moyen', 35, 'docker', 'Écrivez un Dockerfile multi-stage pour une app Go et une app React.', 20],
+    ['Docker : Réseau et DNS interne', 'docker-reseau-dns', 'Configurez des réseaux Docker personnalisés et testez le DNS interne.', 'conteneurisation', 'moyen', 30, 'docker', 'Créez des bridges, connectez des conteneurs et testez la résolution DNS.', 20],
+    ['Docker : Volumes et persistance', 'docker-volumes-persistance', 'Gérez la persistance des données avec les volumes Docker.', 'conteneurisation', 'facile', 25, 'docker', 'Créez des volumes nommés, bind mounts et tmpfs. Backup et restore.', 15],
+    ['Docker : Debugging et troubleshooting', 'docker-debugging', 'Diagnostiquez et résolvez les problèmes courants Docker.', 'conteneurisation', 'moyen', 40, 'docker', 'Utilisez docker logs, exec, inspect, stats pour diagnostiquer.', 25],
+    // Kubernetes avancé
+    ['Kubernetes : StatefulSet et bases de données', 'k8s-statefulset-db', 'Déployez PostgreSQL avec un StatefulSet et du stockage persistant.', 'orchestration', 'difficile', 60, 'kubernetes', 'Créez un StatefulSet, PVC, headless service pour PostgreSQL.', 35],
+    ['Kubernetes : ConfigMaps et Secrets', 'k8s-configmaps-secrets', 'Gérez la configuration et les secrets dans Kubernetes.', 'orchestration', 'facile', 30, 'kubernetes', 'Créez des ConfigMaps, Secrets et injectez-les dans les pods.', 20],
+    ['Kubernetes : RBAC complet', 'k8s-rbac-complet', 'Configurez RBAC avec ServiceAccounts, Roles et ClusterRoles.', 'orchestration', 'difficile', 55, 'kubernetes', 'Créez des SA, Roles, RoleBindings et testez les permissions.', 35],
+    ['Kubernetes : Ingress avec TLS', 'k8s-ingress-tls', 'Configurez un Ingress Controller avec cert-manager et Let\'s Encrypt.', 'orchestration', 'moyen', 45, 'kubernetes', 'Déployez nginx-ingress, cert-manager et un Ingress avec TLS.', 30],
+    ['Kubernetes : Jobs et CronJobs', 'k8s-jobs-cronjobs', 'Exécutez des tâches planifiées et ponctuelles sur K8s.', 'orchestration', 'facile', 25, 'kubernetes', 'Créez des Jobs pour des tâches batch et des CronJobs pour la planification.', 15],
+    ['Kubernetes : Resource Quotas et LimitRanges', 'k8s-resource-quotas', 'Limitez les ressources consommées par namespace.', 'orchestration', 'moyen', 35, 'kubernetes', 'Configurez ResourceQuota et LimitRange, testez les limites.', 20],
+    // CI/CD supplémentaires
+    ['GitHub Actions : Matrix et cache', 'github-actions-matrix', 'Utilisez les matrices de test et le cache de dépendances.', 'cicd', 'moyen', 35, 'docker', 'Créez un workflow avec matrice Node.js 18/20/22 et cache npm.', 20],
+    ['GitHub Actions : Deploy to Kubernetes', 'github-actions-deploy-k8s', 'Déployez automatiquement sur Kubernetes depuis GitHub Actions.', 'cicd', 'difficile', 55, 'kubernetes', 'Build Docker, push ECR, deploy K8s avec kubectl dans un workflow.', 35],
+    ['GitHub Actions : Reusable workflows', 'github-actions-reusable', 'Créez des workflows réutilisables et des composite actions.', 'cicd', 'moyen', 40, 'docker', 'Créez une shared workflow et une composite action.', 25],
+    // IaC supplémentaires
+    ['Terraform : State remote sur S3', 'terraform-state-s3', 'Configurez un backend S3 avec locking DynamoDB pour Terraform.', 'iac', 'moyen', 40, 'terraform', 'Créez le bucket S3, la table DynamoDB et configurez le backend.', 25],
+    ['Terraform : Import de ressources existantes', 'terraform-import', 'Importez des ressources cloud existantes dans le state Terraform.', 'iac', 'moyen', 35, 'terraform', 'Utilisez terraform import pour intégrer une infra existante.', 20],
+    ['Ansible : Rôle Docker complet', 'ansible-role-docker', 'Créez un rôle Ansible pour installer et configurer Docker.', 'iac', 'moyen', 45, 'ansible', 'Écrivez un rôle avec tasks, handlers, defaults et molecule tests.', 25],
+    ['Ansible : Déploiement multi-serveurs', 'ansible-deploy-multi', 'Déployez une application sur un cluster de serveurs avec Ansible.', 'iac', 'difficile', 55, 'ansible', 'Utilisez inventory dynamique, rolling deploy et handlers.', 35],
+    // Monitoring supplémentaires
+    ['Grafana : Dashboards as Code', 'grafana-dashboards-code', 'Gérez vos dashboards Grafana en tant que code avec provisioning.', 'monitoring', 'moyen', 40, 'docker', 'Créez des dashboards JSON, configurez le provisioning automatique.', 25],
+    ['Loki : Logging centralisé', 'loki-logging-centralise', 'Déployez Loki + Promtail pour centraliser vos logs.', 'monitoring', 'moyen', 45, 'docker', 'Installez Loki, configurez Promtail et créez des requêtes LogQL.', 25],
+    ['Prometheus : Alertmanager avancé', 'prometheus-alertmanager', 'Configurez des alertes complexes avec routing et silences.', 'monitoring', 'difficile', 50, 'docker', 'Créez des alertes, configurez le routing Slack/PagerDuty.', 30],
+    // Sécurité supplémentaires
+    ['OPA Gatekeeper : Policy as Code', 'opa-gatekeeper-policies', 'Implémentez des policies Kubernetes avec OPA Gatekeeper.', 'securite', 'difficile', 55, 'kubernetes', 'Installez Gatekeeper, créez des ConstraintTemplates et Constraints.', 35],
+    ['Secrets : External Secrets Operator', 'external-secrets-operator', 'Synchronisez des secrets depuis Vault/AWS SM vers Kubernetes.', 'securite', 'moyen', 45, 'kubernetes', 'Installez ESO, configurez un SecretStore et créez des ExternalSecrets.', 30],
+    ['Container signing avec Cosign', 'container-signing-cosign', 'Signez vos images Docker pour la supply chain security.', 'securite', 'moyen', 35, 'docker', 'Générez des clés, signez des images et vérifiez les signatures.', 20],
+    ['Falco : Runtime security', 'falco-runtime-security', 'Détectez les comportements suspects au runtime avec Falco.', 'securite', 'difficile', 50, 'kubernetes', 'Déployez Falco, créez des règles custom et configurez les alertes.', 35],
+    // Réseau supplémentaires
+    ['Nginx : API Gateway', 'nginx-api-gateway', 'Configurez Nginx comme API Gateway avec rate limiting et auth.', 'network', 'moyen', 40, 'docker', 'Configurez proxy_pass, rate limiting, JWT validation.', 25],
+    ['Traefik : Reverse proxy Kubernetes', 'traefik-reverse-proxy-k8s', 'Déployez Traefik comme Ingress Controller sur Kubernetes.', 'network', 'moyen', 45, 'kubernetes', 'Installez Traefik, configurez IngressRoutes et middlewares.', 25],
+    ['DNS : Configurer CoreDNS', 'dns-coredns-config', 'Personnalisez CoreDNS dans Kubernetes pour vos besoins.', 'network', 'moyen', 35, 'kubernetes', 'Modifiez le ConfigMap CoreDNS, ajoutez des stubs et rewrites.', 20],
+    // Système supplémentaires
+    ['Linux : Hardening avec Lynis', 'linux-hardening-lynis', 'Auditez et durcissez un serveur Linux avec Lynis.', 'systeme', 'moyen', 40, 'mixed', 'Exécutez un audit Lynis, analysez les résultats et corrigez.', 25],
+    ['Bash : Script de backup automatisé', 'bash-script-backup', 'Créez un script de backup complet avec rotation et notification.', 'systeme', 'facile', 30, 'mixed', 'Écrivez un script avec rsync, compression, rotation et cron.', 15],
+    ['Linux : Configurer fail2ban', 'linux-fail2ban', 'Protégez votre serveur contre les attaques brute-force.', 'systeme', 'facile', 25, 'mixed', 'Installez fail2ban, configurez les jails SSH et custom.', 15],
+    ['Systemd : Timer et automation', 'systemd-timer-automation', 'Remplacez cron par des timers systemd pour plus de contrôle.', 'systeme', 'moyen', 30, 'mixed', 'Créez des .timer et .service pour des tâches planifiées.', 20],
+    // Cloud supplémentaires
+    ['AWS : S3 et CloudFront CDN', 'aws-s3-cloudfront', 'Déployez un site statique avec S3 et CloudFront.', 'cloud', 'facile', 30, 'mixed', 'Créez un bucket S3, configurez CloudFront et un domaine custom.', 20],
+    ['AWS : RDS PostgreSQL et backup', 'aws-rds-postgresql', 'Déployez une base RDS PostgreSQL avec réplication et backup.', 'cloud', 'moyen', 45, 'mixed', 'Créez une instance RDS, configurez Multi-AZ et les snapshots.', 25],
+    ['GCP : Deploy sur Cloud Run', 'gcp-deploy-cloud-run', 'Déployez une application containerisée sur Cloud Run.', 'cloud', 'facile', 30, 'docker', 'Buildez avec Cloud Build et déployez sur Cloud Run.', 20],
+    ['Azure : Azure Functions', 'azure-functions-lab', 'Créez et déployez des fonctions serverless sur Azure.', 'cloud', 'moyen', 40, 'mixed', 'Écrivez une Azure Function, configurez les triggers et déployez.', 25],
+    // Données
+    ['MongoDB : Replica Set', 'mongodb-replica-set', 'Configurez un Replica Set MongoDB pour la haute disponibilité.', 'donnees', 'moyen', 45, 'docker', 'Déployez 3 nœuds MongoDB, initialisez le RS et testez le failover.', 25],
+    ['Kafka : Producteur et consommateur', 'kafka-producteur-consommateur', 'Créez un producteur et consommateur Kafka en ligne de commande.', 'donnees', 'moyen', 40, 'docker', 'Lancez Kafka, créez un topic, produisez et consommez des messages.', 25],
+    ['Migration de base de données avec Flyway', 'migration-flyway', 'Automatisez les migrations de schéma avec Flyway.', 'donnees', 'moyen', 35, 'docker', 'Configurez Flyway, créez des migrations SQL et exécutez-les.', 20],
+    // GitOps supplémentaires
+    ['ArgoCD : App of Apps pattern', 'argocd-app-of-apps', 'Implémentez le pattern App of Apps pour gérer plusieurs applications.', 'gitops', 'difficile', 55, 'kubernetes', 'Créez une Application parent qui déploie les Applications enfants.', 35],
+    ['ArgoCD : Canary deployment avec Argo Rollouts', 'argocd-canary-rollouts', 'Déployez en mode canary avec Argo Rollouts.', 'gitops', 'difficile', 60, 'kubernetes', 'Installez Argo Rollouts, créez un Rollout canary avec analyse.', 40],
+    // SRE
+    ['SRE : Définir des SLOs', 'sre-definir-slos', 'Définissez des SLOs, SLIs et error budgets pour un service.', 'sre', 'moyen', 40, 'mixed', 'Calculez les SLIs, définissez les SLOs et créez des alertes burn rate.', 25],
+    ['Chaos : Network partition sur K8s', 'chaos-network-partition', 'Simulez une partition réseau entre des pods Kubernetes.', 'sre', 'difficile', 50, 'kubernetes', 'Utilisez Chaos Mesh pour injecter une network partition et observez.', 35]
   ];
 
   for (const l of labs) {
