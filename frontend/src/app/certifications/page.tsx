@@ -20,7 +20,30 @@ export default function CertificationsPage() {
 
   useEffect(() => {
     certsApi.list()
-      .then((data) => { if (data && data.length > 0) setCerts(data); })
+      .then((data) => {
+        if (data && data.length > 0) {
+          // Map API data to component format
+          const mapped = data.map((c: any) => ({
+            id: c.id || c.slug,
+            title: c.name || c.title,
+            level: c.difficulty === 'intermediaire' ? 'Intermédiaire' : c.difficulty === 'avance' ? 'Avancé' : c.difficulty === 'expert' ? 'Expert' : 'Débutant',
+            duration: c.prep_hours ? `${c.prep_hours}h de préparation` : c.duration || '4 semaines',
+            modules: c.mock_exam_count || c.modules || 0,
+            description: c.description || '',
+            skills: (() => {
+              try {
+                if (Array.isArray(c.skills)) return c.skills;
+                if (Array.isArray(c.topics)) return c.topics;
+                if (typeof c.topics === 'string') return JSON.parse(c.topics);
+                if (typeof c.skills === 'string') return JSON.parse(c.skills);
+                return [];
+              } catch { return []; }
+            })(),
+            badge_color: 'from-primary-400 to-primary-600',
+          }));
+          setCerts(mapped);
+        }
+      })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
@@ -66,7 +89,7 @@ export default function CertificationsPage() {
                   <span className="flex items-center gap-1"><BookOpen size={14} /> {cert.modules} modules</span>
                 </div>
                 <div className="space-y-2">
-                  {cert.skills.map((skill) => (
+                  {(cert.skills || []).map((skill) => (
                     <div key={skill} className="flex items-center gap-2 text-sm">
                       <CheckCircle size={14} className="text-success-400" />
                       <span className="text-gray-600 dark:text-gray-300">{skill}</span>
