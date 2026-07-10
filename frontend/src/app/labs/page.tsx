@@ -5,8 +5,16 @@ import Link from 'next/link';
 import { FlaskConical, Clock, Zap, Filter } from 'lucide-react';
 import { labs as labsApi } from '@/lib/api';
 
-const difficulties = ['Tous', 'Débutant', 'Intermédiaire', 'Avancé'];
-const categories = ['Tous', 'Conteneurs', 'CI/CD', 'Cloud', 'Orchestration', 'Sécurité', 'IaC', 'Monitoring'];
+const difficulties = ['Tous', 'facile', 'moyen', 'difficile'];
+const difficultyLabels: Record<string, string> = {
+  'Tous': 'Tous', 'facile': 'Débutant', 'moyen': 'Intermédiaire', 'difficile': 'Avancé'
+};
+const categories = ['Tous', 'conteneurisation', 'cicd', 'cloud', 'orchestration', 'securite', 'iac', 'monitoring', 'network', 'systeme', 'gitops', 'sre', 'donnees', 'virtualisation'];
+const categoryLabels: Record<string, string> = {
+  'Tous': 'Tous', 'conteneurisation': 'Conteneurs', 'cicd': 'CI/CD', 'cloud': 'Cloud',
+  'orchestration': 'Orchestration', 'securite': 'Sécurité', 'iac': 'IaC', 'monitoring': 'Monitoring',
+  'network': 'Réseau', 'systeme': 'Système', 'gitops': 'GitOps', 'sre': 'SRE', 'donnees': 'Données', 'virtualisation': 'Virtualisation'
+};
 
 
 const fallbackLabs = [
@@ -24,8 +32,8 @@ const fallbackLabs = [
 export default function LabsPage() {
   const [labList, setLabList] = useState(fallbackLabs);
   const [loading, setLoading] = useState(true);
-  const [difficulty, setDifficulty] = useState('All');
-  const [category, setCategory] = useState('All');
+  const [difficulty, setDifficulty] = useState('Tous');
+  const [category, setCategory] = useState('Tous');
 
   useEffect(() => {
     labsApi.list()
@@ -34,7 +42,7 @@ export default function LabsPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const filtered = labList.filter((lab) => {
+  const filtered = labList.filter((lab: any) => {
     const matchDiff = difficulty === 'Tous' || lab.difficulty === difficulty;
     const matchCat = category === 'Tous' || lab.category === category;
     return matchDiff && matchCat;
@@ -59,7 +67,7 @@ export default function LabsPage() {
               <button key={d} onClick={() => setDifficulty(d)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                   difficulty === d ? 'bg-primary-500 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
-                }`}>{d}</button>
+                }`}>{difficultyLabels[d] || d}</button>
             ))}
           </div>
           <div className="flex flex-wrap items-center justify-center gap-2">
@@ -67,7 +75,7 @@ export default function LabsPage() {
               <button key={c} onClick={() => setCategory(c)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                   category === c ? 'bg-secondary-500 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
-                }`}>{c}</button>
+                }`}>{categoryLabels[c] || c}</button>
             ))}
           </div>
         </div>
@@ -91,16 +99,16 @@ export default function LabsPage() {
                 <Link key={lab.id} href={`/labs/${lab.slug}`} className="card-hover group">
                   <div className="flex items-center gap-2 mb-2">
                     <span className={`text-xs px-2 py-0.5 rounded-full border ${
-                      lab.difficulty === 'Débutant' ? 'difficulty-beginner' :
-                      lab.difficulty === 'Intermédiaire' ? 'difficulty-intermediate' : 'difficulty-advanced'
-                    }`}>{lab.difficulty}</span>
-                    <span className="text-xs text-accent-400 font-medium">+{lab.xp} XP</span>
+                      lab.difficulty === 'facile' ? 'difficulty-easy' :
+                      lab.difficulty === 'moyen' ? 'difficulty-medium' : 'difficulty-hard'
+                    }`}>{difficultyLabels[lab.difficulty] || lab.difficulty}</span>
+                    <span className="text-xs text-accent-400 font-medium">+{lab.xp_reward || lab.xp || 25} XP</span>
                     <span className="skill-tag text-xs">{lab.category}</span>
                   </div>
                   <h3 className="font-bold dark:text-white group-hover:text-primary-400 transition-colors">{lab.title}</h3>
                   <p className="text-sm text-gray-500 mt-1">{lab.description}</p>
                   <div className="flex items-center gap-4 mt-3 text-xs text-gray-500">
-                    <span className="flex items-center gap-1"><Clock size={12} /> {lab.duration}</span>
+                    <span className="flex items-center gap-1"><Clock size={12} /> {lab.duration_minutes ? lab.duration_minutes + ' min' : lab.duration}</span>
                     <span className="flex items-center gap-1"><FlaskConical size={12} /> Pratique</span>
                   </div>
                 </Link>
