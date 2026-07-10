@@ -391,6 +391,22 @@ async function migrate() {
       rank INTEGER,
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )`,
+
+    // 26. Cheat Sheets (Fiches)
+    `CREATE TABLE IF NOT EXISTS cheatsheets (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      slug TEXT UNIQUE NOT NULL,
+      description TEXT,
+      category TEXT NOT NULL,
+      content TEXT NOT NULL,
+      icon TEXT,
+      difficulty TEXT DEFAULT 'debutant' CHECK(difficulty IN ('debutant', 'intermediaire', 'avance')),
+      tags TEXT,
+      view_count INTEGER DEFAULT 0,
+      is_published INTEGER DEFAULT 1,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )`
   ];
 

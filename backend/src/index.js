@@ -70,6 +70,7 @@ app.use('/api/mentoring', require('./routes/mentoring'));
 app.use('/api/leaderboard', require('./routes/leaderboard'));
 app.use('/api/notifications', require('./routes/notifications'));
 app.use('/api/lessons', require('./routes/lessons'));
+app.use('/api/cheatsheets', require('./routes/cheatsheets'));
 
 // 404 handler
 app.use((req, res) => {
