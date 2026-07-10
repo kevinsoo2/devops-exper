@@ -8,6 +8,59 @@ import { labs as labsApi } from '@/lib/api';
 import { useAuthStore } from '@/lib/store';
 
 
+
+// Generate lab instructions
+function getLabInstructions(slug: string, category: string) {
+  const s = (slug || "").toLowerCase();
+  if (s.includes("docker-compose") || s.includes("multi-services")) return [
+    { title: "Créer docker-compose.yml", description: "Créez le fichier de configuration.", command: "mkdir mon-app \u0026\u0026 cd mon-app\ntouch docker-compose.yml" },
+    { title: "Configurer les services", description: "Ajoutez frontend, backend, database.", command: "# services:\n#   frontend:\n#     image: nginx:alpine\n#     ports: [\"8080:80\"]\n#   backend:\n#     image: node:18-alpine\n#   database:\n#     image: postgres:15" },
+    { title: "Lancer la stack", description: "Démarrez les services.", command: "docker compose up -d\ndocker compose ps" },
+    { title: "Vérifier la connectivité", description: "Testez que tout fonctionne.", command: "curl http://localhost:8080\ndocker compose logs" },
+    { title: "Nettoyer", description: "Arrêtez et supprimez.", command: "docker compose down -v" },
+  ];
+  if (s.includes("kubernetes") || s.includes("deployer")) return [
+    { title: "Créer un Deployment", description: "Écrivez le manifeste YAML.", command: "kubectl create deployment web --image=nginx:alpine --replicas=3" },
+    { title: "Exposer avec un Service", description: "Créez un Service.", command: "kubectl expose deployment web --port=80 --type=ClusterIP" },
+    { title: "Vérifier les pods", description: "Tous doivent être Running.", command: "kubectl get pods -l app=web\nkubectl get svc web" },
+    { title: "Tester", description: "Accédez à lapplication.", command: "kubectl port-forward svc/web 8080:80\ncurl http://localhost:8080" },
+  ];
+  if (s.includes("terraform") || s.includes("infrastructure")) return [
+    { title: "Initialiser Terraform", description: "Créez main.tf et initialisez.", command: "terraform init" },
+    { title: "Définir les ressources", description: "Ajoutez VPC et subnets.", command: "# resource \"aws_vpc\" \"main\" {\n#   cidr_block = \"10.0.0.0/16\"\n# }" },
+    { title: "Plan", description: "Prévisualisez les changements.", command: "terraform plan" },
+    { title: "Apply", description: "Créez linfrastructure.", command: "terraform apply -auto-approve" },
+    { title: "Destroy", description: "Nettoyez.", command: "terraform destroy -auto-approve" },
+  ];
+  if (s.includes("prometheus") || s.includes("monitoring") || s.includes("elk")) return [
+    { title: "Déployer la stack", description: "Lancez les composants de monitoring.", command: "docker compose -f monitoring-stack.yml up -d" },
+    { title: "Configurer le scraping", description: "Ajoutez vos targets.", command: "# prometheus.yml\nscrape_configs:\n  - job_name: app\n    targets: [\"app:3000\"]" },
+    { title: "Créer des dashboards", description: "Configurez Grafana.", command: "# Accédez à http://localhost:3000\n# Import dashboard ID: 1860" },
+    { title: "Configurer les alertes", description: "Ajoutez des règles dalerte.", command: "# alert: HighCPU\n# expr: cpu_usage > 80\n# for: 5m" },
+  ];
+  if (s.includes("securite") || s.includes("trivy") || s.includes("vault") || s.includes("hardening") || s.includes("sast")) return [
+    { title: "Scanner une image", description: "Analysez les vulnérabilités.", command: "trivy image nginx:latest\ntrivy image --severity CRITICAL mon-app:v1" },
+    { title: "Scanner le code", description: "Analyse statique.", command: "semgrep --config=auto ./src/" },
+    { title: "Corriger", description: "Mettez à jour les dépendances.", command: "# Mettre à jour les packages vulnérables\nnpm audit fix" },
+    { title: "Valider", description: "Re-scannez.", command: "trivy image --exit-code 1 --severity CRITICAL mon-app:v2" },
+  ];
+  return [
+    { title: "Préparer lenvironnement", description: "Vérifiez les prérequis.", command: "# Vérifiez les outils nécessaires" },
+    { title: "Implémenter", description: "Suivez les objectifs du lab.", command: "# Appliquez les configurations étape par étape" },
+    { title: "Tester", description: "Vérifiez le fonctionnement.", command: "# Exécutez les tests de validation" },
+    { title: "Valider", description: "Confirmez la complétion.", command: "echo \"Lab terminé !\"" },
+  ];
+}
+
+function getValidationCommand(category: string) {
+  if (category === "conteneurisation") return "docker compose ps  # Tous running";
+  if (category === "orchestration") return "kubectl get pods  # Tous Running";
+  if (category === "iac") return "terraform state list  # Ressources présentes";
+  if (category === "monitoring") return "curl localhost:9090/targets  # Tous up";
+  if (category === "securite") return "trivy image --exit-code 0 app:latest";
+  return "echo \"Validation OK\"";
+}
+
 const fallbackLab = {
   id: '1',
   title: 'Deploy Multi-Container App with Docker Compose',
@@ -93,11 +146,51 @@ export default function LabDetailPage() {
         </div>
 
         {started ? (
-          <div className="card border-success-500/50 mb-8">
-            <div className="flex items-center gap-2 text-success-400 mb-2">
-              <CheckCircle size={20} /> Environnement du Lab Prêt
+          <div className="space-y-6 mb-8">
+            <div className="card border-success-500/50">
+              <div className="flex items-center gap-2 text-success-400 mb-2">
+                <CheckCircle size={20} /> Environnement du Lab Prêt
+              </div>
+              <p className="text-sm text-gray-500">Suivez les instructions ci-dessous étape par étape.</p>
             </div>
-            <p className="text-sm text-gray-500">Votre environnement de lab se lance. Suivez les objectifs ci-dessous.</p>
+
+            {/* Instructions du Lab */}
+            <div className="card">
+              <h2 className="text-xl font-bold dark:text-white mb-6">📋 Instructions du Lab</h2>
+              
+              {data.instructions ? (
+                <div className="text-sm text-gray-300 leading-relaxed whitespace-pre-line">{data.instructions}</div>
+              ) : (
+                <div className="space-y-6">
+                  {getLabInstructions(data.slug || data.title, data.category).map((step: any, i: number) => (
+                    <div key={i} className="border-l-2 border-primary-500/50 pl-4">
+                      <h3 className="font-semibold text-white mb-2">Étape {i + 1}: {step.title}</h3>
+                      <p className="text-gray-400 text-sm mb-3">{step.description}</p>
+                      {step.command && (
+                        <div className="bg-gray-900 border border-gray-700 rounded-lg p-3 font-mono text-xs text-green-400 overflow-x-auto">
+                          <pre>{step.command}</pre>
+                        </div>
+                      )}
+                      {step.expected && (
+                        <p className="text-xs text-gray-500 mt-2 italic">✓ Résultat attendu : {step.expected}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Validation */}
+            <div className="card border-primary-500/30">
+              <h2 className="font-bold dark:text-white mb-3">✅ Validation</h2>
+              <p className="text-sm text-gray-400 mb-4">Une fois toutes les étapes complétées, vérifiez que tout fonctionne :</p>
+              <div className="bg-gray-900 border border-gray-700 rounded-lg p-3 font-mono text-xs text-green-400 mb-4">
+                <pre>{getValidationCommand(data.category)}</pre>
+              </div>
+              <button className="btn-primary" onClick={() => alert('Lab complété ! +' + ((data as any).xp_reward || (data as any).xp || 25) + ' XP')}>
+                <CheckCircle size={16} /> Marquer comme complété
+              </button>
+            </div>
           </div>
         ) : (
           <button onClick={handleStart} disabled={starting} className="btn-primary mb-8 flex items-center gap-2">
