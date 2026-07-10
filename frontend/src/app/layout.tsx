@@ -3,6 +3,7 @@ import './globals.css';
 import { Providers } from '@/components/layout/Providers';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
+import { ScrollToTop } from '@/components/ui/ScrollToTop';
 
 export const metadata: Metadata = {
   title: 'DevOps Expert Academy - Devenez Expert DevOps',
@@ -30,11 +31,13 @@ export default function RootLayout({
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         />
       </head>
-      <body className="font-sans">
+      <body className="font-sans overflow-x-hidden">
         <Providers>
           <Navbar />
-          <main className="min-h-screen">{children}</main>
+          <main className="min-h-screen relative">{children}</main>
           <Footer />
+          {/* Scroll to top button */}
+          <ScrollToTop />
         </Providers>
       </body>
     </html>

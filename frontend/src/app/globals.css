@@ -215,7 +215,51 @@
 
 /* === SMOOTH PAGE TRANSITIONS === */
 main {
-  animation: fadeIn 0.3s ease-out;
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* === BETTER LINKS === */
+a {
+  transition: color 0.2s ease;
+}
+
+/* === IMPROVED TYPOGRAPHY === */
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+  letter-spacing: -0.02em;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* === BETTER IMAGES === */
+img {
+  transition: transform 0.3s ease;
+}
+
+/* === LOADING STATE === */
+.loading-dots::after {
+  content: '';
+  animation: dots 1.5s steps(4) infinite;
+}
+
+@keyframes dots {
+  0% { content: ''; }
+  25% { content: '.'; }
+  50% { content: '..'; }
+  75% { content: '...'; }
+}
+
+/* === BETTER TABLES === */
+table {
+  @apply w-full text-sm;
+}
+th {
+  @apply text-left font-semibold text-gray-200 pb-2 border-b border-gray-700;
+}
+td {
+  @apply py-2 text-gray-400 border-b border-gray-800;
 }
 
 /* === CODE BLOCKS === */
