@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const { seedCoursesContent } = require('./seed-courses-content');
 const { seedLessonContent } = require('./seed-lesson-content');
 const { seedExtraCourses } = require('./seed-extra-courses');
+const { seedCitrixCourse } = require('./seed-citrix');
 require('dotenv').config();
 
 async function seed() {
@@ -46,7 +47,8 @@ async function seed() {
     ['Troubleshooting Réseau pour DevOps', 'troubleshooting-reseau-devops', 'Diagnostiquez et résolvez les problèmes réseau en production : outils, méthodologie et cas pratiques.', 'network', 'intermediaire', 20, 'Pierre Martin', 'Réseaux fondamentaux', '["Diagnostiquer couche par couche","Utiliser Wireshark et tcpdump","Résoudre les problèmes DNS","Troubleshooter Kubernetes réseau","Optimiser les performances réseau"]', 0],
     ['Scripting Bash et Automatisation', 'scripting-bash-automatisation', 'Automatisez toutes vos tâches d\'administration système avec le scripting Bash avancé et les outils CLI.', 'systeme', 'debutant', 22, 'Pierre Martin', 'Aucun', '["Écrire des scripts Bash professionnels","Manipuler du texte avec grep/sed/awk","Automatiser l\'administration système","Créer des outils de monitoring","Respecter les bonnes pratiques shell"]', 0],
     ['Sécurité et Hardening Linux', 'securite-hardening-linux', 'Durcissez vos serveurs Linux : CIS Benchmarks, SELinux, audit, chiffrement et conformité.', 'systeme', 'avance', 30, 'Lucas Bernard', 'Administration Linux', '["Appliquer les CIS Benchmarks","Configurer SELinux et AppArmor","Mettre en place l\'audit système","Chiffrer disques et communications","Automatiser le hardening"]', 0],
-    ['Performance et Optimisation Système', 'performance-optimisation-systeme', 'Analysez et optimisez les performances de vos serveurs : CPU, mémoire, I/O, réseau et tuning kernel.', 'systeme', 'avance', 26, 'Marie Dupont', 'Administration Linux', '["Utiliser la méthode USE","Analyser CPU et processus","Diagnostiquer les problèmes mémoire","Optimiser le stockage et I/O","Tuner le kernel Linux"]', 0]
+    ['Performance et Optimisation Système', 'performance-optimisation-systeme', 'Analysez et optimisez les performances de vos serveurs : CPU, mémoire, I/O, réseau et tuning kernel.', 'systeme', 'avance', 26, 'Marie Dupont', 'Administration Linux', '["Utiliser la méthode USE","Analyser CPU et processus","Diagnostiquer les problèmes mémoire","Optimiser le stockage et I/O","Tuner le kernel Linux"]', 0],
+    ['Citrix Virtual Apps and Desktops - Administration Complète', 'citrix-virtual-apps-desktops', 'Formation complète sur Citrix : architecture, déploiement, gestion des applications et bureaux virtuels, NetScaler, StoreFront, policies et troubleshooting.', 'virtualisation', 'intermediaire', 45, 'Lucas Bernard', 'Windows Server, Réseaux', '["Déployer Citrix Virtual Apps and Desktops","Configurer NetScaler/ADC","Administrer StoreFront et Workspace","Gérer les policies et profils","Optimiser les performances","Troubleshooter les connexions","Sécuriser l environnement Citrix","Planifier la haute disponibilité"]', 1]
   ];
 
   for (const c of courses) {
@@ -265,6 +267,9 @@ async function seed() {
 
   // Seed chapters and lessons for extra courses (13-18)
   await seedExtraCourses(db);
+
+  // Seed Citrix course content
+  await seedCitrixCourse(db);
 
   // Seed lesson content (educational text)
   await seedLessonContent();
