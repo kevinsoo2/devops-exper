@@ -5,11 +5,12 @@ import Link from 'next/link';
 import { BookOpen, Search, Clock, Users, Star, Filter } from 'lucide-react';
 import { courses as coursesApi } from '@/lib/api';
 
-const categories = ['Tous', 'conteneurisation', 'cicd', 'cloud', 'iac', 'orchestration', 'monitoring', 'network', 'systeme', 'securite', 'virtualisation', 'gitops', 'sre'];
+const categories = ['Tous', 'conteneurisation', 'cicd', 'cloud', 'iac', 'orchestration', 'monitoring', 'network', 'systeme', 'securite', 'virtualisation', 'gitops', 'sre', 'automatisation', 'donnees'];
 const categoryLabels: Record<string, string> = {
   'Tous': 'Tous', 'conteneurisation': 'Conteneurisation', 'cicd': 'CI/CD', 'cloud': 'Cloud',
   'iac': 'IaC', 'orchestration': 'Orchestration', 'monitoring': 'Monitoring', 'network': 'Réseau',
-  'systeme': 'Système', 'securite': 'Sécurité', 'virtualisation': 'Virtualisation', 'gitops': 'GitOps', 'sre': 'SRE'
+  'systeme': 'Système', 'securite': 'Sécurité', 'virtualisation': 'Virtualisation', 'gitops': 'GitOps', 'sre': 'SRE',
+  'automatisation': 'Automatisation', 'donnees': 'Données'
 };
 const levels = ['Tous', 'debutant', 'intermediaire', 'avance'];
 const levelLabels: Record<string, string> = {

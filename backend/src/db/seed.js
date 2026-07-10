@@ -4,6 +4,7 @@ const { seedCoursesContent } = require('./seed-courses-content');
 const { seedLessonContent } = require('./seed-lesson-content');
 const { seedExtraCourses } = require('./seed-extra-courses');
 const { seedCitrixCourse } = require('./seed-citrix');
+const { seedMoreCourses } = require('./seed-more-courses');
 require('dotenv').config();
 
 async function seed() {
@@ -48,7 +49,15 @@ async function seed() {
     ['Scripting Bash et Automatisation', 'scripting-bash-automatisation', 'Automatisez toutes vos tâches d\'administration système avec le scripting Bash avancé et les outils CLI.', 'systeme', 'debutant', 22, 'Pierre Martin', 'Aucun', '["Écrire des scripts Bash professionnels","Manipuler du texte avec grep/sed/awk","Automatiser l\'administration système","Créer des outils de monitoring","Respecter les bonnes pratiques shell"]', 0],
     ['Sécurité et Hardening Linux', 'securite-hardening-linux', 'Durcissez vos serveurs Linux : CIS Benchmarks, SELinux, audit, chiffrement et conformité.', 'systeme', 'avance', 30, 'Lucas Bernard', 'Administration Linux', '["Appliquer les CIS Benchmarks","Configurer SELinux et AppArmor","Mettre en place l\'audit système","Chiffrer disques et communications","Automatiser le hardening"]', 0],
     ['Performance et Optimisation Système', 'performance-optimisation-systeme', 'Analysez et optimisez les performances de vos serveurs : CPU, mémoire, I/O, réseau et tuning kernel.', 'systeme', 'avance', 26, 'Marie Dupont', 'Administration Linux', '["Utiliser la méthode USE","Analyser CPU et processus","Diagnostiquer les problèmes mémoire","Optimiser le stockage et I/O","Tuner le kernel Linux"]', 0],
-    ['Citrix Virtual Apps and Desktops - Administration Complète', 'citrix-virtual-apps-desktops', 'Formation complète sur Citrix : architecture, déploiement, gestion des applications et bureaux virtuels, NetScaler, StoreFront, policies et troubleshooting.', 'virtualisation', 'intermediaire', 45, 'Lucas Bernard', 'Windows Server, Réseaux', '["Déployer Citrix Virtual Apps and Desktops","Configurer NetScaler/ADC","Administrer StoreFront et Workspace","Gérer les policies et profils","Optimiser les performances","Troubleshooter les connexions","Sécuriser l environnement Citrix","Planifier la haute disponibilité"]', 1]
+    ['Citrix Virtual Apps and Desktops - Administration Complète', 'citrix-virtual-apps-desktops', 'Formation complète sur Citrix : architecture, déploiement, gestion des applications et bureaux virtuels, NetScaler, StoreFront, policies et troubleshooting.', 'virtualisation', 'intermediaire', 45, 'Lucas Bernard', 'Windows Server, Réseaux', '["Déployer Citrix Virtual Apps and Desktops","Configurer NetScaler/ADC","Administrer StoreFront et Workspace","Gérer les policies et profils","Optimiser les performances","Troubleshooter les connexions","Sécuriser l environnement Citrix","Planifier la haute disponibilité"]', 1],
+    ['Windows Server Administration', 'windows-server-administration', 'Administration complète de Windows Server : Active Directory, DNS, DHCP, GPO, Hyper-V et PowerShell.', 'systeme', 'intermediaire', 35, 'Lucas Bernard', 'Bases informatique', '["Déployer Active Directory","Configurer DNS et DHCP","Créer des GPO","Gérer Hyper-V","Automatiser avec PowerShell"]', 0],
+    ['Python pour le DevOps', 'python-devops', 'Apprenez Python pour automatiser vos tâches DevOps : scripts, API, SDK cloud, parsing et testing.', 'automatisation', 'debutant', 28, 'Pierre Martin', 'Aucun', '["Écrire des scripts Python professionnels","Interagir avec les API REST","Utiliser les SDK cloud (boto3, azure-sdk)","Parser JSON/YAML/CSV","Tester et packager vos outils"]', 0],
+    ['VMware vSphere Administration', 'vmware-vsphere-administration', 'Maîtrisez VMware vSphere : ESXi, vCenter, vMotion, HA, DRS, stockage et réseau virtuel.', 'virtualisation', 'intermediaire', 38, 'Marie Dupont', 'Réseaux, Stockage', '["Installer et configurer ESXi","Administrer vCenter Server","Configurer vMotion et Storage vMotion","Implémenter HA et DRS","Gérer le réseau distribué","Monitorer avec vROps"]', 0],
+    ['Base de Données pour DevOps', 'bases-donnees-devops', 'Gérez les bases de données en production : PostgreSQL, MySQL, MongoDB, migrations, backup et performance.', 'donnees', 'intermediaire', 30, 'Lucas Bernard', 'Linux basics, SQL', '["Administrer PostgreSQL et MySQL","Gérer MongoDB et Redis","Automatiser les migrations","Mettre en place les backups","Optimiser les performances","Configurer la réplication"]', 0],
+    ['Git Avancé et Workflows', 'git-avance-workflows', 'Maîtrisez Git au-delà des bases : rebase, cherry-pick, hooks, submodules, workflows et monorepos.', 'cicd', 'intermediaire', 18, 'Pierre Martin', 'Git basics', '["Maîtriser rebase et cherry-pick","Configurer les hooks Git","Gérer submodules et monorepos","Implémenter GitFlow et Trunk-based","Résoudre les conflits complexes"]', 0],
+    ['Nginx et Reverse Proxy', 'nginx-reverse-proxy', 'Configuration complète de Nginx : reverse proxy, load balancing, SSL/TLS, caching, rate limiting et sécurité.', 'network', 'intermediaire', 22, 'Marie Dupont', 'Linux, HTTP', '["Configurer Nginx comme reverse proxy","Implémenter le load balancing","Gérer les certificats TLS","Configurer le caching","Mettre en place le rate limiting","Sécuriser avec ModSecurity"]', 0],
+    ['Azure DevOps et Cloud', 'azure-devops-cloud', 'Maîtrisez Azure pour le DevOps : Azure DevOps, AKS, Azure Functions, ARM/Bicep et monitoring.', 'cloud', 'intermediaire', 35, 'Lucas Bernard', 'Cloud basics', '["Utiliser Azure DevOps (Repos, Pipelines, Boards)","Déployer sur AKS","Créer des Azure Functions","Écrire des templates ARM/Bicep","Monitorer avec Azure Monitor"]', 0],
+    ['Chaos Engineering et Résilience', 'chaos-engineering-resilience', 'Testez la résilience de vos systèmes : Chaos Monkey, Litmus, Gremlin, game days et pratiques SRE.', 'sre', 'avance', 20, 'Pierre Martin', 'Kubernetes, Monitoring', '["Comprendre les principes du Chaos Engineering","Utiliser Litmus Chaos sur Kubernetes","Planifier des Game Days","Mesurer la résilience avec des SLOs","Automatiser les tests de chaos"]', 0]
   ];
 
   for (const c of courses) {
@@ -270,6 +279,9 @@ async function seed() {
 
   // Seed Citrix course content
   await seedCitrixCourse(db);
+
+  // Seed more courses content (Windows Server, Python DevOps, VMware, etc.)
+  await seedMoreCourses(db);
 
   // Seed lesson content (educational text)
   await seedLessonContent();
