@@ -102,13 +102,13 @@ export default function LabsPage() {
                       lab.difficulty === 'facile' ? 'difficulty-easy' :
                       lab.difficulty === 'moyen' ? 'difficulty-medium' : 'difficulty-hard'
                     }`}>{difficultyLabels[lab.difficulty] || lab.difficulty}</span>
-                    <span className="text-xs text-accent-400 font-medium">+{lab.xp_reward || lab.xp || 25} XP</span>
+                    <span className="text-xs text-accent-400 font-medium">+{(lab as any).xp_reward || (lab as any).xp || 25} XP</span>
                     <span className="skill-tag text-xs">{lab.category}</span>
                   </div>
                   <h3 className="font-bold dark:text-white group-hover:text-primary-400 transition-colors">{lab.title}</h3>
                   <p className="text-sm text-gray-500 mt-1">{lab.description}</p>
                   <div className="flex items-center gap-4 mt-3 text-xs text-gray-500">
-                    <span className="flex items-center gap-1"><Clock size={12} /> {lab.duration_minutes ? lab.duration_minutes + ' min' : lab.duration}</span>
+                    <span className="flex items-center gap-1"><Clock size={12} /> {(lab as any).duration_minutes ? (lab as any).duration_minutes + ' min' : (lab as any).duration}</span>
                     <span className="flex items-center gap-1"><FlaskConical size={12} /> Pratique</span>
                   </div>
                 </Link>
