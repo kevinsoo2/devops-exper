@@ -55,10 +55,74 @@ const roadmapSteps = [
     status: 'locked',
     items: ['Platform Design', 'Developer Experience', 'SRE Principles', 'Chaos Engineering'],
   },
+  {
+    level: 'Débutant',
+    title: 'Scripting & Automatisation',
+    description: 'Bash, Python, automatisation des tâches',
+    xp: 600,
+    status: 'available',
+    items: ['Bash Scripting', 'Python pour DevOps', 'Cron & Systemd', 'Automatisation SSH'],
+  },
+  {
+    level: 'Intermédiaire',
+    title: 'Cloud Computing',
+    description: 'AWS, Azure, GCP - services essentiels',
+    xp: 1200,
+    status: 'locked',
+    items: ['AWS (EC2, S3, VPC, IAM)', 'Azure (AKS, Functions)', 'GCP (GKE, Cloud Run)', 'Multi-cloud strategies'],
+  },
+  {
+    level: 'Intermédiaire',
+    title: 'Monitoring & Observabilité',
+    description: 'Prometheus, Grafana, ELK, tracing',
+    xp: 1100,
+    status: 'locked',
+    items: ['Prometheus & PromQL', 'Grafana Dashboards', 'ELK Stack (Logs)', 'OpenTelemetry (Traces)'],
+  },
+  {
+    level: 'Avancé',
+    title: 'Sécurité DevSecOps',
+    description: 'SAST, DAST, scanning, secrets, compliance',
+    xp: 1800,
+    status: 'locked',
+    items: ['Scan de vulnérabilités (Trivy)', 'SAST/DAST en pipeline', 'Gestion des secrets (Vault)', 'OPA & Policy as Code'],
+  },
+  {
+    level: 'Avancé',
+    title: 'GitOps & Déploiement Avancé',
+    description: 'ArgoCD, Flux, canary, blue-green',
+    xp: 1600,
+    status: 'locked',
+    items: ['ArgoCD & Flux CD', 'Canary Deployments', 'Blue-Green & A/B Testing', 'Progressive Delivery'],
+  },
+  {
+    level: 'Avancé',
+    title: 'Réseaux pour DevOps',
+    description: 'DNS, Load Balancing, Service Mesh, VPN',
+    xp: 1400,
+    status: 'locked',
+    items: ['DNS & HTTP avancé', 'Load Balancing (Nginx, HAProxy)', 'Service Mesh (Istio)', 'VPN & Firewalling'],
+  },
+  {
+    level: 'Expert',
+    title: 'Kubernetes Avancé',
+    description: 'Operators, CRDs, multi-cluster, federation',
+    xp: 2500,
+    status: 'locked',
+    items: ['Custom Operators & CRDs', 'Multi-cluster management', 'Service Mesh avancé', 'FinOps & Cost optimization'],
+  },
+  {
+    level: 'Expert',
+    title: 'SRE & Fiabilité',
+    description: 'SLO/SLI, Error Budgets, Chaos Engineering',
+    xp: 2800,
+    status: 'locked',
+    items: ['SLO, SLI & Error Budgets', 'Incident Management', 'Chaos Engineering (Litmus)', 'Capacity Planning'],
+  },
 ];
 
 export function RoadmapPreview() {
-  const [filter, setFilter] = useState('All');
+  const [filter, setFilter] = useState('Tous');
 
   const filtered = filter === 'Tous' ? roadmapSteps : roadmapSteps.filter((s) => s.level === filter);
 
