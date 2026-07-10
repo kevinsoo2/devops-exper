@@ -5,6 +5,7 @@ const { seedLessonContent } = require('./seed-lesson-content');
 const { seedExtraCourses } = require('./seed-extra-courses');
 const { seedCitrixCourse } = require('./seed-citrix');
 const { seedMoreCourses } = require('./seed-more-courses');
+const { seedBatch2Courses } = require('./seed-batch2-courses');
 require('dotenv').config();
 
 async function seed() {
@@ -57,7 +58,19 @@ async function seed() {
     ['Git Avancé et Workflows', 'git-avance-workflows', 'Maîtrisez Git au-delà des bases : rebase, cherry-pick, hooks, submodules, workflows et monorepos.', 'cicd', 'intermediaire', 18, 'Pierre Martin', 'Git basics', '["Maîtriser rebase et cherry-pick","Configurer les hooks Git","Gérer submodules et monorepos","Implémenter GitFlow et Trunk-based","Résoudre les conflits complexes"]', 0],
     ['Nginx et Reverse Proxy', 'nginx-reverse-proxy', 'Configuration complète de Nginx : reverse proxy, load balancing, SSL/TLS, caching, rate limiting et sécurité.', 'network', 'intermediaire', 22, 'Marie Dupont', 'Linux, HTTP', '["Configurer Nginx comme reverse proxy","Implémenter le load balancing","Gérer les certificats TLS","Configurer le caching","Mettre en place le rate limiting","Sécuriser avec ModSecurity"]', 0],
     ['Azure DevOps et Cloud', 'azure-devops-cloud', 'Maîtrisez Azure pour le DevOps : Azure DevOps, AKS, Azure Functions, ARM/Bicep et monitoring.', 'cloud', 'intermediaire', 35, 'Lucas Bernard', 'Cloud basics', '["Utiliser Azure DevOps (Repos, Pipelines, Boards)","Déployer sur AKS","Créer des Azure Functions","Écrire des templates ARM/Bicep","Monitorer avec Azure Monitor"]', 0],
-    ['Chaos Engineering et Résilience', 'chaos-engineering-resilience', 'Testez la résilience de vos systèmes : Chaos Monkey, Litmus, Gremlin, game days et pratiques SRE.', 'sre', 'avance', 20, 'Pierre Martin', 'Kubernetes, Monitoring', '["Comprendre les principes du Chaos Engineering","Utiliser Litmus Chaos sur Kubernetes","Planifier des Game Days","Mesurer la résilience avec des SLOs","Automatiser les tests de chaos"]', 0]
+    ['Chaos Engineering et Résilience', 'chaos-engineering-resilience', 'Testez la résilience de vos systèmes : Chaos Monkey, Litmus, Gremlin, game days et pratiques SRE.', 'sre', 'avance', 20, 'Pierre Martin', 'Kubernetes, Monitoring', '["Comprendre les principes du Chaos Engineering","Utiliser Litmus Chaos sur Kubernetes","Planifier des Game Days","Mesurer la résilience avec des SLOs","Automatiser les tests de chaos"]', 0],
+    ['Google Cloud Platform pour DevOps', 'gcp-devops', 'Maîtrisez GCP pour le DevOps : GKE, Cloud Run, Cloud Build, Terraform sur GCP et monitoring.', 'cloud', 'intermediaire', 32, 'Marie Dupont', 'Cloud basics', '["Déployer sur GKE","Utiliser Cloud Run et Cloud Functions","Configurer Cloud Build CI/CD","Gérer l infrastructure avec Terraform","Monitorer avec Cloud Operations"]', 0],
+    ['ElasticSearch et ELK Stack', 'elasticsearch-elk-stack', 'Maîtrisez la stack ELK : Elasticsearch, Logstash, Kibana pour le logging centralisé et l analyse.', 'monitoring', 'intermediaire', 25, 'Lucas Bernard', 'Linux basics', '["Déployer un cluster Elasticsearch","Configurer Logstash pipelines","Créer des dashboards Kibana","Gérer les index et ILM","Sécuriser la stack ELK"]', 0],
+    ['Jenkins Pipeline et Administration', 'jenkins-pipeline-administration', 'Administration complète de Jenkins : pipelines déclaratifs, shared libraries, agents et sécurité.', 'cicd', 'intermediaire', 24, 'Pierre Martin', 'CI/CD basics', '["Écrire des Jenkinsfiles déclaratifs","Créer des shared libraries","Gérer les agents et executors","Sécuriser Jenkins","Intégrer avec Docker et K8s"]', 0],
+    ['Kafka et Event Streaming', 'kafka-event-streaming', 'Apprenez Apache Kafka : messaging distribué, streams processing, Connect et administration.', 'donnees', 'avance', 28, 'Lucas Bernard', 'Java/Linux basics', '["Déployer un cluster Kafka","Produire et consommer des messages","Kafka Streams et ksqlDB","Kafka Connect et intégrations","Monitorer et optimiser Kafka"]', 0],
+    ['Pulumi Infrastructure as Code', 'pulumi-iac', 'Infrastructure as Code avec des vrais langages : Python, TypeScript, Go pour provisionner le cloud.', 'iac', 'intermediaire', 20, 'Marie Dupont', 'Un langage de programmation', '["Écrire de l IaC en Python/TypeScript","Gérer le state Pulumi","Créer des composants réutilisables","Intégrer avec CI/CD","Comparer avec Terraform"]', 0],
+    ['Podman et Containers sans Docker', 'podman-containers', 'Maîtrisez Podman, Buildah et Skopeo : conteneurisation sans daemon, rootless et compatible OCI.', 'conteneurisation', 'intermediaire', 18, 'Pierre Martin', 'Docker basics', '["Utiliser Podman sans daemon","Créer des images avec Buildah","Gérer les registries avec Skopeo","Conteneurs rootless","Pods Podman et systemd"]', 0],
+    ['Service Mesh avec Istio', 'service-mesh-istio', 'Implémentez un service mesh complet avec Istio : traffic management, security, observability.', 'orchestration', 'avance', 30, 'Marie Dupont', 'Kubernetes avancé', '["Installer et configurer Istio","Gérer le trafic (routing, canary, fault injection)","Implémenter mTLS automatique","Configurer l observabilité (Kiali, Jaeger)","Politiques d autorisation"]', 0],
+    ['Hashicorp Stack Complète', 'hashicorp-stack', 'Maîtrisez l écosystème HashiCorp : Vault, Consul, Nomad et Packer en complément de Terraform.', 'iac', 'avance', 35, 'Lucas Bernard', 'Terraform basics', '["Gérer les secrets avec Vault","Service discovery avec Consul","Orchestration avec Nomad","Créer des images avec Packer","Intégrer la stack complète"]', 0],
+    ['Kubernetes Operators et CRDs', 'kubernetes-operators-crds', 'Développez des Operators Kubernetes avec le SDK et créez des Custom Resource Definitions.', 'orchestration', 'avance', 22, 'Pierre Martin', 'Kubernetes avancé, Go/Python', '["Comprendre le pattern Operator","Créer des CRDs","Utiliser Operator SDK (Go/Ansible/Helm)","Implémenter la réconciliation","Publier sur OperatorHub"]', 0],
+    ['FinOps et Optimisation Cloud', 'finops-optimisation-cloud', 'Optimisez vos coûts cloud : tagging, right-sizing, reserved instances, spot et gouvernance.', 'cloud', 'intermediaire', 20, 'Marie Dupont', 'Cloud basics', '["Comprendre le modèle de coûts cloud","Implémenter le tagging et la gouvernance","Right-sizing des ressources","Utiliser Spot/Preemptible instances","Créer des dashboards FinOps"]', 0],
+    ['Observabilité avec OpenTelemetry', 'observabilite-opentelemetry', 'Implémentez l observabilité unifiée avec OpenTelemetry : traces, métriques et logs correlés.', 'monitoring', 'avance', 24, 'Lucas Bernard', 'Monitoring basics', '["Comprendre les signaux d observabilité","Instrumenter avec OpenTelemetry SDK","Collecter avec le Collector OTel","Exporter vers Jaeger, Prometheus, Loki","Corréler traces, métriques et logs"]', 0],
+    ['GitLab CI/CD et DevOps', 'gitlab-cicd-devops', 'Maîtrisez GitLab CI/CD : pipelines, runners, registries, environments et Auto DevOps.', 'cicd', 'intermediaire', 22, 'Pierre Martin', 'Git basics', '["Écrire des .gitlab-ci.yml avancés","Gérer les runners et executors","Utiliser le Container Registry GitLab","Configurer les environments et review apps","Implémenter Auto DevOps"]', 0]
   ];
 
   for (const c of courses) {
@@ -282,6 +295,9 @@ async function seed() {
 
   // Seed more courses content (Windows Server, Python DevOps, VMware, etc.)
   await seedMoreCourses(db);
+
+  // Seed batch 2 courses content (GCP, ELK, Jenkins, Kafka, Pulumi, Podman, Istio, HashiCorp, K8s Operators, FinOps, OpenTelemetry, GitLab)
+  await seedBatch2Courses(db);
 
   // Seed lesson content (educational text)
   await seedLessonContent();
