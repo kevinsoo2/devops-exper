@@ -4,6 +4,7 @@ import { Providers } from '@/components/layout/Providers';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { ScrollToTop } from '@/components/ui/ScrollToTop';
+import { SearchModal } from '@/components/ui/SearchModal';
 
 export const metadata: Metadata = {
   title: 'DevOps Expert Academy - Devenez Expert DevOps',
@@ -34,9 +35,9 @@ export default function RootLayout({
       <body className="font-sans overflow-x-hidden">
         <Providers>
           <Navbar />
+          <SearchModal />
           <main className="min-h-screen relative">{children}</main>
           <Footer />
-          {/* Scroll to top button */}
           <ScrollToTop />
         </Providers>
       </body>
