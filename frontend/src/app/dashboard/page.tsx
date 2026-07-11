@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { BarChart3, BookOpen, Trophy, Zap, Clock, TrendingUp, Target } from 'lucide-react';
 import { stats as statsApi, progress as progressApi } from '@/lib/api';
 import { useAuthStore } from '@/lib/store';
+import { StreakTracker } from '@/components/ui/StreakTracker';
+import { DailyChallenge } from '@/components/ui/DailyChallenge';
 
 
 const fallbackStats = {
@@ -131,6 +133,12 @@ export default function DashboardPage() {
               ))}
             </div>
           </div>
+        </div>
+
+        {/* Streak & Daily Challenge */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+          <StreakTracker />
+          <DailyChallenge />
         </div>
       </div>
     </div>
