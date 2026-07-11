@@ -5,6 +5,8 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { ScrollToTop } from '@/components/ui/ScrollToTop';
 import { SearchModal } from '@/components/ui/SearchModal';
+import { Onboarding } from '@/components/ui/Onboarding';
+import { KeyboardShortcuts } from '@/components/ui/KeyboardShortcuts';
 
 export const metadata: Metadata = {
   title: 'DevOps Expert Academy - Devenez Expert DevOps',
@@ -36,6 +38,8 @@ export default function RootLayout({
         <Providers>
           <Navbar />
           <SearchModal />
+          <KeyboardShortcuts />
+          <Onboarding />
           <main className="min-h-screen relative">{children}</main>
           <Footer />
           <ScrollToTop />
