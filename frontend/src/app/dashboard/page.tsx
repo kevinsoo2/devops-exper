@@ -8,6 +8,7 @@ import { stats as statsApi, progress as progressApi } from '@/lib/api';
 import { useAuthStore } from '@/lib/store';
 import { StreakTracker } from '@/components/ui/StreakTracker';
 import { DailyChallenge } from '@/components/ui/DailyChallenge';
+import { CourseRecommendations } from '@/components/ui/CourseRecommendations';
 
 
 const fallbackStats = {
@@ -140,6 +141,9 @@ export default function DashboardPage() {
           <StreakTracker />
           <DailyChallenge />
         </div>
+
+        {/* Recommendations */}
+        <CourseRecommendations />
       </div>
     </div>
   );

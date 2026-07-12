@@ -354,6 +354,15 @@ pre code {
   transform: translateX(-50%) translateY(-8px);
 }
 
+/* === FOCUS MODE === */
+body.focus-mode nav,
+body.focus-mode footer {
+  display: none !important;
+}
+body.focus-mode main {
+  padding-top: 1rem !important;
+}
+
 /* === COUNTER ANIMATION === */
 @property --num {
   syntax: '<integer>';
