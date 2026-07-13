@@ -7,6 +7,7 @@ import { ScrollToTop } from '@/components/ui/ScrollToTop';
 import { SearchModal } from '@/components/ui/SearchModal';
 import { Onboarding } from '@/components/ui/Onboarding';
 import { KeyboardShortcuts } from '@/components/ui/KeyboardShortcuts';
+import { StudyTimer } from '@/components/ui/StudyTimer';
 
 export const metadata: Metadata = {
   title: 'DevOps Expert Academy - Devenez Expert DevOps',
@@ -23,6 +24,10 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#6366f1" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -43,6 +48,7 @@ export default function RootLayout({
           <main className="min-h-screen relative">{children}</main>
           <Footer />
           <ScrollToTop />
+          <StudyTimer />
         </Providers>
       </body>
     </html>
