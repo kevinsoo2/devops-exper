@@ -4,6 +4,7 @@ const { seedCoursesContent } = require('./seed-courses-content');
 const { seedLessonContent } = require('./seed-lesson-content');
 const { seedExtraCourses } = require('./seed-extra-courses');
 const { seedCitrixCourse } = require('./seed-citrix');
+const { seedRedHatCourse } = require('./seed-redhat');
 const { seedMoreCourses } = require('./seed-more-courses');
 const { seedBatch2Courses } = require('./seed-batch2-courses');
 require('dotenv').config();
@@ -59,6 +60,7 @@ async function seed() {
     ['Nginx et Reverse Proxy', 'nginx-reverse-proxy', 'Configuration complète de Nginx : reverse proxy, load balancing, SSL/TLS, caching, rate limiting et sécurité.', 'network', 'intermediaire', 22, 'Marie Dupont', 'Linux, HTTP', '["Configurer Nginx comme reverse proxy","Implémenter le load balancing","Gérer les certificats TLS","Configurer le caching","Mettre en place le rate limiting","Sécuriser avec ModSecurity"]', 0],
     ['Azure DevOps et Cloud', 'azure-devops-cloud', 'Maîtrisez Azure pour le DevOps : Azure DevOps, AKS, Azure Functions, ARM/Bicep et monitoring.', 'cloud', 'intermediaire', 35, 'Lucas Bernard', 'Cloud basics', '["Utiliser Azure DevOps (Repos, Pipelines, Boards)","Déployer sur AKS","Créer des Azure Functions","Écrire des templates ARM/Bicep","Monitorer avec Azure Monitor"]', 0],
     ['Chaos Engineering et Résilience', 'chaos-engineering-resilience', 'Testez la résilience de vos systèmes : Chaos Monkey, Litmus, Gremlin, game days et pratiques SRE.', 'sre', 'avance', 20, 'Pierre Martin', 'Kubernetes, Monitoring', '["Comprendre les principes du Chaos Engineering","Utiliser Litmus Chaos sur Kubernetes","Planifier des Game Days","Mesurer la résilience avec des SLOs","Automatiser les tests de chaos"]', 0],
+    ['Red Hat System Administration - RHCSA & RHCE', 'redhat-rhcsa-rhce', 'Formation complète Red Hat : administration système RHEL, préparation RHCSA (EX200) et RHCE (EX294) avec Ansible.', 'systeme', 'intermediaire', 60, 'Lucas Bernard', 'Bases Linux', '["Administrer Red Hat Enterprise Linux","Gérer le stockage et LVM","Configurer le réseau et firewalld","Gérer les utilisateurs et SELinux","Automatiser avec Ansible","Préparer l examen RHCSA EX200","Préparer l examen RHCE EX294","Maîtriser systemd et les services"]', 1],
     ['Google Cloud Platform pour DevOps', 'gcp-devops', 'Maîtrisez GCP pour le DevOps : GKE, Cloud Run, Cloud Build, Terraform sur GCP et monitoring.', 'cloud', 'intermediaire', 32, 'Marie Dupont', 'Cloud basics', '["Déployer sur GKE","Utiliser Cloud Run et Cloud Functions","Configurer Cloud Build CI/CD","Gérer l infrastructure avec Terraform","Monitorer avec Cloud Operations"]', 0],
     ['ElasticSearch et ELK Stack', 'elasticsearch-elk-stack', 'Maîtrisez la stack ELK : Elasticsearch, Logstash, Kibana pour le logging centralisé et l analyse.', 'monitoring', 'intermediaire', 25, 'Lucas Bernard', 'Linux basics', '["Déployer un cluster Elasticsearch","Configurer Logstash pipelines","Créer des dashboards Kibana","Gérer les index et ILM","Sécuriser la stack ELK"]', 0],
     ['Jenkins Pipeline et Administration', 'jenkins-pipeline-administration', 'Administration complète de Jenkins : pipelines déclaratifs, shared libraries, agents et sécurité.', 'cicd', 'intermediaire', 24, 'Pierre Martin', 'CI/CD basics', '["Écrire des Jenkinsfiles déclaratifs","Créer des shared libraries","Gérer les agents et executors","Sécuriser Jenkins","Intégrer avec Docker et K8s"]', 0],
@@ -243,7 +245,9 @@ async function seed() {
     ['Certified Kubernetes Security Specialist (CKS)', 'cks', 'Certification avancée en sécurité Kubernetes.', 'CNCF/Linux Foundation', 'securite', 'expert', 2, 395, 2, 'CKA requis', '["Cluster Security","System Hardening","Supply Chain Security","Runtime Security"]', '["K8s security docs","Killer.sh CKS"]', 0],
     ['HashiCorp Terraform Associate', 'terraform-associate', 'Certification officielle Terraform par HashiCorp.', 'HashiCorp', 'iac', 'intermediaire', 3, 70, 2, 'Bases cloud', '["IaC concepts","Terraform workflow","Modules","State management","Cloud agnostic"]', '["Terraform docs","HashiCorp Learn","Study guide"]', 1],
     ['AWS Certified DevOps Engineer Professional', 'aws-devops-pro', 'Certification AWS avancée pour les ingénieurs DevOps.', 'Amazon Web Services', 'cloud', 'expert', 2, 300, 3, 'AWS Associate level', '["SDLC automation","Configuration management","Monitoring & Logging","Policies & Standards","HA & Fault tolerance"]', '["AWS docs","A Cloud Guru","Tutorials Dojo"]', 1],
-    ['Linux Foundation Certified System Administrator (LFCS)', 'lfcs', 'Certification d\'administration système Linux.', 'Linux Foundation', 'systeme', 'intermediaire', 2, 395, 2, 'Bases Linux', '["Commandes essentielles","Filesystem","Networking","Service management","Security"]', '["Linux man pages","The Linux Foundation training"]', 0]
+    ['Linux Foundation Certified System Administrator (LFCS)', 'lfcs', 'Certification d\'administration système Linux.', 'Linux Foundation', 'systeme', 'intermediaire', 2, 395, 2, 'Bases Linux', '["Commandes essentielles","Filesystem","Networking","Service management","Security"]', '["Linux man pages","The Linux Foundation training"]', 0],
+    ['Red Hat Certified System Administrator (RHCSA - EX200)', 'rhcsa-ex200', 'Certification officielle Red Hat validant les compétences d\'administration système RHEL.', 'Red Hat', 'systeme', 'intermediaire', 3, 400, 3, 'Bases Linux', '["Gestion utilisateurs et permissions","Stockage LVM","SELinux","Réseau et firewalld","Conteneurs Podman","Services systemd","Troubleshooting boot"]', '["RH124 + RH134","Cours DevOps Expert Red Hat","Documentation Red Hat"]', 1],
+    ['Red Hat Certified Engineer (RHCE - EX294)', 'rhce-ex294', 'Certification avancée Red Hat validant les compétences Ansible sur RHEL.', 'Red Hat', 'iac', 'avance', 2, 400, 3, 'RHCSA requis', '["Ansible playbooks et modules","Rôles et collections","Variables et templates Jinja2","Ansible Vault","Gestion erreurs et parallélisme","RHEL System Roles"]', '["RH294","Cours DevOps Expert Red Hat","Documentation Ansible"]', 1]
   ];
 
   for (const cert of certifications) {
@@ -424,6 +428,9 @@ async function seed() {
 
   // Seed Citrix course content
   await seedCitrixCourse(db);
+
+  // Seed Red Hat RHCSA/RHCE course content
+  await seedRedHatCourse(db);
 
   // Seed more courses content (Windows Server, Python DevOps, VMware, etc.)
   await seedMoreCourses(db);
