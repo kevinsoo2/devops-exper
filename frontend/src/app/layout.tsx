@@ -9,6 +9,7 @@ import { Onboarding } from '@/components/ui/Onboarding';
 import { KeyboardShortcuts } from '@/components/ui/KeyboardShortcuts';
 import { StudyTimer } from '@/components/ui/StudyTimer';
 import { Chatbot } from '@/components/ui/Chatbot';
+import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 
 export const metadata: Metadata = {
   title: 'DevOps Expert Academy - Devenez Expert DevOps',
@@ -46,7 +47,10 @@ export default function RootLayout({
           <SearchModal />
           <KeyboardShortcuts />
           <Onboarding />
-          <main className="min-h-screen relative">{children}</main>
+          <main className="min-h-screen relative">
+            <Breadcrumbs />
+            {children}
+          </main>
           <Footer />
           <ScrollToTop />
           <StudyTimer />
