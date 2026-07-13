@@ -8,6 +8,7 @@ import { SearchModal } from '@/components/ui/SearchModal';
 import { Onboarding } from '@/components/ui/Onboarding';
 import { KeyboardShortcuts } from '@/components/ui/KeyboardShortcuts';
 import { StudyTimer } from '@/components/ui/StudyTimer';
+import { Chatbot } from '@/components/ui/Chatbot';
 
 export const metadata: Metadata = {
   title: 'DevOps Expert Academy - Devenez Expert DevOps',
@@ -49,6 +50,7 @@ export default function RootLayout({
           <Footer />
           <ScrollToTop />
           <StudyTimer />
+          <Chatbot />
         </Providers>
       </body>
     </html>
