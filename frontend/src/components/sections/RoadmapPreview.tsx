@@ -13,7 +13,7 @@ const roadmapSteps = [
     description: 'Linux, Git, bases du réseau',
     xp: 500,
     status: 'completed',
-    items: ['Linux Fundamentals', 'Git & Version Control', 'Networking Basics', 'Shell Scripting'],
+    category: 'systeme', items: ['Linux Fundamentals', 'Git & Version Control', 'Networking Basics', 'Shell Scripting'],
   },
   {
     level: 'Débutant',
@@ -21,7 +21,7 @@ const roadmapSteps = [
     description: 'Docker, concepts de conteneurs',
     xp: 750,
     status: 'completed',
-    items: ['Docker Basics', 'Dockerfile Best Practices', 'Docker Compose', 'Container Security'],
+    category: 'conteneurisation', items: ['Docker Basics', 'Dockerfile Best Practices', 'Docker Compose', 'Container Security'],
   },
   {
     level: 'Intermédiaire',
@@ -29,7 +29,7 @@ const roadmapSteps = [
     description: 'Jenkins, GitHub Actions, GitLab CI',
     xp: 1000,
     status: 'current',
-    items: ['CI/CD Concepts', 'GitHub Actions', 'Jenkins Pipelines', 'GitLab CI/CD'],
+    category: 'cicd', items: ['CI/CD Concepts', 'GitHub Actions', 'Jenkins Pipelines', 'GitLab CI/CD'],
   },
   {
     level: 'Intermédiaire',
@@ -53,7 +53,7 @@ const roadmapSteps = [
     description: 'Plateformes internes, SRE',
     xp: 3000,
     status: 'locked',
-    items: ['Platform Design', 'Developer Experience', 'SRE Principles', 'Chaos Engineering'],
+    category: 'sre', items: ['Platform Design', 'Developer Experience', 'SRE Principles', 'Chaos Engineering'],
   },
   {
     level: 'Débutant',
@@ -61,7 +61,7 @@ const roadmapSteps = [
     description: 'Bash, Python, automatisation des tâches',
     xp: 600,
     status: 'available',
-    items: ['Bash Scripting', 'Python pour DevOps', 'Cron & Systemd', 'Automatisation SSH'],
+    category: 'systeme', items: ['Bash Scripting', 'Python pour DevOps', 'Cron & Systemd', 'Automatisation SSH'],
   },
   {
     level: 'Intermédiaire',
@@ -69,7 +69,7 @@ const roadmapSteps = [
     description: 'AWS, Azure, GCP - services essentiels',
     xp: 1200,
     status: 'locked',
-    items: ['AWS (EC2, S3, VPC, IAM)', 'Azure (AKS, Functions)', 'GCP (GKE, Cloud Run)', 'Multi-cloud strategies'],
+    category: 'cloud', items: ['AWS (EC2, S3, VPC, IAM)', 'Azure (AKS, Functions)', 'GCP (GKE, Cloud Run)', 'Multi-cloud strategies'],
   },
   {
     level: 'Intermédiaire',
@@ -77,7 +77,7 @@ const roadmapSteps = [
     description: 'Prometheus, Grafana, ELK, tracing',
     xp: 1100,
     status: 'locked',
-    items: ['Prometheus & PromQL', 'Grafana Dashboards', 'ELK Stack (Logs)', 'OpenTelemetry (Traces)'],
+    category: 'monitoring', items: ['Prometheus & PromQL', 'Grafana Dashboards', 'ELK Stack (Logs)', 'OpenTelemetry (Traces)'],
   },
   {
     level: 'Avancé',
@@ -85,7 +85,7 @@ const roadmapSteps = [
     description: 'SAST, DAST, scanning, secrets, compliance',
     xp: 1800,
     status: 'locked',
-    items: ['Scan de vulnérabilités (Trivy)', 'SAST/DAST en pipeline', 'Gestion des secrets (Vault)', 'OPA & Policy as Code'],
+    category: 'securite', items: ['Scan de vulnérabilités (Trivy)', 'SAST/DAST en pipeline', 'Gestion des secrets (Vault)', 'OPA & Policy as Code'],
   },
   {
     level: 'Avancé',
@@ -93,7 +93,7 @@ const roadmapSteps = [
     description: 'ArgoCD, Flux, canary, blue-green',
     xp: 1600,
     status: 'locked',
-    items: ['ArgoCD & Flux CD', 'Canary Deployments', 'Blue-Green & A/B Testing', 'Progressive Delivery'],
+    category: 'gitops', items: ['ArgoCD & Flux CD', 'Canary Deployments', 'Blue-Green & A/B Testing', 'Progressive Delivery'],
   },
   {
     level: 'Avancé',
@@ -101,7 +101,7 @@ const roadmapSteps = [
     description: 'DNS, Load Balancing, Service Mesh, VPN',
     xp: 1400,
     status: 'locked',
-    items: ['DNS & HTTP avancé', 'Load Balancing (Nginx, HAProxy)', 'Service Mesh (Istio)', 'VPN & Firewalling'],
+    category: 'network', items: ['DNS & HTTP avancé', 'Load Balancing (Nginx, HAProxy)', 'Service Mesh (Istio)', 'VPN & Firewalling'],
   },
   {
     level: 'Expert',
@@ -109,7 +109,7 @@ const roadmapSteps = [
     description: 'Operators, CRDs, multi-cluster, federation',
     xp: 2500,
     status: 'locked',
-    items: ['Custom Operators & CRDs', 'Multi-cluster management', 'Service Mesh avancé', 'FinOps & Cost optimization'],
+    category: 'orchestration', items: ['Custom Operators & CRDs', 'Multi-cluster management', 'Service Mesh avancé', 'FinOps & Cost optimization'],
   },
   {
     level: 'Expert',
@@ -117,7 +117,7 @@ const roadmapSteps = [
     description: 'SLO/SLI, Error Budgets, Chaos Engineering',
     xp: 2800,
     status: 'locked',
-    items: ['SLO, SLI & Error Budgets', 'Incident Management', 'Chaos Engineering (Litmus)', 'Capacity Planning'],
+    category: 'sre', items: ['SLO, SLI & Error Budgets', 'Incident Management', 'Chaos Engineering (Litmus)', 'Capacity Planning'],
   },
 ];
 
@@ -203,6 +203,12 @@ export function RoadmapPreview() {
                         <span key={item} className="skill-tag text-xs">{item}</span>
                       ))}
                     </div>
+                    <Link 
+                      href={`/courses?category=${(step as any).category || ''}`}
+                      className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-primary-400 hover:text-primary-300 transition"
+                    >
+                      Voir les formations de ce parcours <ChevronRight size={12} />
+                    </Link>
                   </div>
                 </div>
               </div>
