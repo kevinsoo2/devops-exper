@@ -10,6 +10,8 @@ import { KeyboardShortcuts } from '@/components/ui/KeyboardShortcuts';
 import { StudyTimer } from '@/components/ui/StudyTimer';
 import { Chatbot } from '@/components/ui/Chatbot';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
+import { LoadingScreen } from '@/components/ui/LoadingScreen';
+import { WelcomeBack } from '@/components/ui/WelcomeBack';
 
 export const metadata: Metadata = {
   title: 'DevOps Expert Academy - Devenez Expert DevOps',
@@ -43,6 +45,8 @@ export default function RootLayout({
       </head>
       <body className="font-sans overflow-x-hidden">
         <Providers>
+          <LoadingScreen />
+          <WelcomeBack />
           <Navbar />
           <SearchModal />
           <KeyboardShortcuts />
