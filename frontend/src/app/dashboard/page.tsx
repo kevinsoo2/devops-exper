@@ -9,6 +9,7 @@ import { useAuthStore } from '@/lib/store';
 import { StreakTracker } from '@/components/ui/StreakTracker';
 import { DailyChallenge } from '@/components/ui/DailyChallenge';
 import { CourseRecommendations } from '@/components/ui/CourseRecommendations';
+import { RecentlyViewed } from '@/components/ui/RecentlyViewed';
 
 
 const fallbackStats = {
@@ -144,6 +145,9 @@ export default function DashboardPage() {
 
         {/* Recommendations */}
         <CourseRecommendations />
+
+        {/* Recently Viewed */}
+        <RecentlyViewed />
       </div>
     </div>
   );
