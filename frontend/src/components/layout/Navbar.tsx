@@ -17,6 +17,7 @@ import {
   PenTool,
   Trophy,
   FileText,
+  Info,
 } from 'lucide-react';
 
 const navLinks = [
@@ -29,6 +30,7 @@ const navLinks = [
   { href: '/blog', label: 'Blog', icon: PenTool },
   { href: '/achievements', label: 'Succès', icon: Trophy },
   { href: '/cheatsheets', label: 'Fiches', icon: FileText },
+  { href: '/about', label: 'À propos', icon: Info },
 ];
 
 export function Navbar() {
