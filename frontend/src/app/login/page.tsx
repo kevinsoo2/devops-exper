@@ -1,19 +1,55 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { LogIn, UserPlus, Mail, Lock, User, AlertCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { LogIn, UserPlus, Mail, Lock, User, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { auth } from '@/lib/api';
 import { useAuthStore } from '@/lib/store';
+import { Suspense } from 'react';
 
-
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { setAuth } = useAuthStore();
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [form, setForm] = useState({ username: '', email: '', password: '' });
+
+  // Handle OAuth callback - check for token in URL params
+  useEffect(() => {
+    const token = searchParams.get('token');
+    const userParam = searchParams.get('user');
+    const errorParam = searchParams.get('error');
+
+    if (errorParam) {
+      const errorMessages: Record<string, string> = {
+        'google_auth_failed': 'Échec de la connexion Google. Veuillez réessayer.',
+        'github_auth_failed': 'Échec de la connexion GitHub. Veuillez réessayer.',
+        'no_code': 'Code d\'autorisation manquant.',
+        'token_exchange_failed': 'Erreur lors de l\'échange du token. Vérifiez la configuration.',
+        'backend_auth_failed': 'Erreur du serveur d\'authentification.',
+        'no_email': 'Impossible de récupérer l\'email depuis GitHub. Vérifiez que votre email est public.',
+        'server_error': 'Erreur serveur. Veuillez réessayer.',
+      };
+      setError(errorMessages[errorParam] || 'Erreur d\'authentification.');
+      // Clean URL
+      window.history.replaceState({}, '', '/login');
+      return;
+    }
+
+    if (token && userParam) {
+      try {
+        const user = JSON.parse(userParam);
+        setAuth(user, token);
+        router.push('/dashboard');
+      } catch {
+        setError('Erreur lors de la récupération des données utilisateur.');
+      }
+      // Clean URL
+      window.history.replaceState({}, '', '/login');
+    }
+  }, [searchParams, setAuth, router]);
 
   const handleOAuth = (provider: 'google' | 'github') => {
     // OAuth configuration
@@ -197,5 +233,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin h-8 w-8 border-4 border-primary-500 border-t-transparent rounded-full"></div></div>}>
+      <LoginContent />
+    </Suspense>
   );
 }
