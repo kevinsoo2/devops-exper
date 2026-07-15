@@ -11,12 +11,18 @@ import { CommunityPreview } from '@/components/sections/CommunityPreview';
 import { BlogPreview } from '@/components/sections/BlogPreview';
 import { PricingSection } from '@/components/sections/PricingSection';
 import { NewsletterSection } from '@/components/sections/NewsletterSection';
+import { TestimonialsSection } from '@/components/sections/TestimonialsSection';
+import { FAQSection } from '@/components/sections/FAQSection';
+import { PartnersSection } from '@/components/sections/PartnersSection';
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll';
 
 export default function HomePage() {
   return (
     <>
       <Hero />
+      <AnimateOnScroll animation="fade-in">
+        <PartnersSection />
+      </AnimateOnScroll>
       <AnimateOnScroll animation="slide-up">
         <RoadmapPreview />
       </AnimateOnScroll>
@@ -36,6 +42,9 @@ export default function HomePage() {
         <Terminal />
       </AnimateOnScroll>
       <AnimateOnScroll animation="slide-up">
+        <TestimonialsSection />
+      </AnimateOnScroll>
+      <AnimateOnScroll animation="slide-up">
         <CommunityPreview />
       </AnimateOnScroll>
       <AnimateOnScroll animation="slide-left" delay={100}>
@@ -43,6 +52,9 @@ export default function HomePage() {
       </AnimateOnScroll>
       <AnimateOnScroll animation="scale-in">
         <PricingSection />
+      </AnimateOnScroll>
+      <AnimateOnScroll animation="fade-in">
+        <FAQSection />
       </AnimateOnScroll>
       <AnimateOnScroll animation="slide-up">
         <NewsletterSection />
