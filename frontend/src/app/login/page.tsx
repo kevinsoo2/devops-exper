@@ -10,11 +10,18 @@ import { Suspense } from 'react';
 function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { setAuth } = useAuthStore();
+  const { setAuth, user, token } = useAuthStore();
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [form, setForm] = useState({ username: '', email: '', password: '' });
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user && token) {
+      router.push('/dashboard');
+    }
+  }, [user, token, router]);
 
   // Handle OAuth callback - check for token in URL params
   useEffect(() => {
