@@ -88,6 +88,20 @@ app.post('/api/admin/seed-databases', async (req, res) => {
   }
 });
 
+// Seed2 endpoint (just the new courses)
+app.post('/api/admin/seed-databases-2', async (req, res) => {
+  try {
+    const { seedDatabaseCourses2 } = require('./db/seed-database-courses-2');
+    const { getDb } = require('./db/connection');
+    const db = getDb();
+    await seedDatabaseCourses2(db);
+    res.json({ success: true, message: 'Cours supplémentaires ajoutés' });
+  } catch (error) {
+    console.error('Seed2 error:', error);
+    res.status(500).json({ error: error.message, stack: error.stack });
+  }
+});
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({ error: 'Route non trouvée' });
