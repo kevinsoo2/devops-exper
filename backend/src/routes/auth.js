@@ -213,3 +213,89 @@ router.put('/profile', authenticate, async (req, res) => {
 });
 
 module.exports = router;
+
+// OAuth callback routes (for future implementation)
+router.get('/oauth/google', (req, res) => {
+  // In production: validate the Google code and exchange for tokens
+  // For now, redirect to frontend with a message
+  res.json({ 
+    message: 'Google OAuth endpoint. Configure GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in environment variables.',
+    setup_url: 'https://console.cloud.google.com/apis/credentials'
+  });
+});
+
+router.get('/oauth/github', (req, res) => {
+  // In production: validate the GitHub code and exchange for tokens
+  res.json({ 
+    message: 'GitHub OAuth endpoint. Configure GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET in environment variables.',
+    setup_url: 'https://github.com/settings/developers'
+  });
+});
+
+// POST /api/auth/oauth - Handle OAuth token exchange
+router.post('/oauth', async (req, res) => {
+  try {
+    const { provider, code, access_token, email, name, avatar_url } = req.body;
+    const db = getDb();
+    
+    if (!email) {
+      return res.status(400).json({ error: 'Email requis pour l\'authentification OAuth' });
+    }
+
+    // Check if user exists
+    let user;
+    const existing = await db.execute({
+      sql: 'SELECT * FROM users WHERE email = ?',
+      args: [email]
+    });
+
+    if (existing.rows.length > 0) {
+      user = existing.rows[0];
+      // Update avatar if provided
+      if (avatar_url) {
+        await db.execute({
+          sql: 'UPDATE users SET avatar_url = ? WHERE id = ?',
+          args: [avatar_url, user.id]
+        });
+      }
+    } else {
+      // Create new user from OAuth data
+      const username = (name || email.split('@')[0]).toLowerCase().replace(/[^a-z0-9]/g, '_') + '_' + Date.now().toString(36).slice(-4);
+      const hashedPassword = await require('bcryptjs').hash(`oauth_${provider}_${Date.now()}`, 10);
+      
+      const result = await db.execute({
+        sql: 'INSERT INTO users (email, password, username, full_name, avatar_url, role) VALUES (?, ?, ?, ?, ?, ?)',
+        args: [email, hashedPassword, username, name || username, avatar_url || null, 'user']
+      });
+      
+      user = { 
+        id: Number(result.lastInsertRowid), 
+        email, 
+        username, 
+        full_name: name || username, 
+        role: 'user',
+        avatar_url,
+        xp_points: 0,
+        level: 1
+      };
+    }
+
+    const token = generateToken(user);
+    res.json({ 
+      token, 
+      user: { 
+        id: user.id, 
+        email: user.email, 
+        username: user.username, 
+        full_name: user.full_name,
+        role: user.role,
+        xp_points: user.xp_points || 0,
+        level: user.level || 1,
+        avatar_url: user.avatar_url
+      } 
+    });
+  } catch (error) {
+    console.error('OAuth error:', error);
+    res.status(500).json({ error: 'Erreur OAuth' });
+  }
+});
