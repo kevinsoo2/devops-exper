@@ -76,9 +76,11 @@ app.use('/api/cheatsheets', require('./routes/cheatsheets'));
 app.post('/api/admin/seed-databases', async (req, res) => {
   try {
     const { seedDatabaseCourses } = require('./db/seed-database-courses');
+    const { seedDatabaseCourses2 } = require('./db/seed-database-courses-2');
     const { getDb } = require('./db/connection');
     const db = getDb();
     await seedDatabaseCourses(db);
+    await seedDatabaseCourses2(db);
     res.json({ success: true, message: 'Cours de bases de données ajoutés avec succès' });
   } catch (error) {
     console.error('Seed error:', error);
