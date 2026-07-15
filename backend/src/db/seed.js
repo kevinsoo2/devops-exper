@@ -7,6 +7,7 @@ const { seedCitrixCourse } = require('./seed-citrix');
 const { seedRedHatCourse } = require('./seed-redhat');
 const { seedMoreCourses } = require('./seed-more-courses');
 const { seedBatch2Courses } = require('./seed-batch2-courses');
+const { seedDatabaseCourses } = require('./seed-database-courses');
 require('dotenv').config();
 
 async function seed() {
@@ -437,6 +438,9 @@ async function seed() {
 
   // Seed batch 2 courses content (GCP, ELK, Jenkins, Kafka, Pulumi, Podman, Istio, HashiCorp, K8s Operators, FinOps, OpenTelemetry, GitLab)
   await seedBatch2Courses(db);
+
+  // Seed database courses (Oracle, MySQL, PostgreSQL, DB-Server interactions)
+  await seedDatabaseCourses(db);
 
   // Seed lesson content (educational text)
   await seedLessonContent();

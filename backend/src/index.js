@@ -72,6 +72,20 @@ app.use('/api/notifications', require('./routes/notifications'));
 app.use('/api/lessons', require('./routes/lessons'));
 app.use('/api/cheatsheets', require('./routes/cheatsheets'));
 
+// Seed endpoint (for adding new content without redeploying)
+app.post('/api/admin/seed-databases', async (req, res) => {
+  try {
+    const { seedDatabaseCourses } = require('./db/seed-database-courses');
+    const { getDb } = require('./db/connection');
+    const db = getDb();
+    await seedDatabaseCourses(db);
+    res.json({ success: true, message: 'Cours de bases de données ajoutés avec succès' });
+  } catch (error) {
+    console.error('Seed error:', error);
+    res.status(500).json({ error: 'Erreur lors du seeding', details: error.message });
+  }
+});
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({ error: 'Route non trouvée' });
