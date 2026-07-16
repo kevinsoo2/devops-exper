@@ -68,72 +68,188 @@ function LearnContent() {
     if (!content) return <p className="text-gray-500 italic">Contenu en cours de rédaction...</p>;
     
     const lines = content.split('\n');
-    return lines.map((line, i) => {
-      // Headings
-      if (line.startsWith('## ')) return <h2 key={i} className="text-xl font-bold text-white mt-8 mb-3">{line.slice(3)}</h2>;
-      if (line.startsWith('### ')) return <h3 key={i} className="text-lg font-semibold text-white mt-6 mb-2">{line.slice(4)}</h3>;
-      if (line.startsWith('# ')) return <h1 key={i} className="text-2xl font-bold text-white mt-4 mb-4">{line.slice(2)}</h1>;
-      
-      // Code blocks
-      if (line.startsWith('```')) {
-        // Find the end of code block
-        const codeLines: string[] = [];
-        let j = i + 1;
-        while (j < lines.length && !lines[j].startsWith('```')) {
-          codeLines.push(lines[j]);
-          j++;
+    const elements: React.ReactNode[] = [];
+    let i = 0;
+
+    while (i < lines.length) {
+      const line = lines[i];
+
+      // Info/Warning/Tip boxes: :::info, :::warning, :::tip, :::danger
+      if (line.startsWith(':::')) {
+        const boxType = line.slice(3).trim() as 'info' | 'warning' | 'tip' | 'danger';
+        const boxLines: string[] = [];
+        i++;
+        while (i < lines.length && !lines[i].startsWith(':::')) {
+          boxLines.push(lines[i]);
+          i++;
         }
-        if (codeLines.length > 0 && i === lines.indexOf(line)) {
-          return (
-            <pre key={i} className="bg-gray-900 border border-gray-700 rounded-lg p-4 my-4 overflow-x-auto">
-              <code className="text-sm font-mono text-green-400">{codeLines.join('\n')}</code>
-            </pre>
-          );
-        }
-        return null;
-      }
-      // Skip lines that are inside code blocks
-      if (i > 0) {
-        let inCode = false;
-        for (let k = 0; k < i; k++) {
-          if (lines[k].startsWith('```')) inCode = !inCode;
-        }
-        if (inCode) return null;
-      }
-      
-      // Tables (simple rendering)
-      if (line.startsWith('|') && line.endsWith('|')) {
-        if (line.includes('---')) return null; // Skip separator
-        const cells = line.split('|').filter(c => c.trim());
-        const isHeader = i + 1 < lines.length && lines[i + 1]?.includes('---');
-        return (
-          <div key={i} className={`grid grid-cols-${Math.min(cells.length, 4)} gap-2 py-1 px-2 ${isHeader ? 'font-semibold text-white border-b border-gray-700' : 'text-gray-400'} text-sm`}>
-            {cells.map((cell, ci) => <span key={ci} className="truncate">{cell.trim()}</span>)}
+        i++; // skip closing :::
+        const validTypes = ['info', 'warning', 'tip', 'danger'];
+        const type = validTypes.includes(boxType) ? boxType : 'info';
+        const icons: Record<string, string> = { info: 'ℹ️', warning: '⚠️', tip: '💡', danger: '🚨' };
+        const colors: Record<string, string> = { info: 'bg-blue-500/10 border-blue-500/30 text-blue-300', warning: 'bg-yellow-500/10 border-yellow-500/30 text-yellow-300', tip: 'bg-green-500/10 border-green-500/30 text-green-300', danger: 'bg-red-500/10 border-red-500/30 text-red-300' };
+        elements.push(
+          <div key={`box-${i}`} className={`my-4 p-4 rounded-lg border ${colors[type]}`}>
+            <div className="text-sm leading-relaxed">
+              <span className="mr-2">{icons[type]}</span>
+              {boxLines.map((bl, bi) => <span key={bi}>{renderInlineMarkdown(bl)}{bi < boxLines.length - 1 && <br/>}</span>)}
+            </div>
           </div>
         );
+        continue;
       }
-      
+
+      // ASCII Diagram block: ```diagram or ```ascii
+      if (line.startsWith('```diagram') || line.startsWith('```ascii') || line.startsWith('```architecture')) {
+        const diagramLines: string[] = [];
+        i++;
+        while (i < lines.length && !lines[i].startsWith('```')) {
+          diagramLines.push(lines[i]);
+          i++;
+        }
+        i++; // skip closing ```
+        elements.push(
+          <div key={`diag-${i}`} className="my-6 rounded-xl border border-gray-700/50 bg-gray-900/80 overflow-hidden">
+            <div className="px-4 py-2 border-b border-gray-700/50 flex items-center gap-2">
+              <span className="text-xs text-primary-400">📐</span>
+              <span className="text-xs font-medium text-gray-300">Diagramme d&apos;Architecture</span>
+            </div>
+            <pre className="p-4 overflow-x-auto text-xs font-mono text-cyan-300 leading-relaxed">
+              {diagramLines.join('\n')}
+            </pre>
+          </div>
+        );
+        continue;
+      }
+
+      // Code blocks
+      if (line.startsWith('```')) {
+        const lang = line.slice(3).trim();
+        const codeLines: string[] = [];
+        i++;
+        while (i < lines.length && !lines[i].startsWith('```')) {
+          codeLines.push(lines[i]);
+          i++;
+        }
+        i++; // skip closing ```
+        elements.push(
+          <div key={`code-${i}`} className="my-4 rounded-lg border border-gray-700 overflow-hidden">
+            {lang && (
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-800 border-b border-gray-700">
+                <div className="flex gap-1">
+                  <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
+                </div>
+                <span className="text-xs text-gray-500 ml-1">{lang}</span>
+              </div>
+            )}
+            <pre className="bg-gray-950 p-4 overflow-x-auto">
+              <code className="text-sm font-mono text-green-400">{codeLines.join('\n')}</code>
+            </pre>
+          </div>
+        );
+        continue;
+      }
+
+      // Headings
+      if (line.startsWith('## ')) {
+        elements.push(<h2 key={`h2-${i}`} className="text-xl font-bold text-white mt-8 mb-3 flex items-center gap-2"><span className="w-1 h-6 bg-primary-500 rounded-full"></span>{line.slice(3)}</h2>);
+        i++; continue;
+      }
+      if (line.startsWith('### ')) {
+        elements.push(<h3 key={`h3-${i}`} className="text-lg font-semibold text-white mt-6 mb-2">{line.slice(4)}</h3>);
+        i++; continue;
+      }
+      if (line.startsWith('# ')) {
+        elements.push(<h1 key={`h1-${i}`} className="text-2xl font-bold text-white mt-4 mb-4">{line.slice(2)}</h1>);
+        i++; continue;
+      }
+
+      // Horizontal rule / separator
+      if (line.trim() === '---') {
+        elements.push(<hr key={`hr-${i}`} className="my-6 border-gray-700/50" />);
+        i++; continue;
+      }
+
+      // Tables (simple rendering)
+      if (line.startsWith('|') && line.endsWith('|')) {
+        const tableRows: string[][] = [];
+        let hasHeader = false;
+        while (i < lines.length && lines[i].startsWith('|')) {
+          if (lines[i].includes('---')) { hasHeader = true; i++; continue; }
+          tableRows.push(lines[i].split('|').filter(c => c.trim()).map(c => c.trim()));
+          i++;
+        }
+        elements.push(
+          <div key={`table-${i}`} className="my-4 rounded-lg border border-gray-700/50 overflow-x-auto">
+            <table className="w-full text-sm">
+              {hasHeader && tableRows.length > 0 && (
+                <thead>
+                  <tr className="bg-gray-800/50">
+                    {tableRows[0].map((cell, ci) => (
+                      <th key={ci} className="px-3 py-2 text-left text-xs font-semibold text-gray-300 border-b border-gray-700/50">{cell}</th>
+                    ))}
+                  </tr>
+                </thead>
+              )}
+              <tbody>
+                {tableRows.slice(hasHeader ? 1 : 0).map((row, ri) => (
+                  <tr key={ri} className="hover:bg-gray-800/20">
+                    {row.map((cell, ci) => (
+                      <td key={ci} className="px-3 py-2 text-gray-400 border-b border-gray-800/30 text-xs">{renderInlineMarkdown(cell)}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+        continue;
+      }
+
       // Lists
       if (line.startsWith('- ') || line.startsWith('* ')) {
-        const text = line.slice(2);
-        return (
-          <li key={i} className="ml-4 mb-1 text-gray-300 text-sm list-disc">
-            {renderInlineMarkdown(text)}
+        elements.push(
+          <li key={`li-${i}`} className="ml-4 mb-1.5 text-gray-300 text-sm list-disc">
+            {renderInlineMarkdown(line.slice(2))}
           </li>
         );
+        i++; continue;
       }
-      
+
       // Numbered lists
       if (/^\d+\./.test(line)) {
-        return <li key={i} className="ml-4 mb-1 text-gray-300 text-sm list-decimal">{renderInlineMarkdown(line.replace(/^\d+\.\s*/, ''))}</li>;
+        elements.push(
+          <li key={`oli-${i}`} className="ml-4 mb-1.5 text-gray-300 text-sm list-decimal">
+            {renderInlineMarkdown(line.replace(/^\d+\.\s*/, ''))}
+          </li>
+        );
+        i++; continue;
       }
-      
+
+      // Blockquotes
+      if (line.startsWith('> ')) {
+        elements.push(
+          <blockquote key={`bq-${i}`} className="border-l-4 border-primary-500/50 pl-4 my-3 text-gray-400 text-sm italic">
+            {renderInlineMarkdown(line.slice(2))}
+          </blockquote>
+        );
+        i++; continue;
+      }
+
       // Empty lines
-      if (line.trim() === '') return <div key={i} className="h-3" />;
-      
+      if (line.trim() === '') {
+        elements.push(<div key={`sp-${i}`} className="h-3" />);
+        i++; continue;
+      }
+
       // Regular paragraphs
-      return <p key={i} className="text-gray-300 text-sm leading-relaxed mb-2">{renderInlineMarkdown(line)}</p>;
-    });
+      elements.push(<p key={`p-${i}`} className="text-gray-300 text-sm leading-relaxed mb-2">{renderInlineMarkdown(line)}</p>);
+      i++;
+    }
+
+    return elements;
   }
 
   function renderInlineMarkdown(text: string) {
