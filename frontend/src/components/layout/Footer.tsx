@@ -22,12 +22,12 @@ const footerLinks = {
     { label: 'Contribuer', href: '#' },
   ],
   Ressources: [
-    { label: 'Documentation', href: '#' },
-    { label: 'Changelog', href: '#' },
-    { label: 'Statut', href: '#' },
-    { label: 'Support', href: '#' },
-    { label: 'Glossaire DevOps', href: '#' },
+    { label: 'Glossaire DevOps', href: '/glossary' },
+    { label: 'Commandes Linux', href: '/commands' },
+    { label: 'Prép. Entretiens', href: '/interview' },
+    { label: 'Comparateur Outils', href: '/tools/compare' },
     { label: 'Cheat Sheets', href: '/cheatsheets' },
+    { label: 'Changelog', href: '#' },
   ],
   Entreprise: [
     { label: 'À propos', href: '/about' },

@@ -102,6 +102,20 @@ app.post('/api/admin/seed-databases-2', async (req, res) => {
   }
 });
 
+// Seed labs endpoint
+app.post('/api/admin/seed-labs', async (req, res) => {
+  try {
+    const { seedMoreLabs } = require('./db/seed-more-labs');
+    const { getDb } = require('./db/connection');
+    const db = getDb();
+    await seedMoreLabs(db);
+    res.json({ success: true, message: 'Labs supplémentaires ajoutés' });
+  } catch (error) {
+    console.error('Seed labs error:', error);
+    res.status(500).json({ error: error.message, stack: error.stack });
+  }
+});
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({ error: 'Route non trouvée' });

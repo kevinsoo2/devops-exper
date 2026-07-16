@@ -10,6 +10,7 @@ import { StreakTracker } from '@/components/ui/StreakTracker';
 import { DailyChallenge } from '@/components/ui/DailyChallenge';
 import { CourseRecommendations } from '@/components/ui/CourseRecommendations';
 import { RecentlyViewed } from '@/components/ui/RecentlyViewed';
+import { WeeklyGoal } from '@/components/ui/WeeklyGoal';
 
 
 const fallbackStats = {
@@ -137,10 +138,11 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Streak & Daily Challenge */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+        {/* Streak & Daily Challenge & Weekly Goal */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
           <StreakTracker />
           <DailyChallenge />
+          <WeeklyGoal />
         </div>
 
         {/* Recommendations */}
