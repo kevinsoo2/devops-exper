@@ -35,7 +35,7 @@ async function seedMoreLabs(db) {
 
   for (const lab of labs) {
     await db.execute({
-      sql: `INSERT OR IGNORE INTO labs (title, slug, description, category, difficulty, duration_minutes, technology, objectives, xp_reward) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      sql: `INSERT OR IGNORE INTO labs (title, slug, description, category, difficulty, duration_minutes, environment_type, instructions, xp_reward) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       args: lab
     });
   }
