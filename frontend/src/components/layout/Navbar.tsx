@@ -30,6 +30,7 @@ const navLinks = [
   { href: '/blog', label: 'Blog', icon: PenTool },
   { href: '/achievements', label: 'Succès', icon: Trophy },
   { href: '/cheatsheets', label: 'Fiches', icon: FileText },
+  { href: '/glossary', label: 'Glossaire', icon: BookOpen },
   { href: '/about', label: 'À propos', icon: Info },
 ];
 

@@ -128,23 +128,38 @@ export default function CoursesPage() {
             <p className="text-sm text-gray-500 mb-6">{filtered.length} formations trouvées</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filtered.map((course) => (
-                <Link key={course.id} href={`/courses/${course.slug}`} className="card-hover group">
-                  <div className="h-32 bg-gradient-to-br from-primary-500/20 to-secondary-500/20 rounded-xl mb-4 flex items-center justify-center">
-                    <BookOpen size={36} className="text-primary-400 group-hover:scale-110 transition-transform" />
-                  </div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="skill-tag text-xs">{categoryLabels[course.category] || course.category}</span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full border ${
-                      course.level === 'debutant' ? 'difficulty-easy' :
-                      course.level === 'intermediaire' ? 'difficulty-medium' : 'difficulty-hard'
-                    }`}>{levelLabels[course.level] || course.level}</span>
-                  </div>
-                  <h3 className="font-bold dark:text-white group-hover:text-primary-400 transition-colors">{course.title}</h3>
-                  <p className="text-sm text-gray-500 mt-1 line-clamp-2">{course.description}</p>
-                  <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
-                    <span className="flex items-center gap-1"><Clock size={14} /> {course.duration_hours || 0}h</span>
-                    <span className="flex items-center gap-1"><Users size={14} /> {((course as any).enrollment_count || course.enrolled_count || 0).toLocaleString()}</span>
-                    <span className="flex items-center gap-1"><Star size={14} className="text-accent-400" /> {course.rating || 0}</span>
+                <Link key={course.id} href={`/courses/${course.slug}`} className="card-hover group relative overflow-hidden">
+                  {/* Gradient background based on category */}
+                  <div className={`h-2 absolute top-0 left-0 right-0 bg-gradient-to-r ${
+                    course.category === 'conteneurisation' ? 'from-blue-500 to-cyan-500' :
+                    course.category === 'orchestration' ? 'from-blue-400 to-indigo-500' :
+                    course.category === 'cicd' ? 'from-green-500 to-emerald-500' :
+                    course.category === 'cloud' ? 'from-orange-400 to-amber-500' :
+                    course.category === 'iac' ? 'from-purple-500 to-violet-500' :
+                    course.category === 'monitoring' ? 'from-yellow-500 to-orange-500' :
+                    course.category === 'securite' ? 'from-red-500 to-pink-500' :
+                    course.category === 'donnees' ? 'from-teal-500 to-green-500' :
+                    course.category === 'network' ? 'from-sky-500 to-blue-500' :
+                    course.category === 'systeme' ? 'from-gray-400 to-gray-600' :
+                    'from-primary-500 to-secondary-500'
+                  }`} />
+                  <div className="pt-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="skill-tag text-xs">{categoryLabels[course.category] || course.category}</span>
+                      <span className={`text-xs px-2 py-0.5 rounded-full border ${
+                        course.level === 'debutant' ? 'border-green-500/30 text-green-400 bg-green-500/10' :
+                        course.level === 'intermediaire' ? 'border-yellow-500/30 text-yellow-400 bg-yellow-500/10' : 
+                        'border-red-500/30 text-red-400 bg-red-500/10'
+                      }`}>{levelLabels[course.level] || course.level}</span>
+                      {course.is_featured ? <Star size={12} className="text-accent-400 fill-accent-400" /> : null}
+                    </div>
+                    <h3 className="font-bold dark:text-white group-hover:text-primary-400 transition-colors line-clamp-2">{course.title}</h3>
+                    <p className="text-sm text-gray-500 mt-2 line-clamp-2">{course.description}</p>
+                    <div className="mt-4 pt-3 border-t border-gray-800/50 flex items-center justify-between text-xs text-gray-500">
+                      <span className="flex items-center gap-1"><Clock size={12} /> {course.duration_hours || 0}h</span>
+                      <span className="flex items-center gap-1"><Users size={12} /> {((course as any).enrollment_count || course.enrolled_count || 0).toLocaleString()}</span>
+                      {course.instructor && <span className="text-gray-600 truncate max-w-[100px]">{course.instructor}</span>}
+                    </div>
                   </div>
                 </Link>
               ))}

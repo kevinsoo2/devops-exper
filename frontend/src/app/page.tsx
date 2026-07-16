@@ -15,11 +15,15 @@ import { TestimonialsSection } from '@/components/sections/TestimonialsSection';
 import { FAQSection } from '@/components/sections/FAQSection';
 import { PartnersSection } from '@/components/sections/PartnersSection';
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll';
+import { TipOfTheDay } from '@/components/ui/TipOfTheDay';
 
 export default function HomePage() {
   return (
     <>
       <Hero />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <TipOfTheDay />
+      </div>
       <AnimateOnScroll animation="fade-in">
         <PartnersSection />
       </AnimateOnScroll>

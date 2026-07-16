@@ -51,6 +51,9 @@ export default function ToolsPage() {
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
             Explorez les outils essentiels que tout ingénieur DevOps doit connaître.
           </p>
+          <a href="/tools/compare" className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-xl bg-primary-500/10 border border-primary-500/20 text-primary-400 text-sm font-medium hover:bg-primary-500/20 transition-all">
+            <span>⚖️</span> Comparer les outils entre eux
+          </a>
         </div>
 
         <div className="mb-8 space-y-4">
