@@ -136,14 +136,30 @@ app.post('/api/admin/seed-new-courses', async (req, res) => {
     const { seedNewCourses } = require('./db/seed-new-courses');
     const { seedNewCourses2 } = require('./db/seed-new-courses-2');
     const { seedNewCourses3 } = require('./db/seed-new-courses-3');
+    const { seedAutoChapters } = require('./db/seed-auto-chapters');
     const { getDb } = require('./db/connection');
     const db = getDb();
     await seedNewCourses(db);
     await seedNewCourses2(db);
     await seedNewCourses3(db);
-    res.json({ success: true, message: 'Tous les nouveaux cours ajoutés' });
+    await seedAutoChapters(db);
+    res.json({ success: true, message: 'Tous les nouveaux cours ajoutés avec contenu' });
   } catch (error) {
     console.error('Seed new courses error:', error);
+    res.status(500).json({ error: error.message, stack: error.stack });
+  }
+});
+
+// Seed auto chapters only (for courses missing content)
+app.post('/api/admin/seed-auto-chapters', async (req, res) => {
+  try {
+    const { seedAutoChapters } = require('./db/seed-auto-chapters');
+    const { getDb } = require('./db/connection');
+    const db = getDb();
+    await seedAutoChapters(db);
+    res.json({ success: true, message: 'Chapitres et leçons auto-générés' });
+  } catch (error) {
+    console.error('Seed auto chapters error:', error);
     res.status(500).json({ error: error.message, stack: error.stack });
   }
 });
