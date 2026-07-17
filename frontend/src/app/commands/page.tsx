@@ -67,7 +67,7 @@ const commands = [
   { cmd: 'git cherry-pick abc123', desc: 'Appliquer un commit spécifique sur la branche courante', cat: 'Git' },
 ];
 
-const allCategories = ['Tous', ...new Set(commands.map(c => c.cat))];
+const allCategories = ['Tous', ...Array.from(new Set(commands.map(c => c.cat)))];
 
 export default function CommandsPage() {
   const [search, setSearch] = useState('');
