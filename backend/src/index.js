@@ -134,10 +134,12 @@ app.post('/api/admin/seed-rhcsa', async (req, res) => {
 app.post('/api/admin/seed-new-courses', async (req, res) => {
   try {
     const { seedNewCourses } = require('./db/seed-new-courses');
+    const { seedNewCourses2 } = require('./db/seed-new-courses-2');
     const { getDb } = require('./db/connection');
     const db = getDb();
     await seedNewCourses(db);
-    res.json({ success: true, message: 'Nouveaux cours ajoutés' });
+    await seedNewCourses2(db);
+    res.json({ success: true, message: 'Tous les nouveaux cours ajoutés' });
   } catch (error) {
     console.error('Seed new courses error:', error);
     res.status(500).json({ error: error.message, stack: error.stack });
