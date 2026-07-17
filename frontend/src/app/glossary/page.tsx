@@ -70,7 +70,7 @@ const glossaryTerms = [
   { term: 'Zero Trust', definition: 'Modèle de sécurité où rien n\'est implicitement fiable : vérification systématique de chaque accès.', category: 'Sécurité' },
 ];
 
-const allCategories = [...new Set(glossaryTerms.map(t => t.category))].sort();
+const allCategories = Array.from(new Set(glossaryTerms.map(t => t.category))).sort();
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 export default function GlossaryPage() {
