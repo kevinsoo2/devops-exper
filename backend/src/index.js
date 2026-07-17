@@ -135,10 +135,12 @@ app.post('/api/admin/seed-new-courses', async (req, res) => {
   try {
     const { seedNewCourses } = require('./db/seed-new-courses');
     const { seedNewCourses2 } = require('./db/seed-new-courses-2');
+    const { seedNewCourses3 } = require('./db/seed-new-courses-3');
     const { getDb } = require('./db/connection');
     const db = getDb();
     await seedNewCourses(db);
     await seedNewCourses2(db);
+    await seedNewCourses3(db);
     res.json({ success: true, message: 'Tous les nouveaux cours ajoutés' });
   } catch (error) {
     console.error('Seed new courses error:', error);
