@@ -116,6 +116,20 @@ app.post('/api/admin/seed-labs', async (req, res) => {
   }
 });
 
+// Seed RHCSA cheatsheet
+app.post('/api/admin/seed-rhcsa', async (req, res) => {
+  try {
+    const { seedRhcsaCheatsheet } = require('./db/seed-rhcsa-cheatsheet');
+    const { getDb } = require('./db/connection');
+    const db = getDb();
+    await seedRhcsaCheatsheet(db);
+    res.json({ success: true, message: 'Fiche RHCSA EX200 ajoutée' });
+  } catch (error) {
+    console.error('Seed RHCSA error:', error);
+    res.status(500).json({ error: error.message, stack: error.stack });
+  }
+});
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({ error: 'Route non trouvée' });
