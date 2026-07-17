@@ -45,8 +45,9 @@ export const auth = {
 };
 
 export const courses = {
-  list: (params?: { category?: string; level?: string; search?: string }) => {
-    const query = new URLSearchParams(params as any).toString();
+  list: (params?: { category?: string; level?: string; search?: string; limit?: string }) => {
+    const allParams = { limit: '100', ...(params || {}) };
+    const query = new URLSearchParams(allParams as any).toString();
     return fetchApi<{ courses: any[] }>(`/courses${query ? `?${query}` : ''}`).then(data => data.courses || []);
   },
   get: (slug: string) => fetchApi<any>(`/courses/${slug}`),
