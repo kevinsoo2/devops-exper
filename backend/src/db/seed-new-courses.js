@@ -1,0 +1,47 @@
+/**
+ * Seed new courses to expand the platform
+ */
+async function seedNewCourses(db) {
+  console.log('\n📚 Insertion de nouveaux cours...');
+
+  const newCourses = [
+    // Conteneurisation
+    ['Docker Swarm et Orchestration', 'docker-swarm-orchestration', 'Déployez et gérez des clusters Docker Swarm : services, stacks, secrets, configs, load balancing et haute disponibilité.', 'conteneurisation', 'intermediaire', 22, 'Pierre Martin', 'Docker basics', '["Créer un cluster Swarm multi-nœuds","Déployer des stacks de services","Gérer les secrets et configs","Implémenter le load balancing","Configurer le rolling update","Monitorer le cluster Swarm"]', 0],
+    ['Buildah et Skopeo - Images OCI', 'buildah-skopeo-images-oci', 'Construisez des images OCI sans daemon avec Buildah et gérez les registries avec Skopeo.', 'conteneurisation', 'intermediaire', 18, 'Marie Dupont', 'Docker ou Podman', '["Construire des images sans Dockerfile","Utiliser Buildah pour les multi-stage","Gérer les registries avec Skopeo","Signer les images avec Cosign","Optimiser les couches OCI","Intégrer dans les pipelines CI"]', 0],
+    // CI/CD
+    ['GitHub Actions Avancé - Workflows Complexes', 'github-actions-avance', 'Maîtrisez les workflows GitHub Actions avancés : matrix builds, reusable workflows, composite actions, environments et déploiement.', 'cicd', 'avance', 20, 'Lucas Bernard', 'GitHub Actions basics', '["Créer des reusable workflows","Matrix builds multi-plateforme","Composite Actions personnalisées","Déploiement multi-environnements","Self-hosted runners","GitHub Packages et Container Registry"]', 0],
+    ['ArgoCD et Flux - GitOps en Production', 'argocd-flux-gitops-production', 'Implémentez le GitOps à grande échelle avec ArgoCD et Flux : multi-cluster, App of Apps, Progressive Delivery.', 'cicd', 'avance', 25, 'Marie Dupont', 'Kubernetes, Git', '["ArgoCD ApplicationSets","Flux v2 et GitRepository","Multi-cluster management","Progressive Delivery (Argo Rollouts)","Notifications et webhooks","Sync policies et auto-healing"]', 0],
+    // Cloud
+    ['AWS EKS et Conteneurs en Production', 'aws-eks-conteneurs-production', 'Déployez et gérez des applications conteneurisées sur AWS EKS : Fargate, ALB Ingress, IAM Roles, observabilité.', 'cloud', 'avance', 35, 'Pierre Martin', 'Kubernetes, AWS basics', '["Provisionner EKS avec Terraform","Configurer Fargate Profiles","ALB Ingress Controller","IAM Roles for Service Accounts","Observabilité avec CloudWatch","Scaling avec Karpenter"]', 1],
+    ['Multi-Cloud et Cloud Hybride', 'multi-cloud-hybride', 'Architecturez des solutions multi-cloud et hybrides : interconnexion, portabilité, gouvernance et disaster recovery.', 'cloud', 'avance', 30, 'Lucas Bernard', 'Au moins un cloud provider', '["Architecturer en multi-cloud","Interconnexion VPN et Direct Connect","Portabilité avec Kubernetes","Terraform multi-provider","DR et failover cross-cloud","Gouvernance et FinOps multi-cloud"]', 0],
+    // Orchestration
+    ['Kubernetes Networking Deep Dive', 'kubernetes-networking-deep-dive', 'Comprenez le réseau Kubernetes en profondeur : CNI, Services, Ingress, Network Policies, DNS, et Service Mesh.', 'orchestration', 'avance', 28, 'Marie Dupont', 'Kubernetes intermédiaire', '["Comprendre le modèle réseau K8s","CNI : Calico, Cilium, Flannel","Services ClusterIP, NodePort, LoadBalancer","Ingress Controllers avancés","Network Policies pour la sécurité","DNS CoreDNS et résolution"]', 0],
+    ['Helm Charts Avancé et Operators', 'helm-charts-avance-operators', 'Créez des Helm Charts complexes et développez des Kubernetes Operators avec le SDK.', 'orchestration', 'avance', 24, 'Pierre Martin', 'Kubernetes, Helm basics', '["Helm templates avancés","Chart dependencies et subcharts","Helm hooks et tests","Library charts réutilisables","Operator SDK en Go","Reconciliation loop patterns"]', 0],
+    // Monitoring
+    ['Grafana Loki et Logging Cloud-Native', 'grafana-loki-logging', 'Centralisez vos logs avec Grafana Loki : architecture, déploiement, LogQL, alerting et intégration avec Grafana.', 'monitoring', 'intermediaire', 22, 'Lucas Bernard', 'Linux, Docker', '["Architecture Loki (distribuée vs monolithique)","Déployer Loki sur Kubernetes","Configurer Promtail et Alloy","Écrire des requêtes LogQL","Dashboards et alertes dans Grafana","Retention et stockage objet"]', 0],
+    ['Datadog et Monitoring SaaS', 'datadog-monitoring-saas', 'Implémentez un monitoring complet avec Datadog : infrastructure, APM, logs, synthetics et RUM.', 'monitoring', 'intermediaire', 25, 'Marie Dupont', 'Linux basics', '["Installer l agent Datadog","Métriques infrastructure et custom","APM et tracing distribué","Log management et pipelines","Synthetics et monitoring API","Dashboards et alerting avancé"]', 0],
+    // Sécurité
+    ['Sécurité des Conteneurs et Supply Chain', 'securite-conteneurs-supply-chain', 'Sécurisez vos conteneurs de bout en bout : scanning, signing, SBOM, admission controllers et runtime security.', 'securite', 'avance', 28, 'Lucas Bernard', 'Docker, Kubernetes', '["Scanner avec Trivy et Grype","Signer avec Cosign et Notary","Générer des SBOM (Syft)","Admission controllers (Kyverno, OPA)","Runtime security (Falco)","Supply chain avec SLSA framework"]', 1],
+    ['Zero Trust Architecture pour DevOps', 'zero-trust-architecture-devops', 'Implémentez une architecture Zero Trust : identité, micro-segmentation, encryption everywhere et least privilege.', 'securite', 'avance', 24, 'Pierre Martin', 'Réseau, Sécurité basics', '["Principes Zero Trust (Never Trust, Always Verify)","Service Mesh mTLS (Istio, Linkerd)","SPIFFE/SPIRE pour l identité","Micro-segmentation réseau","Policy as Code (OPA, Cedar)","BeyondCorp et accès conditionnel"]', 0],
+    ['Gestion des Secrets en Production', 'gestion-secrets-production', 'Maîtrisez la gestion des secrets : Vault, External Secrets Operator, rotation automatique et bonnes pratiques.', 'securite', 'intermediaire', 20, 'Marie Dupont', 'Kubernetes basics', '["HashiCorp Vault architecture","Dynamic secrets et leasing","External Secrets Operator (ESO)","AWS Secrets Manager et Azure Key Vault","Sealed Secrets pour GitOps","Rotation automatique des credentials"]', 0],
+    // SRE
+    ['SRE Avancé - Error Budgets et Incident Management', 'sre-avance-error-budgets', 'Pratiques SRE avancées : SLOs data-driven, error budgets, incident management, postmortems et capacity planning.', 'sre', 'avance', 26, 'Lucas Bernard', 'Monitoring basics', '["Définir des SLOs pertinents","Calculer et tracker les Error Budgets","Incident Management (PagerDuty, Opsgenie)","Postmortems blameless","Capacity Planning","Reliability Reviews et pre-mortems"]', 0],
+    ['Toil Reduction et Automatisation SRE', 'toil-reduction-automatisation-sre', 'Identifiez et éliminez le toil : automatisation progressive, self-service platforms et ingénierie de la fiabilité.', 'sre', 'intermediaire', 20, 'Pierre Martin', 'Linux, Scripting', '["Identifier et mesurer le toil","Automatisation progressive","Self-service platforms","Runbooks automatisés","ChatOps avec Slack/Teams","Platform Engineering basics"]', 0],
+    // Système
+    ['Administration Active Directory et LDAP', 'active-directory-ldap', 'Administrez Active Directory, les GPOs, DNS intégré, réplication et intégrez les systèmes Linux avec LDAP/Kerberos.', 'systeme', 'intermediaire', 32, 'Lucas Bernard', 'Windows Server basics', '["Installer et configurer AD DS","Gérer les GPO (Group Policy Objects)","DNS intégré à AD","Réplication et sites AD","Intégration Linux avec SSSD/Realm","LDAP et authentification centralisée"]', 0],
+    ['PowerShell pour l\'Administration et l\'Automatisation', 'powershell-administration-automatisation', 'Maîtrisez PowerShell : scripting avancé, modules, DSC, remoting et automatisation d\'infrastructure Windows.', 'systeme', 'intermediaire', 25, 'Marie Dupont', 'Windows Server', '["Cmdlets et Pipeline avancé","Scripts et fonctions","Modules personnalisés","PowerShell Remoting (WinRM)","Desired State Configuration (DSC)","Automatisation Active Directory et Azure"]', 0],
+    // Réseau
+    ['HAProxy et Load Balancing Avancé', 'haproxy-load-balancing-avance', 'Configurez HAProxy pour le load balancing L4/L7 : backends, ACLs, SSL termination, rate limiting et haute disponibilité.', 'network', 'intermediaire', 22, 'Pierre Martin', 'Linux, Réseau TCP/IP', '["HAProxy architecture et modes (TCP/HTTP)","Configuration des frontends et backends","SSL/TLS termination et offloading","ACLs et content switching","Rate limiting et protection DDoS","Keepalived pour la HA"]', 0],
+    ['DNS et BIND - Administration Complète', 'dns-bind-administration', 'Administrez un serveur DNS BIND : zones, enregistrements, DNSSEC, vues, et intégration avec l\'infrastructure.', 'network', 'intermediaire', 20, 'Lucas Bernard', 'Linux, Réseau', '["Architecture DNS et résolution","Configurer BIND9 (named)","Zones primaires et secondaires","Enregistrements A, AAAA, CNAME, MX, SRV, TXT","DNSSEC pour la sécurité","Split DNS et vues"]', 0],
+  ];
+
+  for (const c of newCourses) {
+    await db.execute({
+      sql: 'INSERT OR IGNORE INTO courses (title, slug, description, category, level, duration_hours, instructor, prerequisites, learning_outcomes, is_featured) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      args: c
+    });
+  }
+  console.log('✅ ' + newCourses.length + ' nouveaux cours insérés');
+}
+
+module.exports = { seedNewCourses };

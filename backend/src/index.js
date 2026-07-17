@@ -130,6 +130,20 @@ app.post('/api/admin/seed-rhcsa', async (req, res) => {
   }
 });
 
+// Seed new courses
+app.post('/api/admin/seed-new-courses', async (req, res) => {
+  try {
+    const { seedNewCourses } = require('./db/seed-new-courses');
+    const { getDb } = require('./db/connection');
+    const db = getDb();
+    await seedNewCourses(db);
+    res.json({ success: true, message: 'Nouveaux cours ajoutés' });
+  } catch (error) {
+    console.error('Seed new courses error:', error);
+    res.status(500).json({ error: error.message, stack: error.stack });
+  }
+});
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({ error: 'Route non trouvée' });
