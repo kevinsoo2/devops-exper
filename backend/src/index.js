@@ -164,6 +164,20 @@ app.post('/api/admin/seed-auto-chapters', async (req, res) => {
   }
 });
 
+// Cleanup duplicates
+app.post('/api/admin/cleanup-duplicates', async (req, res) => {
+  try {
+    const { cleanupDuplicates } = require('./db/cleanup-duplicates');
+    const { getDb } = require('./db/connection');
+    const db = getDb();
+    await cleanupDuplicates(db);
+    res.json({ success: true, message: 'Doublons nettoyés' });
+  } catch (error) {
+    console.error('Cleanup error:', error);
+    res.status(500).json({ error: error.message, stack: error.stack });
+  }
+});
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({ error: 'Route non trouvée' });
