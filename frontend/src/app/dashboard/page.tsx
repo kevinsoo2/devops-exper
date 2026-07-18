@@ -148,6 +148,31 @@ export default function DashboardPage() {
         {/* Recommendations */}
         <CourseRecommendations />
 
+        {/* Quick Actions */}
+        <div className="card mt-8">
+          <h2 className="font-bold dark:text-white mb-4 flex items-center gap-2">
+            <Zap size={18} className="text-accent-400" /> Actions Rapides
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <Link href="/progress" className="p-3 rounded-xl bg-primary-500/5 border border-primary-500/20 hover:bg-primary-500/10 transition-all text-center group">
+              <span className="text-xl">🗺️</span>
+              <p className="text-xs text-gray-400 mt-1 group-hover:text-primary-400">Parcours</p>
+            </Link>
+            <Link href="/commands" className="p-3 rounded-xl bg-green-500/5 border border-green-500/20 hover:bg-green-500/10 transition-all text-center group">
+              <span className="text-xl">💻</span>
+              <p className="text-xs text-gray-400 mt-1 group-hover:text-green-400">Commandes</p>
+            </Link>
+            <Link href="/interview" className="p-3 rounded-xl bg-purple-500/5 border border-purple-500/20 hover:bg-purple-500/10 transition-all text-center group">
+              <span className="text-xl">🎯</span>
+              <p className="text-xs text-gray-400 mt-1 group-hover:text-purple-400">Entretiens</p>
+            </Link>
+            <Link href="/cheatsheets" className="p-3 rounded-xl bg-orange-500/5 border border-orange-500/20 hover:bg-orange-500/10 transition-all text-center group">
+              <span className="text-xl">📋</span>
+              <p className="text-xs text-gray-400 mt-1 group-hover:text-orange-400">Fiches</p>
+            </Link>
+          </div>
+        </div>
+
         {/* Recently Viewed */}
         <RecentlyViewed />
       </div>

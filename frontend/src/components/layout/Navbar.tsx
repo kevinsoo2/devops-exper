@@ -26,6 +26,7 @@ const navLinks = [
   { href: '/tools', label: 'Outils', icon: Wrench },
   { href: '/certifications', label: 'Certifs', icon: Award },
   { href: '/roadmap', label: 'Parcours', icon: Map },
+  { href: '/progress', label: 'Progression', icon: Map },
   { href: '/community', label: 'Communauté', icon: Users },
   { href: '/blog', label: 'Blog', icon: PenTool },
   { href: '/achievements', label: 'Succès', icon: Trophy },
