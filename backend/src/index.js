@@ -178,6 +178,20 @@ app.post('/api/admin/cleanup-duplicates', async (req, res) => {
   }
 });
 
+// Seed more cheatsheets
+app.post('/api/admin/seed-cheatsheets', async (req, res) => {
+  try {
+    const { seedMoreCheatsheets } = require('./db/seed-more-cheatsheets');
+    const { getDb } = require('./db/connection');
+    const db = getDb();
+    await seedMoreCheatsheets(db);
+    res.json({ success: true, message: 'Fiches récap ajoutées' });
+  } catch (error) {
+    console.error('Seed cheatsheets error:', error);
+    res.status(500).json({ error: error.message, stack: error.stack });
+  }
+});
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({ error: 'Route non trouvée' });
