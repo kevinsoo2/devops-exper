@@ -78,7 +78,7 @@ export default function ProfilePage() {
               <p className="text-sm text-gray-500">Niveau {user?.level || 1} &middot; {user?.xp_points || 0} XP</p>
               <div className="mt-2 flex items-center gap-2 flex-wrap">
                 <span className="px-2 py-0.5 rounded-full bg-primary-500/10 text-primary-400 text-[10px] font-medium border border-primary-500/20">🎓 Apprenant</span>
-                <span className="px-2 py-0.5 rounded-full bg-accent-500/10 text-accent-400 text-[10px] font-medium border border-accent-500/20">🔥 Streak {user?.streak_days || 0}j</span>
+                <span className="px-2 py-0.5 rounded-full bg-accent-500/10 text-accent-400 text-[10px] font-medium border border-accent-500/20">🔥 Streak {(user as any)?.streak_days || 0}j</span>
                 <span className="px-2 py-0.5 rounded-full bg-success-500/10 text-success-400 text-[10px] font-medium border border-success-500/20">⚡ Niv.{user?.level || 1}</span>
               </div>
             </div>
@@ -95,7 +95,7 @@ export default function ProfilePage() {
               <p className="text-[10px] text-gray-500">Niveau</p>
             </div>
             <div className="text-center p-3 rounded-xl bg-gray-800/30">
-              <p className="text-lg font-bold text-white">{user?.streak_days || 0}</p>
+              <p className="text-lg font-bold text-white">{(user as any)?.streak_days || 0}</p>
               <p className="text-[10px] text-gray-500">Jours streak</p>
             </div>
           </div>
