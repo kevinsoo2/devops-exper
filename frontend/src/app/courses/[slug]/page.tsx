@@ -116,27 +116,67 @@ export default function CourseDetailPage() {
           <ArrowLeft size={16} /> Retour aux Formations
         </Link>
 
-        {/* Header */}
+        {/* Header with visual banner */}
+        <div className="relative mb-8 -mx-4 sm:-mx-6 lg:-mx-8">
+          <div className={`relative h-48 sm:h-56 bg-gradient-to-br ${
+            course.category === 'conteneurisation' ? 'from-blue-600 to-cyan-700' :
+            course.category === 'orchestration' ? 'from-blue-500 to-indigo-700' :
+            course.category === 'cicd' ? 'from-green-600 to-emerald-700' :
+            course.category === 'cloud' ? 'from-orange-500 to-amber-700' :
+            course.category === 'iac' ? 'from-purple-600 to-violet-700' :
+            course.category === 'monitoring' ? 'from-yellow-600 to-orange-700' :
+            course.category === 'securite' ? 'from-red-600 to-pink-700' :
+            course.category === 'donnees' ? 'from-teal-600 to-green-700' :
+            course.category === 'network' ? 'from-sky-600 to-blue-700' :
+            course.category === 'systeme' ? 'from-slate-600 to-gray-700' :
+            'from-primary-600 to-secondary-700'
+          } overflow-hidden rounded-2xl mx-4 sm:mx-6 lg:mx-8`}>
+            <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }} />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <span className="px-3 py-1 rounded-lg bg-white/10 backdrop-blur-sm text-white/90 text-xs font-medium border border-white/20">
+                    {course.category}
+                  </span>
+                  <span className={`px-3 py-1 rounded-lg text-xs font-medium backdrop-blur-sm border border-white/20 ${
+                    course.level === 'debutant' ? 'bg-green-500/20 text-green-200' :
+                    course.level === 'intermediaire' ? 'bg-yellow-500/20 text-yellow-200' : 
+                    'bg-red-500/20 text-red-200'
+                  }`}>{course.level === 'debutant' ? 'Débutant' : course.level === 'intermediaire' ? 'Intermédiaire' : 'Avancé'}</span>
+                </div>
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white px-4 max-w-3xl text-balance">{course.title}</h1>
+              </div>
+            </div>
+            {/* Decorative circles */}
+            <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/5 rounded-full" />
+            <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-white/5 rounded-full" />
+          </div>
+        </div>
+
+        {/* Course info bar */}
+        <div className="card !p-4 mb-6 flex flex-wrap items-center gap-4 sm:gap-6">
+          <div className="flex items-center gap-2 text-sm">
+            <Clock size={16} className="text-primary-400" />
+            <span className="text-gray-300 font-medium">{course.duration_hours || 0}h</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm">
+            <Users size={16} className="text-secondary-400" />
+            <span className="text-gray-300 font-medium">{(course.enrollment_count || 0).toLocaleString()} inscrits</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm">
+            <Star size={16} className="text-accent-400 fill-accent-400" />
+            <span className="text-gray-300 font-medium">{course.rating || '4.8'}/5</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm">
+            <BookOpen size={16} className="text-success-400" />
+            <span className="text-gray-300 font-medium">{chapters.length} chap. • {chapters.reduce((acc: number, ch: any) => acc + (ch.lessons?.length || 0), 0)} leçons</span>
+          </div>
+          <div className="ml-auto text-sm text-gray-500">par <span className="text-white font-medium">{course.instructor || 'DevOps Expert'}</span></div>
+        </div>
+
+        {/* Description */}
         <div className="mb-8">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="skill-tag">{course.category}</span>
-            <span className={`text-xs px-2 py-0.5 rounded-full border ${
-              course.level === 'debutant' ? 'difficulty-easy' :
-              course.level === 'intermediaire' ? 'difficulty-medium' : 'difficulty-hard'
-            }`}>{course.level === 'debutant' ? 'Débutant' : course.level === 'intermediaire' ? 'Intermédiaire' : 'Avancé'}</span>
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-bold dark:text-white">{course.title}</h1>
-          <p className="mt-4 text-gray-500">{course.description}</p>
-          <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-gray-500">
-            <span className="flex items-center gap-1"><Clock size={14} /> {course.duration_hours || 0}h</span>
-            <span className="flex items-center gap-1"><Users size={14} /> {(course.enrollment_count || 0).toLocaleString()} inscrits</span>
-            <span className="flex items-center gap-1"><Star size={14} className="text-accent-400" /> {course.rating || 0}</span>
-            <span>par {course.instructor || 'DevOps Expert'}</span>
-          </div>
-          <div className="mt-3 text-sm text-gray-500">
-            <span className="font-medium">{chapters.length} chapitres</span> • 
-            <span className="ml-1">{chapters.reduce((acc: number, ch: any) => acc + (ch.lessons?.length || 0), 0)} leçons</span>
-          </div>
+          <p className="text-gray-400 leading-relaxed">{course.description}</p>
         </div>
 
         {/* Enroll Button */}
