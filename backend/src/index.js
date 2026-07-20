@@ -181,6 +181,7 @@ app.post('/api/admin/cleanup-duplicates', async (req, res) => {
 // Seed more cheatsheets
 app.post('/api/admin/seed-cheatsheets', async (req, res) => {
   try {
+    delete require.cache[require.resolve('./db/seed-more-cheatsheets')];
     const { seedMoreCheatsheets } = require('./db/seed-more-cheatsheets');
     const { getDb } = require('./db/connection');
     const db = getDb();
