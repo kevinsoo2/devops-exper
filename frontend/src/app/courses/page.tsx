@@ -127,42 +127,86 @@ export default function CoursesPage() {
           <>
             <p className="text-sm text-gray-500 mb-6">{filtered.length} formations trouvées</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map((course) => (
-                <Link key={course.id} href={`/courses/${course.slug}`} className="card-hover group relative overflow-hidden">
-                  {/* Gradient background based on category */}
-                  <div className={`h-2 absolute top-0 left-0 right-0 bg-gradient-to-r ${
-                    course.category === 'conteneurisation' ? 'from-blue-500 to-cyan-500' :
-                    course.category === 'orchestration' ? 'from-blue-400 to-indigo-500' :
-                    course.category === 'cicd' ? 'from-green-500 to-emerald-500' :
-                    course.category === 'cloud' ? 'from-orange-400 to-amber-500' :
-                    course.category === 'iac' ? 'from-purple-500 to-violet-500' :
-                    course.category === 'monitoring' ? 'from-yellow-500 to-orange-500' :
-                    course.category === 'securite' ? 'from-red-500 to-pink-500' :
-                    course.category === 'donnees' ? 'from-teal-500 to-green-500' :
-                    course.category === 'network' ? 'from-sky-500 to-blue-500' :
-                    course.category === 'systeme' ? 'from-gray-400 to-gray-600' :
-                    'from-primary-500 to-secondary-500'
-                  }`} />
-                  <div className="pt-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="skill-tag text-xs">{categoryLabels[course.category] || course.category}</span>
-                      <span className={`text-xs px-2 py-0.5 rounded-full border ${
-                        course.level === 'debutant' ? 'border-green-500/30 text-green-400 bg-green-500/10' :
-                        course.level === 'intermediaire' ? 'border-yellow-500/30 text-yellow-400 bg-yellow-500/10' : 
-                        'border-red-500/30 text-red-400 bg-red-500/10'
-                      }`}>{levelLabels[course.level] || course.level}</span>
-                      {course.is_featured ? <Star size={12} className="text-accent-400 fill-accent-400" /> : null}
+              {filtered.map((course) => {
+                const gradients: Record<string, string> = {
+                  'conteneurisation': 'from-blue-600/80 to-cyan-600/80',
+                  'orchestration': 'from-blue-500/80 to-indigo-600/80',
+                  'cicd': 'from-green-600/80 to-emerald-600/80',
+                  'cloud': 'from-orange-500/80 to-amber-600/80',
+                  'iac': 'from-purple-600/80 to-violet-600/80',
+                  'monitoring': 'from-yellow-600/80 to-orange-600/80',
+                  'securite': 'from-red-600/80 to-pink-600/80',
+                  'donnees': 'from-teal-600/80 to-green-600/80',
+                  'network': 'from-sky-600/80 to-blue-600/80',
+                  'systeme': 'from-slate-600/80 to-gray-600/80',
+                  'gitops': 'from-orange-500/80 to-red-500/80',
+                  'sre': 'from-indigo-600/80 to-purple-600/80',
+                  'automatisation': 'from-emerald-600/80 to-teal-600/80',
+                  'virtualisation': 'from-violet-600/80 to-fuchsia-600/80',
+                };
+                const icons: Record<string, string> = {
+                  'conteneurisation': 'fa-brands fa-docker',
+                  'orchestration': 'fa-solid fa-dharmachakra',
+                  'cicd': 'fa-solid fa-code-branch',
+                  'cloud': 'fa-solid fa-cloud',
+                  'iac': 'fa-solid fa-cubes',
+                  'monitoring': 'fa-solid fa-chart-line',
+                  'securite': 'fa-solid fa-shield-halved',
+                  'donnees': 'fa-solid fa-database',
+                  'network': 'fa-solid fa-network-wired',
+                  'systeme': 'fa-solid fa-server',
+                  'gitops': 'fa-brands fa-git-alt',
+                  'sre': 'fa-solid fa-heartbeat',
+                  'automatisation': 'fa-solid fa-robot',
+                  'virtualisation': 'fa-solid fa-layer-group',
+                };
+                const gradient = gradients[course.category] || 'from-primary-600/80 to-secondary-600/80';
+                const icon = icons[course.category] || 'fa-solid fa-book';
+                
+                return (
+                <Link key={course.id} href={`/courses/${course.slug}`} className="card-hover group relative overflow-hidden !p-0">
+                  {/* Visual header with gradient + icon + pattern */}
+                  <div className={`relative h-32 bg-gradient-to-br ${gradient} overflow-hidden`}>
+                    {/* SVG Pattern overlay */}
+                    <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }} />
+                    {/* Large icon */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <i className={`${icon} text-5xl text-white/30 group-hover:text-white/50 group-hover:scale-110 transition-all duration-300`}></i>
                     </div>
-                    <h3 className="font-bold dark:text-white group-hover:text-primary-400 transition-colors line-clamp-2">{course.title}</h3>
-                    <p className="text-sm text-gray-500 mt-2 line-clamp-2">{course.description}</p>
-                    <div className="mt-4 pt-3 border-t border-gray-800/50 flex items-center justify-between text-xs text-gray-500">
-                      <span className="flex items-center gap-1"><Clock size={12} /> {course.duration_hours || 0}h</span>
-                      <span className="flex items-center gap-1"><Users size={12} /> {((course as any).enrollment_count || course.enrolled_count || 0).toLocaleString()}</span>
-                      {course.instructor && <span className="text-gray-600 truncate max-w-[100px]">{course.instructor}</span>}
+                    {/* Category badge */}
+                    <div className="absolute top-3 left-3">
+                      <span className="px-2 py-1 rounded-lg bg-black/30 backdrop-blur-sm text-[10px] text-white font-medium">
+                        {categoryLabels[course.category] || course.category}
+                      </span>
+                    </div>
+                    {/* Level badge */}
+                    <div className="absolute top-3 right-3">
+                      <span className={`px-2 py-1 rounded-lg text-[10px] font-medium backdrop-blur-sm ${
+                        course.level === 'debutant' ? 'bg-green-500/30 text-green-200' :
+                        course.level === 'intermediaire' ? 'bg-yellow-500/30 text-yellow-200' : 
+                        'bg-red-500/30 text-red-200'
+                      }`}>{levelLabels[course.level] || course.level}</span>
+                    </div>
+                    {/* Featured star */}
+                    {course.is_featured ? (
+                      <div className="absolute bottom-3 right-3">
+                        <Star size={16} className="text-yellow-300 fill-yellow-300" />
+                      </div>
+                    ) : null}
+                  </div>
+                  {/* Content */}
+                  <div className="p-4">
+                    <h3 className="font-bold dark:text-white group-hover:text-primary-400 transition-colors line-clamp-2 text-sm">{course.title}</h3>
+                    <p className="text-xs text-gray-500 mt-1.5 line-clamp-2">{course.description}</p>
+                    <div className="mt-3 pt-3 border-t border-gray-800/50 flex items-center justify-between text-xs text-gray-500">
+                      <span className="flex items-center gap-1"><Clock size={11} /> {course.duration_hours || 0}h</span>
+                      <span className="flex items-center gap-1"><Users size={11} /> {((course as any).enrollment_count || course.enrolled_count || 0).toLocaleString()}</span>
+                      {course.instructor && <span className="text-gray-600 truncate max-w-[80px]">{course.instructor}</span>}
                     </div>
                   </div>
                 </Link>
-              ))}
+                );
+              })}
             </div>
           </>
         )}
