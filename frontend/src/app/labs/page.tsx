@@ -59,7 +59,7 @@ export default function LabsPage() {
             Mettez en pratique vos connaissances avec des exercices hands-on.
           </p>
           <div className="mt-4 flex flex-wrap justify-center gap-3">
-            <a href="/labs/terminal" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-green-500/10 border border-green-500/20 text-green-400 text-sm font-medium hover:bg-green-500/20 transition-all">
+            <a href="/terminal" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-green-500/10 border border-green-500/20 text-green-400 text-sm font-medium hover:bg-green-500/20 transition-all">
               <span>🖥️</span> Terminal Interactif Linux
             </a>
             <a href="https://labs.play-with-docker.com/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium hover:bg-blue-500/20 transition-all">
