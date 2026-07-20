@@ -485,8 +485,8 @@ var.env == "prod" ? 3 : 1
 coalesce(var.custom_name, "default")
 
 # Fichiers
-file("${path.module}/script.sh")
-templatefile("${path.module}/init.tpl", { port = 8080 })
+file("\\${path.module}/script.sh")
+templatefile("\\${path.module}/init.tpl", { port = 8080 })
 \`\`\`
 
 ## Patterns courants
