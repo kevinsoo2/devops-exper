@@ -178,6 +178,21 @@ app.post('/api/admin/cleanup-duplicates', async (req, res) => {
   }
 });
 
+// Seed Linux lesson content with real commands
+app.post('/api/admin/seed-linux-content', async (req, res) => {
+  try {
+    delete require.cache[require.resolve('./db/seed-linux-content')];
+    const { seedLinuxContent } = require('./db/seed-linux-content');
+    const { getDb } = require('./db/connection');
+    const db = getDb();
+    await seedLinuxContent(db);
+    res.json({ success: true, message: 'Contenu Linux mis à jour avec commandes' });
+  } catch (error) {
+    console.error('Seed linux content error:', error);
+    res.status(500).json({ error: error.message, stack: error.stack });
+  }
+});
+
 // Seed more cheatsheets
 app.post('/api/admin/seed-cheatsheets', async (req, res) => {
   try {
