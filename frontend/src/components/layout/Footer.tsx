@@ -26,8 +26,8 @@ const footerLinks = {
     { label: 'Commandes Linux', href: '/commands' },
     { label: 'Prép. Entretiens', href: '/interview' },
     { label: 'Comparateur Outils', href: '/tools/compare' },
-    { label: 'Cheat Sheets', href: '/cheatsheets' },
-    { label: 'Changelog', href: '#' },
+    { label: 'Mode Étude', href: '/study' },
+    { label: 'Changelog', href: '/changelog' },
   ],
   Entreprise: [
     { label: 'À propos', href: '/about' },
