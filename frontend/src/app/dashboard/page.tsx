@@ -83,6 +83,23 @@ export default function DashboardPage() {
           <p className="text-gray-500 mt-1">Voici un aperçu de votre progression.</p>
         </div>
 
+        {/* Continue Learning Banner */}
+        <div className="card mb-8 border-primary-500/20 bg-gradient-to-r from-primary-500/5 via-transparent to-secondary-500/5 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-primary-500/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
+          <div className="relative flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-primary-500/20 flex items-center justify-center flex-shrink-0">
+              <BookOpen size={22} className="text-primary-400" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm text-gray-400">Reprendre où vous en étiez</p>
+              <p className="font-bold text-white mt-0.5">Continuez votre apprentissage DevOps</p>
+            </div>
+            <Link href="/courses" className="btn-primary text-sm !px-5 !py-2 hidden sm:flex">
+              Continuer →
+            </Link>
+          </div>
+        </div>
+
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
           {stats.map((stat) => {

@@ -18,7 +18,7 @@ const footerLinks = {
     { label: 'Blog', href: '/blog' },
     { label: 'Succès & Badges', href: '/achievements' },
     { label: 'Classement', href: '/achievements' },
-    { label: 'Discord', href: '#' },
+    { label: 'Projets Portfolio', href: '/projects' },
     { label: 'Contribuer', href: '#' },
   ],
   Ressources: [
@@ -31,8 +31,8 @@ const footerLinks = {
   ],
   Entreprise: [
     { label: 'À propos', href: '/about' },
-    { label: 'Contact', href: '/about' },
-    { label: 'Partenaires', href: '#' },
+    { label: 'Carrières DevOps', href: '/career' },
+    { label: 'Salaires', href: '/salaries' },
     { label: 'Mentions légales', href: '#' },
     { label: 'RGPD', href: '#' },
     { label: 'CGU', href: '#' },
